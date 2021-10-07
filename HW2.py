@@ -1,23 +1,45 @@
+'''
+HW2
+python code for homework2 in computer1 class in Yonsei University
+Using integration to solve Kepler problem
+'''
+
 import numpy as np
 import matplotlib.pyplot as plt
 from HW1 import HW1
 
 
-# Change of variable
-# Final equation
-# t = 
-# 8/sqrt(alpha) int 0 to sqrt(zeta-9/10) sqrt(9/8-9/10-x^2) dx +
-# 10/sqrt(alpha) int sqrt(9/8-zeta) to sqrt(9/8-9/10) sqrt(9/8-9/10-x^2) dx
-
 def f(x):
+    '''
+    Integrand
+    '''
+
     return np.sqrt(9/8-9/10-x**2)
 
 
-def HW2(zeta_min, zeta_max, n):
+def HW2(zeta_min: float, zeta_max: float, n: int) -> np.ndarray:
+
+    '''
+    Integrate :math:`\\zeta\'(0.987654(\\zeta\'-0.9)(9/8-\\zeta\'))^{-1/2}`
+    from 0.9 to :math:`\\zeta`
+    To remove singularity in the integrand, I separates the integrand
+    and changes
+    :math:`\\zeta\'` to :math:`x=(\\zeta\'-0.9)^{1/2}` for the first part and
+    to :math:`x=(9/8-\\zeta\')^{1/2}` for the second part.
+
+    Args:
+     zeta_min: minimum value of zeta
+     zeta_max: maximum value of zeta
+     n: number of points between zeta_min and zeta_max
+
+    Returns:
+     Integration evaluated in n points between zeta_min and zeta_max
+    '''
+
     zeta = np.linspace(zeta_min, zeta_max, n)
     t = np.zeros(n)
-    x1 = np.sqrt(zeta-9/10)
-    x2 = np.sqrt(9/8-zeta)
+    x1 = np.sqrt(zeta-zeta_min)
+    x2 = np.sqrt(zeta_max-zeta)
     fx1 = f(x1)
     fx2 = f(x2)
     t[0] = 0
@@ -31,10 +53,9 @@ def HW2(zeta_min, zeta_max, n):
 if __name__ == "__main__":
 
     t_ref, zeta_ref = HW1(0, 3.2, 1000, 0.9, 0)
-    t_3, zeta_3 = HW2(0.9, 9/8, 200)
+    t, zeta = HW2(0.9, 9/8, 200)
     plt.plot(t_ref, zeta_ref, label='HW1')
-    plt.plot(t_3, zeta_3, marker='o', markersize=3,
+    plt.plot(t, zeta, marker='o', markersize=3,
              linestyle='none', label='HW2')
     plt.legend()
     plt.show()
-        
