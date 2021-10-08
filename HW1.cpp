@@ -12,7 +12,8 @@ Using explicit Euler Method to solve Kepler problem
 using namespace std;
 
 tuple<vector<double>, vector<double>> HW1(double t0, double t1,
-int n, double y0, double y0p) { 
+					  int n, double y0, double y0p)
+{ 
 
     // initialize the variable
     double spacing;
@@ -24,9 +25,10 @@ int n, double y0, double y0p) {
 
     // use uniform n points bewteen t0 and t1
     // additional one point needed for end point
-    for(int i=0; i< n+1; i++) {
+    for(int i=0; i< n+1; i++)
+      {
         t[i] = i*spacing;
-    }
+      }
 
     // initial condition
     y[0] = y0;
@@ -35,11 +37,12 @@ int n, double y0, double y0p) {
     // Solve 2nd order ODE using
     // Explict Euler Method
 
-    for(int i = 0; i < n-1; i++) {
-        y_inv = 1 / y[i];
-        y[i+2] = pow(spacing, 2)*(pow(y_inv, 3) - pow(y_inv, 2)) + \
-        2*y[i+1] - y[i];
-    }
+    for(int i = 2; i < n+1; i++)
+      {
+        y_inv = 1 / y[i-1];
+        y[i] = pow(spacing, 2)*(pow(y_inv, 3) - pow(y_inv, 2)) + \
+        2*y[i-1] - y[i-2];
+      }
 
     return make_tuple(t, y);
 }
@@ -53,9 +56,10 @@ int main(void) {
     vector<double> t, y;
     tie(t, y) = HW1(t0, t1, n, y0, y0p);
 
-    for (int i = 0; i < n+1; i++) {
-        cout << t[i] << ',' << y[i] << endl;
-    }
+    for (int i = 0; i < n+1; i++)
+      {
+        cout << t[i] << '\t' << y[i] << endl;
+      }
 
     return 0;
 }

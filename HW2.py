@@ -1,23 +1,16 @@
 '''
 HW2
 python code for homework2 in computer1 class in Yonsei University
-Using integration to solve Kepler problem
+Using numerical integration to solve Kepler problem
 '''
-
+from typing import Tuple
 import numpy as np
 import matplotlib.pyplot as plt
 from HW1 import HW1
 
 
-def f(x):
-    '''
-    Integrand
-    '''
-
-    return np.sqrt(9/8-9/10-x**2)
-
-
-def HW2(zeta_min: float, zeta_max: float, n: int) -> np.ndarray:
+def HW2(zeta_min: float, zeta_max: float,
+        n: int) -> Tuple[np.ndarray, np.ndarray]:
 
     '''
     Integrate :math:`\\zeta\'(0.987654(\\zeta\'-0.9)(9/8-\\zeta\'))^{-1/2}`
@@ -36,16 +29,14 @@ def HW2(zeta_min: float, zeta_max: float, n: int) -> np.ndarray:
      Integration evaluated in n points between zeta_min and zeta_max
     '''
 
-    zeta = np.linspace(zeta_min, zeta_max, n)
-    t = np.zeros(n)
+    zeta = np.linspace(zeta_min, zeta_max, n+1)
+    t = np.zeros(n+1)
     x1 = np.sqrt(zeta-zeta_min)
     x2 = np.sqrt(zeta_max-zeta)
-    fx1 = f(x1)
-    fx2 = f(x2)
     t[0] = 0
-    for i in range(n-1):
-        t[i+1] = t[i] + 8/np.sqrt(0.987654)*(x1[i+1]-x1[i])*fx1[i] - \
-            10/np.sqrt(0.987654)*(x2[i+1]-x2[i])*fx2[i]
+    for i in range(n):
+        t[i+1] = t[i] + 8/np.sqrt(0.987654)*(x1[i+1]-x1[i])*x2[i] - \
+            10/np.sqrt(0.987654)*(x2[i+1]-x2[i])*x1[i]
 
     return t, zeta
 
@@ -53,7 +44,7 @@ def HW2(zeta_min: float, zeta_max: float, n: int) -> np.ndarray:
 if __name__ == "__main__":
 
     t_ref, zeta_ref = HW1(0, 3.2, 1000, 0.9, 0)
-    t, zeta = HW2(0.9, 9/8, 200)
+    t, zeta = HW2(0.9, 9/8, 10)
     plt.plot(t_ref, zeta_ref, label='HW1')
     plt.plot(t, zeta, marker='o', markersize=3,
              linestyle='none', label='HW2')

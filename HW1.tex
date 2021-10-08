@@ -1,0 +1,101 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\title{Computer1 Homework01}
+\author{Junho Lee, Yonsei University}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+We need to solve
+
+\begin{equation}
+  \label{eq:ode_2nd}
+  \frac{d^2 \zeta}{dt^2} = \frac{1}{\zeta^3} - \frac{1}{\zeta^2}
+\end{equation}
+
+with intial condition
+
+\begin{equation}
+  \label{eq:init_cond}
+  \begin{aligned}
+    \zeta(t_0) &= 0.9 \\
+    \zeta'(t_0) &= 0
+  \end{aligned}
+\end{equation}
+
+Let domain $D$ of $\zeta(t)$ be $[t_0, t_1]$.
+
+To solve equation \eqref{eq:ode_2nd}, I divide the domain $D$ into $n$ pieces.
+
+\begin{equation}
+  \label{eq:x}
+  x_i = (t_1-t_0)\frac{i}{n} + t_0
+\end{equation}
+
+for $0 \leq i \leq n$.
+
+Now define
+
+\begin{equation}
+  \label{eq:zeta}
+  \zeta_i \coloneqq \zeta(x_i)
+\end{equation}
+
+Then we can approximate $\zeta''_i$ as following
+
+\begin{equation}
+  \label{eq:ddzeta}
+  \zeta''_i \approx \frac{\zeta_{i+1}-2\zeta_i+\zeta_{i-1}}{h^2}
+\end{equation}
+, where $h=(t_1-t_0)/n$.
+
+Substitude \eqref{eq:ddzeta} to \eqref{eq:ode_2nd}, then
+
+\begin{equation}
+  \label{eq:implict_euler}
+  \frac{\zeta_{i+1}-2\zeta_i+\zeta_{i-1}}{h^2} = \frac{1}{\zeta_i^3} - \frac{1}{\zeta_i^2}
+\end{equation}
+
+for $1 \leq i \leq n-1$.
+
+To evaluate $\zeta_i$, I modify \eqref{eq:implict_euler} as
+
+\begin{equation}
+  \label{eq:explict_euler}
+  \zeta_i = \frac{h^2}{\zeta_{i-1}^3} - \frac{h^2}{\zeta_{i-1}^2} + 2\zeta_{i-1} - \zeta_{i-2}
+\end{equation}
+
+, for $ 2 \leq i \leq n$.
+
+$\zeta_0$ and $\zeta_1$ are needed to solve recurrence equation \eqref{eq:explict_euler}.
+$\zeta_0$ is explicity given as $0.9$, but $\zeta_1$ is not.
+
+To find $\zeta_1$, I use following approximation.
+
+\begin{equation}
+  \label{eq:dzeta}
+  \zeta'_0 \approx \frac{\zeta_1 - \zeta_0}{h}
+\end{equation}
+
+By \eqref{eq:dzeta}, $\zeta_1$ is
+
+\begin{equation}
+  \label{eq:zeta1}
+  \zeta_1 = h\zeta'_0 + \zeta_0
+\end{equation}
+
+Now we can solve recurrence equation \eqref{eq:explict_euler} to numerically
+approximate the solution of \eqref{eq:ode_2nd}.
+  
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
