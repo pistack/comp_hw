@@ -23,7 +23,7 @@ int n, double y0, double y0p) {
     spacing = (t1 - t0) / n;
 
     // use uniform n points bewteen t0 and t1
-    // for time
+    // additional one point needed for end point
     for(int i=0; i< n+1; i++) {
         t[i] = i*spacing;
     }
