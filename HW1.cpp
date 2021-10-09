@@ -21,7 +21,7 @@ tuple<vector<double>, vector<double>> HW1(double t0, double t1,
     vector<double> t(n+1, 0);
     vector<double> y(n+1, 0);
 
-    spacing = (t1 - t0) / n;
+    spacing = (t1 - t0) / double(n);
 
     // use uniform n points bewteen t0 and t1
     // additional one point needed for end point

@@ -70,7 +70,6 @@ def eval_action(t: np.ndarray, zeta: np.ndarray,
 
 
 def move_step(init_guess: np.ndarray,
-              lb: np.ndarray, ub: np.ndarray,
               step: float) -> np.ndarray:
 
     '''
@@ -78,24 +77,22 @@ def move_step(init_guess: np.ndarray,
 
     Args:
      init_guess: initial guess
-     weight: weight
-     lb: lower bound
-     ub: upper bound
      step: step size
 
     Returns:
      initial guess moved by step
     '''
+    move = init_guess + step*np.random.uniform(-1, 1,
+                                               size=init_guess.shape[0])
+    move[move > 1] = 1
+    move[move < -1] = -1
 
-    c = init_guess + step*(np.random.rand(init_guess.shape[0])-0.5)
-    c[c < lb] = lb[c < lb]
-    c[c > ub] = ub[c > ub]
-
-    return c
+    return move
 
 
 def HW3(zeta_min: float, t0: float, n: int, num_sine: int,
-        num_iter: int) -> Tuple[float, np.ndarray, np.ndarray, np.ndarray]:
+        num_iter: int,
+        step: float) -> Tuple[float, np.ndarray, np.ndarray, np.ndarray]:
 
     '''
     Find the minimum action path using
@@ -107,6 +104,7 @@ def HW3(zeta_min: float, t0: float, n: int, num_sine: int,
      n: number of point to evaluate
      num_sine: number of sine function used for approximation of path
      num_iter: number of iteration
+     step: size of step to move coefficients
 
     Returns:
      Value of action of given path, time, zeta and theta.
@@ -116,26 +114,15 @@ def HW3(zeta_min: float, t0: float, n: int, num_sine: int,
     zeta_max = zeta_min/(2*zeta_min-1)
     a = 0.5*(zeta_min+zeta_max)
     t = np.linspace(0, np.pi*a**(1.5), n)
-    lb = -0.5*np.ones(num_sine)
-    ub = 0.5*np.ones(num_sine)
-    weight = 1/np.linspace(1, num_sine, 1)
-
-    # define step
-    step = (1/num_iter)**(1/num_sine)
 
     # first guess
-    c_zeta = (np.random.rand(num_sine)-0.5)*weight
-    c_theta = (np.random.rand(num_sine)-0.5)*weight
+    c_zeta = np.zeros(num_sine)
+    c_theta = np.zeros(num_sine)
+    c_zeta[0] = 1
+    c_theta[0] = 1
 
     min_zeta, min_deriv_zeta = sum_of_sine(t, c_zeta, num_sine)
     min_theta, min_deriv_theta = sum_of_sine(t, c_theta, num_sine)
-
-    while (min_zeta[-1] == 0) or (min_theta[-1] == 0):
-        c_zeta = move_step(c_zeta, lb, ub, step)
-        c_theta = move_step(c_theta, lb, ub, step)
-        min_zeta, min_deriv_zeta = sum_of_sine(t, c_zeta, num_sine)
-        min_theta, min_deriv_theta = sum_of_sine(t, c_theta, num_sine)
-
     scale_zeta = (zeta_max-zeta_min)/min_zeta[-1]
     scale_theta = np.pi/min_theta[-1]
     min_zeta = scale_zeta*min_zeta + zeta_min
@@ -147,24 +134,21 @@ def HW3(zeta_min: float, t0: float, n: int, num_sine: int,
                              min_deriv_zeta, min_deriv_theta)
 
     for i in range(num_iter):
-        c_zeta = move_step(c_zeta, lb, ub, step)
-        c_theta = move_step(c_theta, lb, ub, step)
-        tmp_zeta, tmp_deriv_zeta = sum_of_sine(t, c_zeta, num_sine)
-        tmp_theta, tmp_deriv_theta = sum_of_sine(t, c_theta, num_sine)
-
-        while (min_zeta[-1] == 0) or (min_theta[-1] == 0):
-            c_zeta = move_step(c_zeta, lb, ub, step)
-            c_theta = move_step(c_theta, lb, ub, step)
-            tmp_zeta, tmp_deriv_zeta = sum_of_sine(t, c_zeta, num_sine)
-            tmp_theta, tmp_deriv_theta = sum_of_sine(t, c_theta, num_sine)
-
+        while True:
+            tmp_c_zeta = move_step(c_zeta, step)
+            tmp_c_theta = move_step(c_theta, step)
+            tmp_zeta, tmp_deriv_zeta = \
+                sum_of_sine(t, tmp_c_zeta, num_sine)
+            tmp_theta, tmp_deriv_theta = \
+                sum_of_sine(t, tmp_c_theta, num_sine)
+            if not (tmp_zeta[-1] == 0) or (tmp_theta[-1] == 0):
+                break
         scale_zeta = (zeta_max-zeta_min)/tmp_zeta[-1]
         scale_theta = np.pi/tmp_theta[-1]
         tmp_zeta = scale_zeta*tmp_zeta + zeta_min
         tmp_deriv_zeta = scale_zeta*tmp_deriv_zeta
         tmp_theta = scale_theta*tmp_theta
         tmp_deriv_theta = scale_theta*tmp_deriv_theta
-
         tmp_action = eval_action(t, tmp_zeta, tmp_theta,
                                  tmp_deriv_zeta, tmp_deriv_theta)
 
@@ -172,16 +156,14 @@ def HW3(zeta_min: float, t0: float, n: int, num_sine: int,
             min_action = tmp_action
             min_zeta = tmp_zeta
             min_theta = tmp_theta
-        else:
-            pass
 
-    return min_action, t+t0, np.abs(min_zeta), np.abs(min_theta)
+    return min_action, t+t0, min_zeta, min_theta
 
 
 if __name__ == "__main__":
 
-    t_ref, zeta_ref = HW1(0, 3.2, 100, 0.9, 0)
-    action, t, zeta, theta = HW3(0.9, 0, 15, 5, 2**20)
+    t_ref, zeta_ref = HW1(0, 3.2, 1000, 0.9, 0)
+    action, t, zeta, theta = HW3(0.9, 0, 100, 4, 10**4, 0.25)
     print(action)
     plt.plot(t_ref, zeta_ref, label='HW1')
     plt.plot(t, zeta, marker='o', markersize=3,

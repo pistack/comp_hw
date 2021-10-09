@@ -27,11 +27,11 @@ tuple<vector<double>, vector<double>> HW2(double a,
   // use uniform n pts between zeta_min and zeta_max
   // additional one point needed for end point.
 
-  grid_space = (zeta_max-zeta_min)/n;
+  grid_space = (zeta_max-zeta_min)/double(n);
   
   for(int i=0; i<n+1; i++)
     {
-      zeta[i] = i*grid_space + zeta_min;
+      zeta[i] = double(i)*grid_space + zeta_min;
     }
 
   // change of variable
