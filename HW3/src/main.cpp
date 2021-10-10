@@ -24,9 +24,11 @@ int main(void)
   int n; // number of points to evaluate
   int num_sine; // number of sine function used for guess
   int num_iter; // number of iteration
+  int num_move; // number of actual moves
   double zeta_min; // minimum value of zeta
   double t0; // initial time
   double step; // step size
+  double lambda; // parameter for adapt step size
   double min_action; // minimum action value
   vector<double> t(n,0); // time
   vector<double> zeta(n,0);  // guessed zeta
@@ -47,6 +49,8 @@ int main(void)
   cin >> num_sine;
   cout << " size of step: ";
   cin >> step;
+  cout << " value for paramter to adapt step size: ";
+  cin >> lambda;
   cout << " number of iteration: ";
   cin >> num_iter;
   cout << " file name to store result (zeta): ";
@@ -54,11 +58,12 @@ int main(void)
   cout << " file name to store result (theta): ";
   cin >> filename_theta;
   cout << " Now starts calculation" << endl;
-  tie(min_action, t, zeta, theta) = \
-    HW3(zeta_min, t0, n, num_sine, num_iter, step, gen, dist);
+  tie(num_move, min_action, t, zeta, theta) =				\
+    HW3(zeta_min, t0, n, num_sine, num_iter, step, lambda, gen, dist);
   cout << " Calcuation is finished" << endl;
   cout << "======================result===================" << endl;
   cout << " Minimum action is " << min_action << endl;
+  cout << " Number of Actual move is " << num_move << endl;
   fout.open(filename_zeta);
   for(int i=0; i < n; i++) 
     {

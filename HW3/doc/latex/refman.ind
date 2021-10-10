@@ -1,0 +1,40 @@
+\begin{theindex}
+
+  \item {/home/lis1331/\+Documents/lecture/phy/computer/comp\+\_\+hw/\+H\+W3/src/hw3.\+cpp}, 
+		\hyperpage{3}
+  \item {/home/lis1331/\+Documents/lecture/phy/computer/comp\+\_\+hw/\+H\+W3/src/include/hw3.\+hpp}, 
+		\hyperpage{4}
+  \item {/home/lis1331/\+Documents/lecture/phy/computer/comp\+\_\+hw/\+H\+W3/src/main.\+cpp}, 
+		\hyperpage{8}
+  \item {/home/lis1331/\+Documents/lecture/phy/computer/comp\+\_\+hw/\+H\+W3/src/support.\+cpp}, 
+		\hyperpage{9}
+
+  \indexspace
+
+  \item {eval\+\_\+action}
+    \subitem {hw3.\+hpp}, \hyperpage{5}
+
+  \indexspace
+
+  \item {H\+W3}
+    \subitem {hw3.\+hpp}, \hyperpage{6}
+  \item {hw3.\+hpp}
+    \subitem {eval\+\_\+action}, \hyperpage{5}
+    \subitem {H\+W3}, \hyperpage{6}
+    \subitem {move\+\_\+step}, \hyperpage{6}
+    \subitem {scale\+\_\+and\+\_\+add\+\_\+vector}, \hyperpage{7}
+    \subitem {sum\+\_\+of\+\_\+sine}, \hyperpage{7}
+
+  \indexspace
+
+  \item {move\+\_\+step}
+    \subitem {hw3.\+hpp}, \hyperpage{6}
+
+  \indexspace
+
+  \item {scale\+\_\+and\+\_\+add\+\_\+vector}
+    \subitem {hw3.\+hpp}, \hyperpage{7}
+  \item {sum\+\_\+of\+\_\+sine}
+    \subitem {hw3.\+hpp}, \hyperpage{7}
+
+\end{theindex}

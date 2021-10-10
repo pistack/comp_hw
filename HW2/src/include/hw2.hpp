@@ -6,6 +6,10 @@
  * @date 2021. 10. 10.
  */
 
+#ifndef HW2_H
+#define HW2_H
+#endif
+
 #include <cmath>
 #include <tuple>
 #include <vector>

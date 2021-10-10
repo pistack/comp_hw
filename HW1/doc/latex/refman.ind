@@ -1,0 +1,20 @@
+\begin{theindex}
+
+  \item {/home/lis1331/\+Documents/lecture/phy/computer/comp\+\_\+hw/\+H\+W1/src/hw1.\+cpp}, 
+		\hyperpage{3}
+  \item {/home/lis1331/\+Documents/lecture/phy/computer/comp\+\_\+hw/\+H\+W1/src/include/hw1.\+hpp}, 
+		\hyperpage{4}
+  \item {/home/lis1331/\+Documents/lecture/phy/computer/comp\+\_\+hw/\+H\+W1/src/main.\+cpp}, 
+		\hyperpage{6}
+
+  \indexspace
+
+  \item {H\+W1}
+    \subitem {hw1.\+cpp}, \hyperpage{4}
+    \subitem {hw1.\+hpp}, \hyperpage{6}
+  \item {hw1.\+cpp}
+    \subitem {H\+W1}, \hyperpage{4}
+  \item {hw1.\+hpp}
+    \subitem {H\+W1}, \hyperpage{6}
+
+\end{theindex}

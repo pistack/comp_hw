@@ -7,18 +7,22 @@
  * @date 2021. 10. 10.
  */
 
+#include <iostream>
 #include "hw3.hpp"
 
 using namespace std;
 
-tuple<double,vector<double>,vector<double>,vector<double>>
+tuple<int, double, vector<double>, vector<double>, vector<double>>
 HW3(double zeta_min, double t0, int n, int num_sine, int num_iter,
-    double step, mt19937 &gen, uniform_real_distribution<double> &dist)
+    double step, double lambda,
+    mt19937 &gen, uniform_real_distribution<double> &dist)
 {
-  // int n_accept = 0;
+  int n_accept = 0;
   double zeta_max = zeta_min/(2*zeta_min-1);
   double a = 0.5*(zeta_min+zeta_max);
   double tmax = pi*pow(a,1.5);
+  double delta_action;
+  double adapt_step = step;
   double scale_zeta;
   double scale_theta;
   double min_action;
@@ -79,6 +83,10 @@ HW3(double zeta_min, double t0, int n, int num_sine, int num_iter,
       tmp_action = eval_action(t, tmp_zeta, tmp_deriv_zeta,
 			       tmp_theta, tmp_deriv_theta);
 
+      delta_action = tmp_action - min_action;
+      if(adapt_step > exp(-lambda*delta_action*adapt_step))
+	adapt_step = exp(-lambda*delta_action*adapt_step);
+
       if(tmp_action < min_action)
 	{
 	  min_action = tmp_action;
@@ -86,13 +94,11 @@ HW3(double zeta_min, double t0, int n, int num_sine, int num_iter,
 	  min_c_theta = tmp_c_theta;
 	  min_zeta = tmp_zeta;
 	  min_theta = tmp_theta;
-	  // n_accept++;
+	  n_accept++;
 	}
     }
 
-  // cout << double(n_accept)/double(num_iter)*100 << endl;
-
-  return make_tuple(min_action,
+  return make_tuple(n_accept, min_action,
 		    scale_and_add_vector(t,1, t0),
 		    min_zeta,
 		    min_theta);

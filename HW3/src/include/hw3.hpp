@@ -7,6 +7,10 @@
  * @date 2021. 10. 10.
  */
 
+#ifndef HW3_H
+#define HW3_H
+#endif
+
 #include <cmath>
 #include <random>
 #include <tuple>
@@ -75,12 +79,15 @@ double eval_action(std::vector<double> &t, std::vector<double> zeta,
  * @param num_sine number of sine functions to guess
  * @param num_iter number of iteration
  * @param step step size
+ * @param lambda paramter to adapt step size
  * @param gen random number generator (assume mt19937)
  * @param dist distribution
- * @return tuple of minimum action, time and path(zeta, theta)
+ * @return tuple of number of actural moves, minimum action, 
+ *  time and path(zeta, theta)
  */
 
-std::tuple<double,std::vector<double>,std::vector<double>,std::vector<double>>
+std::tuple<int, double,
+	   std::vector<double>, std::vector<double>, std::vector<double>>
 HW3(double zeta_min, double t0,
-    int n, int num_sine, int num_iter, double step,
+    int n, int num_sine, int num_iter, double step, double lambda,
     std::mt19937 &gen, std::uniform_real_distribution<double> &dist);

@@ -1,0 +1,41 @@
+\hypertarget{support_8cpp}{}\section{/home/lis1331/\+Documents/lecture/phy/computer/comp\+\_\+hw/\+H\+W3/src/support.cpp File Reference}
+\label{support_8cpp}\index{/home/lis1331/\+Documents/lecture/phy/computer/comp\+\_\+hw/\+H\+W3/src/support.\+cpp@{/home/lis1331/\+Documents/lecture/phy/computer/comp\+\_\+hw/\+H\+W3/src/support.\+cpp}}
+
+
+support functions for homework3 of Computer1 class in Yonsei University scale and add vector, evaluate sum and derivative of sine function, randomly move initial guess by step and evaluate the action of given path.  
+
+
+{\ttfamily \#include \char`\"{}hw3.\+hpp\char`\"{}}\newline
+Include dependency graph for support.\+cpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=310pt]{support_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{support_8cpp_a33f3d8de61c49e3251c5d58b3b3f97a9}\label{support_8cpp_a33f3d8de61c49e3251c5d58b3b3f97a9}} 
+vector$<$ double $>$ {\bfseries scale\+\_\+and\+\_\+add\+\_\+vector} (vector$<$ double $>$ \&v, double scale, double add)
+\item 
+\mbox{\Hypertarget{support_8cpp_a4e7773ac6ed19ce46e8bd242eecf450f}\label{support_8cpp_a4e7773ac6ed19ce46e8bd242eecf450f}} 
+tuple$<$ vector$<$ double $>$, vector$<$ double $>$ $>$ {\bfseries sum\+\_\+of\+\_\+sine} (vector$<$ double $>$ \&t, vector$<$ double $>$ c, int num\+\_\+sine)
+\item 
+\mbox{\Hypertarget{support_8cpp_ab27932438b60b5d027874f2f964d8ad0}\label{support_8cpp_ab27932438b60b5d027874f2f964d8ad0}} 
+vector$<$ double $>$ {\bfseries move\+\_\+step} (vector$<$ double $>$ \&init\+\_\+guess, double step, mt19937 \&gen, uniform\+\_\+real\+\_\+distribution$<$ double $>$ \&dist)
+\item 
+\mbox{\Hypertarget{support_8cpp_a7a7182652d0cca7186208c1f96fe2923}\label{support_8cpp_a7a7182652d0cca7186208c1f96fe2923}} 
+double {\bfseries eval\+\_\+action} (vector$<$ double $>$ \&t, vector$<$ double $>$ zeta, vector$<$ double $>$ deriv\+\_\+zeta, vector$<$ double $>$ theta, vector$<$ double $>$ deriv\+\_\+theta)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+support functions for homework3 of Computer1 class in Yonsei University scale and add vector, evaluate sum and derivative of sine function, randomly move initial guess by step and evaluate the action of given path. 
+
+\begin{DoxyAuthor}{Author}
+pistack (Junho Lee) 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2021. 10. 10. 
+\end{DoxyDate}
