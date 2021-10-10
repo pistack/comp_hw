@@ -1,13 +1,12 @@
-/*
-HW1
-C++ code for homework1 in computer1 class in Yonsei University
-Using explicit Euler Method to solve Kepler problem
-*/
+/*!
+ * @file hw1.cpp
+ * @brief code for homework1 of Computer1 class in Yonsei University
+ * Use explicit Euler Method to solve Kepler problem
+ * @author pistack (Junho Lee)
+ * @date 2021. 10. 10.
+ */
 
-#include <cmath>
-#include <tuple>
-#include <vector>
-#include <iostream>
+#include "hw1.hpp"
 
 using namespace std;
 
@@ -45,21 +44,4 @@ tuple<vector<double>, vector<double>> HW1(double t0, double t1,
       }
 
     return make_tuple(t, y);
-}
-
-int main(void) {
-    double t0 = 0;
-    double t1 = 10;
-    int n = 100;
-    double y0 = 0.9;
-    double y0p = 0;
-    vector<double> t, y;
-    tie(t, y) = HW1(t0, t1, n, y0, y0p);
-
-    for (int i = 0; i < n+1; i++)
-      {
-        cout << t[i] << '\t' << y[i] << endl;
-      }
-
-    return 0;
 }

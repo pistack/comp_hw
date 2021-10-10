@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from HW1 import HW1
 
 
-def HW2(zeta_min: float, zeta_max: float,
+def HW2(zeta_min: float,
         n: int) -> Tuple[np.ndarray, np.ndarray]:
 
     '''
@@ -22,12 +22,23 @@ def HW2(zeta_min: float, zeta_max: float,
 
     Args:
      zeta_min: minimum value of zeta
-     zeta_max: maximum value of zeta
      n: number of points between zeta_min and zeta_max
 
     Returns:
      Integration evaluated in n points between zeta_min and zeta_max
     '''
+
+    tmp = 1/zeta_min
+    a = tmp*(tmp-2)
+    tmp = 1.0+np.sqrt(1.0+a)
+    zeta_max = -tmp/a
+    tmp = zeta_max - zeta_min
+    tmp = 1/tmp
+    c1 = 2*zeta_min*tmp
+    c2 = 2*zeta_max*tmp
+    tmp = np.sqrt(-a)
+    c1 = c1/tmp
+    c2 = c2/tmp
 
     zeta = np.linspace(zeta_min, zeta_max, n+1)
     t = np.zeros(n+1)
@@ -35,8 +46,8 @@ def HW2(zeta_min: float, zeta_max: float,
     x2 = np.sqrt(zeta_max-zeta)
     t[0] = 0
     for i in range(n):
-        t[i+1] = t[i] + 8/np.sqrt(0.987654)*(x1[i+1]-x1[i])*x2[i] - \
-            10/np.sqrt(0.987654)*(x2[i+1]-x2[i])*x1[i]
+        t[i+1] = t[i] + c1*(x1[i+1]-x1[i])*x2[i] - \
+            c2*(x2[i+1]-x2[i])*x1[i]
 
     return t, zeta
 
@@ -44,7 +55,7 @@ def HW2(zeta_min: float, zeta_max: float,
 if __name__ == "__main__":
 
     t_ref, zeta_ref = HW1(0, 3.2, 1000, 0.9, 0)
-    t, zeta = HW2(0.9, 9/8, 10)
+    t, zeta = HW2(0.9, 20)
     plt.plot(t_ref, zeta_ref, label='HW1')
     plt.plot(t, zeta, marker='o', markersize=3,
              linestyle='none', label='HW2')
