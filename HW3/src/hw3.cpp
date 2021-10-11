@@ -85,7 +85,8 @@ HW3(double zeta_min, double t0, int n, int num_fourier, int num_iter,
 	  tie(tmp_theta, tmp_deriv_theta) = \
 	    sum_of_fourier(t, tmp_c_theta, num_fourier);
 	}
-      while(abs(tmp_zeta[n-1]) < 1e-8 || abs(tmp_theta[n-1]) < 1e-8);
+      while(abs(tmp_zeta[0]-tmp_zeta[n-1]) < 1e-8 ||
+	    abs(tmp_theta[0]-tmp_theta[n-1]) < 1e-8);
 
       scale_zeta = (zeta_max-zeta_min)/(tmp_zeta[n-1]-tmp_zeta[0]);
       add_zeta = zeta_min - scale_zeta*tmp_zeta[0];

@@ -8,11 +8,12 @@ from typing import Tuple
 import numpy as np
 
 
-def sum_of_sine(t: np.ndarray, c: np.ndarray,
-                num_sine: int) -> Tuple[np.ndarray, np.ndarray]:
+def sum_of_fourier(t: np.ndarray, c: np.ndarray,
+                   num_fourier: int) -> Tuple[np.ndarray, np.ndarray]:
 
     '''
-    Evaluate the sum of sine function weighted by c and its derivative
+    Evaluate the sum of sine and cosine function
+    weighted by c and its derivative
 
     Args:
      t: time range
@@ -20,23 +21,26 @@ def sum_of_sine(t: np.ndarray, c: np.ndarray,
      num_sine: number of sine function to add
 
    Returns:
-    value and the derivative of the sum of sine function weighted by c
+    value and the derivative of the sum of sine and cosine
+    function weighted by c
 
    Note:
-    The periode of ith sine function is equal to 4*(tf-t0)/i
-    for 0 < i < num_sine+1.
+    The periode of ith sine and cosine function is equal to 2*(tf-t0)/i
+    for 0 < i < num_fourier+1.
    '''
 
     # time
-    periode = 4*(t[-1]-t[0])
+    periode = 2*(t[-1]-t[0])
     n = t.shape[0]
     y = np.zeros(n)
     deriv = np.zeros(n)
     omega = 2*np.pi/periode
-    for i in range(num_sine):
-        tmp = omega*(i+1)
+    for i in range(0, 2*num_fourier, 2):
+        tmp = omega*(i/2+1)
         y = y + c[i]*np.sin(tmp*t)
         deriv = deriv + c[i]*tmp*np.cos(tmp*t)
+        y = y + c[i]*np.cos(tmp*t)
+        deriv = deriv - c[i]*tmp*np.sin(tmp*t)
     return y, deriv
 
 
@@ -88,9 +92,10 @@ def move_step(init_guess: np.ndarray,
     return move
 
 
-def HW3(zeta_min: float, t0: float, n: int, num_sine: int,
+def HW3(zeta_min: float, t0: float, n: int, num_fourier: int,
         num_iter: int,
-        step: float) -> Tuple[float, np.ndarray, np.ndarray, np.ndarray]:
+        step: float,
+        lamda: float) -> Tuple[float, np.ndarray, np.ndarray, np.ndarray]:
 
     '''
     Find the minimum action path using
@@ -100,12 +105,14 @@ def HW3(zeta_min: float, t0: float, n: int, num_sine: int,
      zeta_min: minimum value of zeta
      t0: initial time
      n: number of point to evaluate
-     num_sine: number of sine function used for approximation of path
+     num_fourier: number of sine and cosine function
+                  used for approximation of path
      num_iter: number of iteration
      step: size of step to move coefficients
+     lamda: parameter to adapt step size
 
     Returns:
-     Value of action of given path, time, zeta and theta.
+     Value of action of minimum path, time, zeta and theta.
     '''
 
     # define condition
@@ -114,18 +121,27 @@ def HW3(zeta_min: float, t0: float, n: int, num_sine: int,
     t = np.linspace(0, np.pi*a**(1.5), n)
 
     # first guess
-    c_zeta = np.zeros(num_sine)
-    c_theta = np.zeros(num_sine)
-    c_zeta[0] = 1
-    c_theta[0] = 1
+    c_zeta = np.zeros(2*num_fourier)
+    c_theta = np.zeros(2*num_fourier)
+    c_zeta[0] = 0.5
+    c_theta[0] = 0.5
+    c_zeta[1] = -0.5
+    c_theta[1] = -0.5
 
-    min_zeta, min_deriv_zeta = sum_of_sine(t, c_zeta, num_sine)
-    min_theta, min_deriv_theta = sum_of_sine(t, c_theta, num_sine)
-    scale_zeta = (zeta_max-zeta_min)/min_zeta[-1]
-    scale_theta = np.pi/min_theta[-1]
-    min_zeta = scale_zeta*min_zeta + zeta_min
+    # adapt step
+    adapt_step = step
+
+    min_zeta, min_deriv_zeta = sum_of_fourier(t, c_zeta, num_fourier)
+    min_theta, min_deriv_theta = sum_of_fourier(t, c_theta, num_fourier)
+
+    scale_zeta = (zeta_max-zeta_min)/(min_zeta[-1]-min_zeta[0])
+    add_zeta = zeta_min - scale_zeta*min_zeta[0]
+    scale_theta = np.pi/(min_theta[-1]-min_theta[0])
+    add_theta = -scale_theta*min_theta[0]
+
+    min_zeta = scale_zeta*min_zeta + add_zeta
     min_deriv_zeta = scale_zeta*min_deriv_zeta
-    min_theta = scale_theta*min_theta
+    min_theta = scale_theta*min_theta + add_theta
     min_deriv_theta = scale_theta*min_deriv_theta
 
     min_action = eval_action(t, min_zeta, min_theta,
@@ -133,19 +149,24 @@ def HW3(zeta_min: float, t0: float, n: int, num_sine: int,
 
     for i in range(num_iter):
         while True:
-            tmp_c_zeta = move_step(c_zeta, step)
-            tmp_c_theta = move_step(c_theta, step)
+            tmp_c_zeta = move_step(c_zeta, adapt_step)
+            tmp_c_theta = move_step(c_theta, adapt_step)
             tmp_zeta, tmp_deriv_zeta = \
-                sum_of_sine(t, tmp_c_zeta, num_sine)
+                sum_of_fourier(t, tmp_c_zeta, num_fourier)
             tmp_theta, tmp_deriv_theta = \
-                sum_of_sine(t, tmp_c_theta, num_sine)
-            if not (tmp_zeta[-1] == 0) or (tmp_theta[-1] == 0):
+                sum_of_fourier(t, tmp_c_theta, num_fourier)
+            if not np.abs(tmp_zeta[0]-tmp_zeta[-1]) < 1e-8 or \
+               np.abs(tmp_theta[0] - tmp_theta[-1]) < 1e-8:
                 break
-        scale_zeta = (zeta_max-zeta_min)/tmp_zeta[-1]
-        scale_theta = np.pi/tmp_theta[-1]
-        tmp_zeta = scale_zeta*tmp_zeta + zeta_min
+
+        scale_zeta = (zeta_max-zeta_min)/(tmp_zeta[-1]-tmp_zeta[0])
+        add_zeta = zeta_min - scale_zeta*tmp_zeta[0]
+        scale_theta = np.pi/(tmp_theta[-1]-tmp_theta[0])
+        add_theta = -scale_theta*tmp_theta[0]
+
+        tmp_zeta = scale_zeta*tmp_zeta + add_zeta
         tmp_deriv_zeta = scale_zeta*tmp_deriv_zeta
-        tmp_theta = scale_theta*tmp_theta
+        tmp_theta = scale_theta*tmp_theta + add_theta
         tmp_deriv_theta = scale_theta*tmp_deriv_theta
         tmp_action = eval_action(t, tmp_zeta, tmp_theta,
                                  tmp_deriv_zeta, tmp_deriv_theta)
@@ -154,5 +175,9 @@ def HW3(zeta_min: float, t0: float, n: int, num_sine: int,
             min_action = tmp_action
             min_zeta = tmp_zeta
             min_theta = tmp_theta
+
+        if adapt_step > np.exp(-lamda*adapt_step*(tmp_action-min_action)):
+            adapt_step = np.exp(-lamda*adapt_step*(tmp_action-min_action))
+            print(adapt_step)
 
     return min_action, t+t0, min_zeta, min_theta
