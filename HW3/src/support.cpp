@@ -28,24 +28,30 @@ scale_and_add_vector(vector<double> &v, double scale, double add)
 }
 
 tuple<vector<double>, vector<double>>
-sum_of_sine(vector<double> &t, vector<double> c, int num_sine)
+sum_of_fourier(vector<double> &t, vector<double> c, int num_fourier)
 {
+  int max_sum = 2*num_fourier;
   int n = t.size();
-  double period = 4*(t[n-1]-t[0]);
-  double omega = 2*pi/period;
+  double half_period = t[n-1]-t[0];
+  double omega = pi/half_period;
   double tmp = 0;
   vector<double> y(n, 0);
   vector<double> deriv(n, 0);
 
   for(int i = 0; i<n; i++)
     {
-      for(int j = 0; j<num_sine; j++)
+      for(int j = 0; j<max_sum; j += 2)
 	{
+	  tmp = (j/2+1)*omega;
 	  if(c[j] != 0.0)
 	    {
-	      tmp = (j+1)*omega;
 	      y[i] += c[j]*sin(tmp*t[i]);
 	      deriv[i] += c[j]*tmp*cos(tmp*t[i]);
+	    }
+	  if(c[j+1] != 0.0)
+	    {
+	      y[i] += c[j+1]*cos(tmp*t[i]);
+	      deriv[i] -= c[j+1]*tmp*sin(tmp*t[i]);
 	    }
 	}
     }

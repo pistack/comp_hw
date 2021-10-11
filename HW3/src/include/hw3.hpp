@@ -30,17 +30,18 @@ std::vector<double>
 scale_and_add_vector(std::vector<double> &v, double scale, double add);
 
 /*!
- * @brief evaluates sum of sine function with 
+ * @brief evaluates sum of sine and cosine function with 
  * period 4*(t_max-t_min) weighted by coefficents and its derivative
  * at given time t.
  * @param t time
  * @param c coefficiets
- * @param num_sine number of sine function to add
- * @return tuple of value and derivatives of the sum of sine function
+ * @param num_fourier number of sine and cosine function to add
+ * @return tuple of value and derivatives of 
+ * the sum of sine and cosine function
  */
 
 std::tuple<std::vector<double>, std::vector<double>>
-sum_of_sine(std::vector<double> &t, std::vector<double> c, int num_sine);
+sum_of_fourier(std::vector<double> &t, std::vector<double> c, int num_fourier);
 
 /*!
  * @brief randomly move initial guess by step
@@ -76,7 +77,7 @@ double eval_action(std::vector<double> &t, std::vector<double> zeta,
     for constraint motion 0.5 < zeta_min < 1
  * @param t0 initial time
  * @param n number of points to evaluate
- * @param num_sine number of sine functions to guess
+ * @param num_fourier number of sine and cosine functions to guess
  * @param num_iter number of iteration
  * @param step step size
  * @param lambda paramter to adapt step size
@@ -89,5 +90,5 @@ double eval_action(std::vector<double> &t, std::vector<double> zeta,
 std::tuple<int, double,
 	   std::vector<double>, std::vector<double>, std::vector<double>>
 HW3(double zeta_min, double t0,
-    int n, int num_sine, int num_iter, double step, double lambda,
+    int n, int num_fourier, int num_iter, double step, double lambda,
     std::mt19937 &gen, std::uniform_real_distribution<double> &dist);
