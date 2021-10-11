@@ -134,5 +134,5 @@ dmypy.json
 
 # HW exe file and doxygen build file
 */bin/*
-*/html/
-*/latex/
+*/html/*
+*/latex/*
