@@ -2,10 +2,15 @@
 
 CXX = g++
 INC = -I src/include/
-CXXFLAGS = -O3 $(INC)
+CXXFLAGS = -O2 -Wall -Wextra -pedantic $(INC) # default
+# CXXFLAGS = -O3 $(INC) # optimization
 
-OBJS = ./src/hw3.o ./src/support.o ./src/main.o
-SRCS = ./src/hw3.cpp ./src/main.cpp ./src/support.cpp
+OBJS = ./src/hw3.o ./src/main.o \
+       ./src/kepler.o ./src/path.o ./src/fourier.o \
+       ./src/move.o ./src/vector.o
+SRCS = ./src/hw3.cpp ./src/main.cpp \
+       ./src/kepler.cpp ./src/path.cpp ./src/fourier.cpp \
+       ./src/move.cpp ./src/vector.cpp 
 
 TARGET = ./bin/hw3
 
@@ -25,6 +30,8 @@ new :
 	$(MAKE)
 # DO NOT DELETE
 
-./src/hw3.o: src/include/hw3.hpp
+./src/hw3.o: src/include/basic.hpp src/include/kepler.hpp
 ./src/main.o: src/include/hw3.hpp
-./src/support.o: src/include/hw3.hpp
+./src/kepler.o: src/include/basic.hpp
+./src/path.o: src/include/basic.hpp
+./src/fourier.o: src/include/basic.hpp

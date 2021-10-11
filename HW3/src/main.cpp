@@ -43,7 +43,7 @@ int main(void)
   cin >> t0;
   cout << " minimum value of zeta: ";
   cin >> zeta_min;
-  cout << " number of points to evaluate: ";
+  cout << " number of points used for action: ";
   cin >> n;
   cout << " number of sine and cosine function used for guess: ";
   cin >> num_fourier;
