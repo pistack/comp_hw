@@ -15,6 +15,20 @@
 #include <vector>
 #include <random>
 
+const double pi = 3.141592653589793; ///<define pi
+
+/*!
+ * @brief randomly move initial guess by at most step
+ * @param init_guess initial guess
+ * @param step step size
+ * @param gen random number generator (assume mt19937)
+ * @param dist distribution
+ * @return moved initial guess by at most step
+ */
+
+std::vector<double>
+move_step(std::vector<double> &init_guess, double step,
+	  std::mt19937 &gen, std::uniform_real_distribution<double> &dist);
 
 /*!
  * @brief HW3: Solve Kepler problem via Markov Chain Monte Carlo Method

@@ -36,15 +36,15 @@ int main(void)
   string filename; // file name to store results
   ofstream fout; // file output stream
 
-  cout << "===============================================" << endl;
-  cout << "         hw3: main program for homework3       " << endl;
+  cout << "==========================================================" << endl;
+  cout << "               hw3: main program for homework3            " << endl;
   cout << " initial time: ";
   cin >> t0;
   cout << " minimum value of zeta: ";
   cin >> zeta_min;
   cout << " number of points used for action: ";
   cin >> n;
-  cout << " number of sine and cosine function used for guess: ";
+  cout << " number of sine and cosine function for approximation: ";
   cin >> num_fourier;
   cout << " size of step: ";
   cin >> step;
@@ -52,13 +52,13 @@ int main(void)
   cin >> lambda;
   cout << " number of iteration: ";
   cin >> num_iter;
-  cout << " file name to store result (zeta): ";
+  cout << " file name to store result: ";
   cin >> filename;
   cout << " Now starts calculation" << endl;
   tie(num_move, min_action, t, zeta, theta) =				\
     HW3(zeta_min, t0, n, num_fourier, num_iter, step, lambda, gen, dist);
   cout << " Calcuation is finished" << endl;
-  cout << "======================result===================" << endl;
+  cout << "======================result==============================" << endl;
   cout << " Minimum action is " << min_action << endl;
   cout << " Number of Actual move is " << num_move << endl;
 
@@ -73,7 +73,7 @@ int main(void)
   
   cout << " Save result to " << filename << endl;
   cout << " Teriminates program, good bye :) " << endl;
-  cout << "===============================================" << endl;
+  cout << "==========================================================" << endl;
 
   return 0;
 }

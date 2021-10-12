@@ -6,7 +6,7 @@
  */
 
 #include <cmath>
-#include "basic.hpp"
+#include "fourier.hpp"
 
 using namespace std;
 
@@ -26,8 +26,8 @@ fourier_path &zeta, fourier_path &theta)
  
 
   // fill mid points
-  for(int i=0; i<n; i++)
-    t_mid[i] = 0.5*(t[i-1]+t[i]);
+  for(int i=1; i<n; i++)
+    t_mid[i-1] = 0.5*(t[i-1]+t[i]);
 
   // evaluate path
   zeta_t = zeta.eval(t);
@@ -50,11 +50,11 @@ fourier_path &zeta, fourier_path &theta)
       // initial point
       tmp1 = 0.5*(pow(deriv_zeta_t[i-1], 2.0) + \
 		  pow((zeta_t[i-1]*deriv_theta_t[i-1]), 2.0)) + \
-      1/abs(zeta[i-1]);
+      1/abs(zeta_t[i-1]);
 
       // mid point
       tmp2 = 0.5*(pow(deriv_zeta_t_mid[i-1], 2.0) + \
-		  pow((zeta_t_mid[i]*deriv_theta_t_mid[i-1]), 2.0)) + \
+		  pow((zeta_t_mid[i-1]*deriv_theta_t_mid[i-1]), 2.0)) + \
       1/abs(zeta_t_mid[i-1]);
 
       // end point

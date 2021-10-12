@@ -7,9 +7,13 @@
  * @date 2021. 10. 12.
  */
 
+#include <algorithm>
+#include <functional>
 #include <cmath>
-#include "basic.hpp"
+#include <tuple>
+#include "fourier.hpp"
 #include "kepler.hpp"
+#include "hw3.hpp"
 
 using namespace std;
 
@@ -43,19 +47,15 @@ HW3(double zeta_min, double t0, int n, int num_fourier, int num_iter,
   vector<double> t(n, 0);
   
   // subset of time to check our guess is vailed
-  vector<double> tends(2, 0) = {0.0, tmax};
+  vector<double> tends = {0.0, tmax};
 
   // guess minimial
   vector<double> min_c_zeta(size, 0);
   vector<double> min_c_theta(size, 0);
 
-  // guess temporal
-  vector<double> tmp_c_zeta(size, 0);
-  vector<double> tmp_c_theta(size, 0);
-
   // minimal path
-  fourier_path min_zeta = fourier_path();
-  fourier_path min_theta = fourier_path();
+  fourier_path min_zeta;
+  fourier_path min_theta;
 
   // fill time
   for(int i = 0; i<n; i++)
@@ -77,22 +77,26 @@ HW3(double zeta_min, double t0, int n, int num_fourier, int num_iter,
   period, min_c_theta);
 
   // initial action
-  min_action = eval_action(t, zeta_min, min_zeta, min_theta);
+  min_action = eval_action(t, min_zeta, min_theta);
 
+  
   for(int i = 0; i < num_iter; i++)
     {
       // init temporal variable
       double tmp_action;
-      fourier_path tmp_zeta = fourier_path();
-      fourier_path tmp_theta = fourier_path();
+      fourier_path tmp_zeta;
+      fourier_path tmp_theta;
+      vector<double> tst_zeta(2, 0);
+      vector<double> tst_theta(2, 0);
+      // guess temporal
+      vector<double> tmp_c_zeta(size, 0);
+      vector<double> tmp_c_theta(size, 0);
 
       do
       {
         // init temporal variable to check guess is vaild
-        fourier tmp_zeta_check = fourier();
-        fourier tmp_theta_check = fourier();
-        vector<double> tst_zeta(2, 0);
-        vector<double> tst_theta(2, 0);
+        fourier tmp_zeta_check;
+        fourier tmp_theta_check;
 
         tmp_c_zeta = move_step(min_c_zeta, step, gen, dist);
         tmp_c_theta = move_step(min_c_theta, step, gen, dist);
@@ -108,7 +112,7 @@ HW3(double zeta_min, double t0, int n, int num_fourier, int num_iter,
       
       tmp_zeta.init(0.0, tmax, zeta_min, zeta_max, period,
       tmp_c_zeta);
-      tmp_theta.init(0.0, tmax, zeta_min, zeta_max, period,
+      tmp_theta.init(0.0, tmax, 0.0, pi, period,
       tmp_c_theta);
       tmp_action = eval_action(t, tmp_zeta, tmp_theta);
       
@@ -119,7 +123,7 @@ HW3(double zeta_min, double t0, int n, int num_fourier, int num_iter,
       adapt_step = exp(-lambda*delta_action*adapt_step);
 
       // update action and guess
-      if(tmp_action < min_action)
+      if(delta_action < 0)
       {
         min_action = tmp_action;
         min_c_zeta = tmp_c_zeta;
@@ -135,10 +139,11 @@ HW3(double zeta_min, double t0, int n, int num_fourier, int num_iter,
   period, min_c_theta);
 
   // minimal action
-  min_action = eval_action(t, zeta_min, min_zeta, min_theta);
+  min_action = eval_action(t, min_zeta, min_theta);
 
-  return make_tuple(n_accept, min_action,
-		    scale_and_add_vector(t, 1.0, t0),
+  transform(t.begin(), t.end(), t.begin(), bind2nd(plus<double>(), t0));
+
+  return make_tuple(n_accept, min_action, t,
 		    min_zeta.eval(t),
 		    min_theta.eval(t));
 }

@@ -6,11 +6,11 @@
  */
 
 #include <cmath>
-#include "basic.hpp"
+#include "fourier.hpp"
 
 using namespace std;
 
-void fourier::init(int num_fourier, double period, vector<double> c)
+void fourier::init(int num_fourier, double period, vector<double> &c)
 {
 		f_num_fourier = num_fourier;
 		f_period = period;
@@ -34,7 +34,7 @@ vector<double> fourier::eval(vector<double> &t)
 			y[i] += f_c[j]*sin(tmp*t[i]);
 			if(f_c[j+1] != 0.0)
 			y[i] += f_c[j+1]*cos(tmp*t[i]);
-			}
+		 }
 		}
 
 		return y;

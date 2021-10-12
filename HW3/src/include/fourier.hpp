@@ -1,19 +1,15 @@
 /*!
- * @file basic.hpp
- * @brief headerfile for basic function
- * to solve Kepler problem
+ * @file fourier.hpp
+ * @brief headerfile for fourier function
  * @author pistack (Junho Lee)
  * @date 2021. 10. 12.
  */
 
-#ifndef BASIC_H
-#define BASIC_H
+#ifndef FOURIER_H
+#define FOURIER_H
 #endif
 
 #include <vector>
-#include <random>
-
-const double pi = 3.141592653589793; // define pi 
 
 /*!
  * @brief Class for sum of the sine and cosine function
@@ -23,6 +19,7 @@ const double pi = 3.141592653589793; // define pi
 class fourier
 {
 	private:
+        const double pi = 3.141592653589793; // define pi 
 	int f_num_fourier; ///< number of sine and cosine function to add
 	double f_period; ///< the period of fourier function 
 	std::vector<double> f_c; ///< coefficients
@@ -35,7 +32,7 @@ class fourier
 	 * @param c coeffcients of fourier function
 	 */
 
-	void init(int num_fourier, double period, std::vector<double> c);
+	void init(int num_fourier, double period, std::vector<double> &c);
 
 	/*!
 	 * @brief evaluate the fourier function
@@ -63,7 +60,7 @@ class fourier_path
 {
 	private:
 	///< fourier function used to approximate path
-	fourier p_func = fourier(); 
+	fourier p_func; 
 	double p_init; ///< initial value of path
 	double p_final; ///< final value of path
 	double scale; ///< scaler used to match initial condtion
@@ -102,26 +99,4 @@ class fourier_path
 	std::vector<double> deriv(std::vector<double> &t);
 };
 
-/*!
- * @brief scale vector by scaler and add vector by adder
- * @param v vector to scale and add
- * @param scale scaler
- * @param add adder
- * @return scale and added vector (scale*v+add)
- */
 
-std::vector<double>
-scale_and_add_vector(std::vector<double> &v, double scale, double add);
-
-/*!
- * @brief randomly move initial guess by at most step
- * @param init_guess initial guess
- * @param step step size
- * @param gen random number generator (assume mt19937)
- * @param dist distribution
- * @return moved initial guess by at most step
- */
-
-std::vector<double>
-move_step(std::vector<double> &init_guess, double step,
-	  std::mt19937 &gen, std::uniform_real_distribution<double> &dist);

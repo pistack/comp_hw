@@ -22,4 +22,4 @@
  */
 
 double eval_action(std::vector<double> &t,
-fourier_path &zeta, fourier_path &theta);
+		   fourier_path &zeta, fourier_path &theta);
