@@ -38,12 +38,17 @@ int main(void) {
   cout << " Now starts calculation" << endl;
   tie(t, y) = HW2(zeta_min, t0, n);
   cout << " Calcuation is finished" << endl;
+
+  // store result to file
   fout.open(filename);
+  // first column t, second column zeta
+  fout << '#' << 't' << '\t' << "zeta" << '\t' << endl;
+  fout.unsetf(ios::floatfield); // initialize floatfield
+  fout.precision(8); // print 8 significant digits
   for(int i=0; i < n+1; i++) // one more point needed for end point
-    {
       fout << t[i] << '\t' << y[i] << endl;
-    }
   fout.close();
+  
   cout << " Save result to " << filename << endl;
   cout << " Teriminates program, good bye :) " << endl;
   cout << "===============================================" << endl;

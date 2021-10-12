@@ -33,8 +33,7 @@ int main(void)
   vector<double> t(n,0); // time
   vector<double> zeta(n,0);  // guessed zeta
   vector<double> theta(n,0); // guessed theta
-  string filename_zeta; // file name to store results zeta
-  string filename_theta; // file name to store results theta
+  string filename; // file name to store results
   ofstream fout; // file output stream
 
   cout << "===============================================" << endl;
@@ -54,9 +53,7 @@ int main(void)
   cout << " number of iteration: ";
   cin >> num_iter;
   cout << " file name to store result (zeta): ";
-  cin >> filename_zeta;
-  cout << " file name to store result (theta): ";
-  cin >> filename_theta;
+  cin >> filename;
   cout << " Now starts calculation" << endl;
   tie(num_move, min_action, t, zeta, theta) =				\
     HW3(zeta_min, t0, n, num_fourier, num_iter, step, lambda, gen, dist);
@@ -64,20 +61,17 @@ int main(void)
   cout << "======================result===================" << endl;
   cout << " Minimum action is " << min_action << endl;
   cout << " Number of Actual move is " << num_move << endl;
-  fout.open(filename_zeta);
-  for(int i=0; i < n; i++) 
-    {
-      fout << t[i] << '\t' << zeta[i] << endl;
-    }
+
+  // store results to file
+  fout.open(filename);
+  fout << '#' << 't' << '\t' << "zeta" << '\t' << "theta" << endl;
+  fout.unsetf(ios::floatfield); // initialize floatfield
+  fout.precision(8); // print 8 significant digits
+  for(int i=0; i < n; i++)
+    fout << t[i] << '\t' << zeta[i] << '\t' << theta[i] << endl;
   fout.close();
-  cout << " Save result (zeta) to " << filename_zeta << endl;
-  fout.open(filename_theta);
-  for(int i=0; i < n; i++) 
-    {
-      fout << t[i] << '\t' << theta[i] << endl;
-    }
-  fout.close();
-  cout << " Save result (theta) to " << filename_theta << endl;
+  
+  cout << " Save result to " << filename << endl;
   cout << " Teriminates program, good bye :) " << endl;
   cout << "===============================================" << endl;
 
