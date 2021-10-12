@@ -12,40 +12,30 @@ using namespace std;
 
 
 double eval_action(vector<double> &t,
-		   double zeta_init, double zeta_finial,
-		   double theta_init, double theta_finial,
-		   vector<double> c_zeta,
-		   vector<double> c_theta)
+fourier_path &zeta, fourier_path &theta)
 {
   int n = t.size();
-  vector<double> t_mid(n+1, 0);
-  vector<double> zeta(n, 0);
-  vector<double> deriv_zeta(n, 0);
-  vector<double> zeta_mid(n+1, 0);
-  vector<double> deriv_zeta_mid(n+1, 0);
-  vector<double> theta(n, 0);
-  vector<double> deriv_theta(n, 0);
-  vector<double> theta_mid(n+1, 0);
-  vector<double> deriv_theta_mid(n+1, 0);
   double action = 0;
+  vector<double> t_mid(n-1, 0);
+  vector<double> zeta_t(n, 0);
+  vector<double> deriv_zeta_t(n, 0);
+  vector<double> zeta_t_mid(n-1, 0);
+  vector<double> deriv_zeta_t_mid(n-1, 0);
+  vector<double> deriv_theta_t(n, 0);
+  vector<double> deriv_theta_t_mid(n-1, 0);
+ 
 
   // fill mid points
-  t_mid[0] = t[0];
-  t_mid[n] = t[n-1];
-  for(int i=1; i<n; i++)
+  for(int i=0; i<n; i++)
     t_mid[i] = 0.5*(t[i-1]+t[i]);
 
   // evaluate path
-
-  // zeta
-  tie(zeta, deriv_zeta) = eval_path(t, zeta_init, zeta_finial, c_zeta);
-  tie(zeta_mid, deriv_zeta_mid) = \
-    eval_path(t_mid, zeta_init, zeta_finial, c_zeta);
-
-  // theta
-  tie(theta, deriv_theta) = eval_path(t, theta_init, theta_finial, c_theta);
-  tie(theta_mid, deriv_theta_mid) = \
-    eval_path(t_mid, theta_init, theta_finial, c_theta);
+  zeta_t = zeta.eval(t);
+  zeta_t_mid = zeta.eval(t_mid);
+  deriv_zeta_t = zeta.deriv(t);
+  deriv_zeta_t_mid = zeta.deriv(t_mid);
+  deriv_theta_t = theta.deriv(t);
+  deriv_theta_t_mid = theta.deriv(t_mid);
 
   
   // Evaulate action by simple's 1/3 rule
@@ -58,19 +48,19 @@ double eval_action(vector<double> &t,
       double tmp3;
 
       // initial point
-      tmp1 = 0.5*(pow(deriv_zeta[i-1], 2.0) + \
-		  pow((zeta[i-1]*deriv_theta[i-1]), 2.0)) + \
-	1/abs(zeta[i-1]);
+      tmp1 = 0.5*(pow(deriv_zeta_t[i-1], 2.0) + \
+		  pow((zeta_t[i-1]*deriv_theta_t[i-1]), 2.0)) + \
+      1/abs(zeta[i-1]);
 
       // mid point
-      tmp2 = 0.5*(pow(deriv_zeta_mid[i], 2.0) + \
-		  pow((zeta_mid[i]*deriv_theta_mid[i]), 2.0)) + \
-	1/abs(zeta_mid[i]);
+      tmp2 = 0.5*(pow(deriv_zeta_t_mid[i-1], 2.0) + \
+		  pow((zeta_t_mid[i]*deriv_theta_t_mid[i-1]), 2.0)) + \
+      1/abs(zeta_t_mid[i-1]);
 
       // end point
-      tmp3 = 0.5*(pow(deriv_zeta[i], 2.0) +		    \
-		  pow((zeta[i]*deriv_theta[i]), 2.0)) + \
-	1/abs(zeta[i]);
+      tmp3 = 0.5*(pow(deriv_zeta_t[i], 2.0) +		    \
+		  pow((zeta_t[i]*deriv_theta_t[i]), 2.0)) + \
+      1/abs(zeta_t[i]);
       
       action += dt/6.0*(tmp1+4.0*tmp2+tmp3);
     }

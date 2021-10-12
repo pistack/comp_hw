@@ -9,23 +9,17 @@
 
 using namespace std;
 
-tuple<vector<double>, vector<double>>
-eval_path(vector<double> &t, double init, double fin,
-	  vector<double> &c)
+void fourier_path::get_init(double t_init, double t_fin,
+  double init, double fin, double period, vector<double> &c)
 {
-  // initialize variable
-  int n = t.size();
-  int num_fourier = c.size()/2; // one term = one sine + one cosine
-  double scale;
-  double add;
-  vector<double> path(n, 0);
-  vector<double> deriv_path(n, 0);
+  // init variable
+  vector<double> t_ends = {t_init, t_fin};
+  vector<double> f_ends(2, 0);
 
-  tie(path, deriv_path) = sum_of_fourier(t, c, num_fourier);
-  scale = (fin-init)/(path[n-1]-path[0]);
-  add = init - scale*path[0];
-  path = scale_and_add_vector(path, scale, add);
-  deriv_path = scale_and_add_vector(deriv_path, scale, 0.0);
-
-  return make_tuple(path, deriv_path);
+  p_init = init; 
+  p_final = fin;
+  p_func.init(c.size()/2, period, c);
+  f_ends = p_func.eval(t_ends);
+  scale = (p_final - p_init)/(f_ends[1]-f_ends[0]);
+  add = p_init - scale*f_ends[0];
 }
