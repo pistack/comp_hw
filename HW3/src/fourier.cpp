@@ -10,36 +10,57 @@
 
 using namespace std;
 
-tuple<vector<double>, vector<double>>
-sum_of_fourier(vector<double> &t, vector<double> c, int num_fourier)
+void fourier::init(int num_fourier, double period, vector<double> c)
 {
-  int max_sum = 2*num_fourier;
-  int n = t.size();
-  double half_period = t[n-1]-t[0];
-  double omega = pi/half_period;
-  double tmp = 0;
-  vector<double> y(n, 0);
-  vector<double> deriv(n, 0);
+		f_num_fourier = num_fourier;
+		f_period = period;
+		f_c = c;
+}
 
-  for(int i = 0; i<n; i++)
-    {
-      for(int j = 0; j<max_sum; j += 2)
+vector<double> fourier::eval(vector<double> &t)
+{
+	int term = 2*f_num_fourier;
+	int n = t.size();
+	double omega = 2*pi/f_period;
+	double tmp;
+	vector<double> y(n, 0);
+	
+	for(int i=0; i<n; i++)
 	{
-	  tmp = (j/2+1)*omega;
-	  if(c[j] != 0.0)
-	    {
-	      y[i] += c[j]*sin(tmp*t[i]);
-	      deriv[i] += c[j]*tmp*cos(tmp*t[i]);
-	    }
-	  if(c[j+1] != 0.0)
-	    {
-	      y[i] += c[j+1]*cos(tmp*t[i]);
-	      deriv[i] -= c[j+1]*tmp*sin(tmp*t[i]);
-	    }
-	}
-    }
+		for(int j=0; j<term; j += 2)
+		{
+			tmp = (j/2+1)*omega;
+			if(f_c[j] != 0.0)
+			y[i] += f_c[j]*sin(tmp*t[i]);
+			if(f_c[j+1] != 0.0)
+			y[i] += f_c[j+1]*cos(tmp*t[i]);
+			}
+		}
 
-  return make_tuple(y, deriv);
+		return y;
+}
+
+vector<double> fourier::deriv(vector<double> &t)
+{
+	int term = 2*f_num_fourier;
+	int n = t.size();
+	double omega = 2*pi/f_period;
+	double tmp;
+	vector<double> yp(n, 0);
+	
+	for(int i=0; i<n; i++)
+	{
+		for(int j=0; j<term; j += 2)
+		{
+			tmp = (j/2+1)*omega;
+			if(f_c[j] != 0.0)
+			yp[i] += f_c[j]*tmp*cos(tmp*t[i]);
+			if(f_c[j+1] != 0.0)
+			yp[i] -= f_c[j+1]*tmp*sin(tmp*t[i]);
+		}
+	}
+
+	return yp;
 }
 
 

@@ -10,11 +10,97 @@
 #define BASIC_H
 #endif
 
-#include <tuple>
 #include <vector>
 #include <random>
 
 const double pi = 3.141592653589793; // define pi 
+
+/*!
+ * @brief Class for sum of the sine and cosine function
+ * weighted by coefficients
+ */
+
+class fourier
+{
+	private:
+	int f_num_fourier; ///< number of sine and cosine function to add
+	double f_period; ///< the period of fourier function 
+	std::vector<double> f_c; ///< coefficients
+
+	public:
+	/*!
+	 * @brief initize fourier class
+	 * @param num_fourier number of sine and cosine function to add
+	 * @param period period of fourier function
+	 * @param c coeffcients of fourier function
+	 */
+
+	void init(int num_fourier, double period, std::vector<double> c);
+
+	/*!
+	 * @brief evaluate the fourier function
+	 * @param t points to evaluate the fourier function
+	 * @return values of the fourier function evaluated at t
+	 */
+
+	std::vector<double> eval(std::vector<double> &t);
+
+	/*!
+	 * @brief evaluate the derivative of fourier function
+	 * @param t points to evaluate the derivative of fourier function
+	 * @return values of the derivative of fourier function
+	 * evaluated at t
+	 */
+
+	std::vector<double> deriv(std::vector<double> &t);
+};
+
+/*!
+ * @brief Class for the path approximated by fourier function
+ */
+
+class fourier_path
+{
+	private:
+	///< fourier function used to approximate path
+	fourier p_func = fourier(); 
+	double p_init; ///< initial value of path
+	double p_final; ///< final value of path
+	double scale; ///< scaler used to match initial condtion
+	double add; ///< adder used to match initial condition
+
+	public:
+
+	/*!
+	 * @brief initize fourier path class
+	 * @param t_init initial time
+	 * @param t_fin finial time
+	 * @param init initial value of path
+	 * @param fin finial value of path
+	 * @param period period of fourier function
+	 * @param c coefficients of fourier function
+	 */
+
+	void init(double t_init, double t_fin,
+	double init, double fin, double period,
+	std::vector<double> &c);
+
+	/*!
+	 * @brief evaluate the path
+	 * @param t points to evaluate the path
+	 * @return the path evaluated at t
+	 */
+
+	std::vector<double> eval(std::vector<double> &t);
+
+	/*!
+	 * @brief evaluate the derivative of path
+	 * @param t points to evaluate
+	 * @return the derivative of path evaluated at t
+	 */
+
+	std::vector<double> deriv(std::vector<double> &t);
+};
 
 /*!
  * @brief scale vector by scaler and add vector by adder
@@ -28,41 +114,14 @@ std::vector<double>
 scale_and_add_vector(std::vector<double> &v, double scale, double add);
 
 /*!
- * @brief evaluates sum of sine and cosine function with 
- * period 2*(t_max-t_min) weighted by coefficents and its derivative
- * at given time t.
- * @param t time
- * @param c coefficiets
- * @param num_fourier number of sine and cosine function to add
- * @return tuple of value and derivatives of 
- * the sum of sine and cosine function
- */
-
-std::tuple<std::vector<double>, std::vector<double>>
-sum_of_fourier(std::vector<double> &t, std::vector<double> c, int num_fourier);
-
-/*!
  * @brief randomly move initial guess by at most step
  * @param init_guess initial guess
  * @param step step size
  * @param gen random number generator (assume mt19937)
  * @param dist distribution
- * @return moved initial guess by step
+ * @return moved initial guess by at most step
  */
 
 std::vector<double>
 move_step(std::vector<double> &init_guess, double step,
 	  std::mt19937 &gen, std::uniform_real_distribution<double> &dist);
-
-/*!
- * @brief evaluates path and its derivative
- * @param t time
- * @param init initial value of the path
- * @param fin final value of the path
- * @param c fourier coefficients for path
- * @return the tuple of path and its derivative
- */
-
-std::tuple<std::vector<double>, std::vector<double>>
-eval_path(std::vector<double> &t, double init, double finial,
-	  std::vector<double> &c);
