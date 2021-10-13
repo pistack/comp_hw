@@ -52,6 +52,9 @@
 /// \zeta(t_0) &= \zeta_0 \\
 /// \zeta'(t_0) &= \zeta'_0
 /// \f}
+/// To solve above 2nd order ordinary differential equation
+/// \latexonly \eqref{eq:ode_2nd} \endlatexonly
+/// we need to aproximate 
 
 ///////////////////////////////////////////////////////////////////////
 
