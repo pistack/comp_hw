@@ -1,7 +1,7 @@
 /*!
  * @file hw1.cpp
  * @brief code for homework1 of Computer1 class in Yonsei University
- * Use explicit Euler Method to solve Kepler problem
+ * Use finite difference method to solve Kepler problem
  * @author pistack (Junho Lee)
  * @date 2021. 10. 10.
  */
@@ -31,7 +31,10 @@ tuple<vector<double>, vector<double>> HW1(double t0, double t1,
 
     // initial condition
     y[0] = y0;
-    y[1] = 1/n*(t1-t0)*y0p + y[0];
+    // estimate y1 using 2nd order talyor expension
+    y[1] = spacing*(y0p+0.5*spacing*
+    (pow(1.0/y0, 3.0) - pow(1.0/y0, 2.0))) + \
+    y[0];
 
     // Solve 2nd order ODE using
     // Explict Euler Method
@@ -39,7 +42,8 @@ tuple<vector<double>, vector<double>> HW1(double t0, double t1,
     for(int i = 2; i < n+1; i++)
       {
         y_inv = 1 / y[i-1];
-        y[i] = pow(spacing, 2)*(pow(y_inv, 3) - pow(y_inv, 2)) + \
+        y[i] = pow(spacing, 2.0) * \
+        (pow(y_inv, 3.0) - pow(y_inv, 2.0)) + \
         2*y[i-1] - y[i-2];
       }
 
