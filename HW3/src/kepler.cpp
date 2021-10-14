@@ -11,8 +11,8 @@
 using namespace std;
 
 
-double eval_action(vector<double> &t,
-fourier_path &zeta, fourier_path &theta)
+double eval_action(vector<double> t,
+fourier_path zeta, fourier_path theta)
 {
   int n = t.size();
   double action = 0;

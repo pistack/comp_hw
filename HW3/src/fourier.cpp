@@ -5,19 +5,32 @@
  * @date 2021. 10. 12.
  */
 
+#include <algorithm>
+#include <functional>
 #include <cmath>
 #include "fourier.hpp"
 
 using namespace std;
 
-void fourier::init(int num_fourier, double period, vector<double> &c)
+fourier& fourier::operator=(const fourier &copy)
 {
-		f_num_fourier = num_fourier;
-		f_period = period;
-		f_c = c;
+	f_num_fourier = copy.f_num_fourier;
+	f_period = copy.f_period;
+	f_c = copy.f_c;
+	return *this;
 }
 
-vector<double> fourier::eval(vector<double> &t)
+void fourier::update(vector<double> c){ f_c = c;}
+
+double fourier::eval(double t)
+{
+	vector<double> v = {t};
+	vector<double> result(1, 0);
+	result = eval(v);
+	return result[0];
+}
+
+vector<double> fourier::eval(vector<double> t)
 {
 	int term = 2*f_num_fourier;
 	int n = t.size();
@@ -40,7 +53,15 @@ vector<double> fourier::eval(vector<double> &t)
 		return y;
 }
 
-vector<double> fourier::deriv(vector<double> &t)
+double fourier::deriv(double t)
+{
+	vector<double> v = {t};
+	vector<double> result(1, 0);
+	result = deriv(v);
+	return result[0];
+}
+
+vector<double> fourier::deriv(vector<double> t)
 {
 	int term = 2*f_num_fourier;
 	int n = t.size();
@@ -63,5 +84,60 @@ vector<double> fourier::deriv(vector<double> &t)
 	return yp;
 }
 
+double fourier::nderiv(int n, double t)
+{
+	vector<double> v = {t};
+	vector<double> result(1, 0);
+	result = nderiv(n, v);
+	return result[0];
+}
+
+vector<double> fourier::nderiv(int n, vector<double> t)
+{
+	int term = 2*f_num_fourier;
+	int n_t = t.size();
+	double omega = 2*pi/f_period;
+	double tmp;
+	vector<double> c = f_c;
+	vector<double> yp(n, 0);
+
+	if(n % 2 == 0)
+	{
+		if(n/2 %2 == 0){}
+		else
+		{
+			transform(c.begin(), c.end(), c.begin(), 
+			bind2nd(multiplies<double>(),-1.0));
+		}
+	}
+	else
+	{
+		for(int j=0; j<term; j+=2)
+		{
+			iter_swap(c.begin()+j, c.begin()+j+1);
+			c[j] *= -1.0;
+		}
+		if((n-1)/2 %2 == 0){}
+		else
+		{
+			transform(c.begin(), c.end(), c.begin(), 
+			bind2nd(multiplies<double>(),-1.0));
+		}
+	}
+	
+	for(int i=0; i<n_t; i++)
+	{
+		for(int j=0; j<term; j += 2)
+		{
+			tmp = pow((j/2+1)*omega, double(n));
+			if(c[j] != 0.0)
+			yp[i] += c[j]*tmp*sin(tmp*t[i]);
+			if(f_c[j+1] != 0.0)
+			yp[i] += f_c[j+1]*tmp*cos(tmp*t[i]);
+		}
+	}
+
+	return yp;
+}
 
 

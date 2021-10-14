@@ -3,9 +3,9 @@
 CXX = g++
 AR = ar
 INC = -I src/include/
-#CXXFLAGS = -O -g -Wall -Wextra -pedantic $(INC) #debug
+CXXFLAGS = -O -g -Wall -Wextra -pedantic $(INC) #debug
 #CXXFLAGS = -O2 -Wall -Wextra -pedantic $(INC) # default
-CXXFLAGS = -O3 $(INC) # optimization
+#CXXFLAGS = -O3 $(INC) # optimization
 
 OBJS = ./src/hw3.o ./src/main.o \
        ./src/kepler.o ./src/move.o
@@ -31,11 +31,11 @@ dep :
 clean :
 	rm -rf $(OBJS) ./src/fourier_path.o ./src/fourier.o
 
-cleanall :
-	rm -rf $(OBJS) ./src/libfourier.a ./bin/hw3
+distclean :
+	rm -rf $(OBJS) ./src/libfourier.a ./bin/hw3 ./src/fourier_path.o ./src/fourier.o
 
 new :
-	$(MAKE) clean
+	$(MAKE) distclean
 	$(MAKE)
 # DO NOT DELETE
 

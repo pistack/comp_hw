@@ -34,7 +34,7 @@ HW3(double zeta_min, double t0, int n, int num_fourier, int num_iter,
   double tmax = pi*pow(a,1.5);
 
   // period of fourier function
-  double period;
+  double period = 2*tmax;
 
   // variable used for adaptation of step size
   double delta_action;
@@ -45,24 +45,18 @@ HW3(double zeta_min, double t0, int n, int num_fourier, int num_iter,
 
   // time
   vector<double> t(n, 0);
-  
-  // subset of time to check our guess is vailed
-  vector<double> tends = {0.0, tmax};
-
-  // guess minimial
-  vector<double> min_c_zeta(size, 0);
-  vector<double> min_c_theta(size, 0);
-
-  // minimal path
-  fourier_path min_zeta;
-  fourier_path min_theta;
 
   // fill time
   for(int i = 0; i<n; i++)
     t[i] = double(i)/double(n-1)*tmax;
+  
+  // store path
+  vector<double> path_zeta_t(n, 0);
+  vector<double> path_theta_t(n, 0);
 
-  // set period of fourier function
-  period = 2*tmax;
+  // guess minimial
+  vector<double> min_c_zeta(size, 0);
+  vector<double> min_c_theta(size, 0);
 
   // initial guess
   min_c_zeta[0] = 0.5;
@@ -70,52 +64,40 @@ HW3(double zeta_min, double t0, int n, int num_fourier, int num_iter,
   min_c_theta[0] = 0.5;
   min_c_theta[1] = -0.5;
 
+  // init fourier function
+  fourier fourier_zeta(num_fourier, period, min_c_zeta);
+  fourier fourier_theta(num_fourier, period, min_c_theta);
+
   // init path
-  min_zeta.init(0.0, tmax, zeta_min, zeta_max,
-  period, min_c_zeta);
-  min_theta.init(0.0, tmax, 0.0, pi,
-  period, min_c_theta);
+  fourier_path path_zeta(0.0, tmax, zeta_min, zeta_max, fourier_zeta);
+  fourier_path path_theta(0.0, tmax, 0.0, pi, fourier_theta);
 
   // initial action
-  min_action = eval_action(t, min_zeta, min_theta);
+  min_action = eval_action(t, path_zeta, path_theta);
 
-  
   for(int i = 0; i < num_iter; i++)
     {
       // init temporal variable
       double tmp_action;
-      fourier_path tmp_zeta;
-      fourier_path tmp_theta;
-      vector<double> tst_zeta(2, 0);
-      vector<double> tst_theta(2, 0);
+
       // guess temporal
       vector<double> tmp_c_zeta(size, 0);
       vector<double> tmp_c_theta(size, 0);
 
       do
       {
-        // init temporal variable to check guess is vaild
-        fourier tmp_zeta_check;
-        fourier tmp_theta_check;
-
         tmp_c_zeta = move_step(min_c_zeta, step, gen, dist);
         tmp_c_theta = move_step(min_c_theta, step, gen, dist);
-        tmp_zeta_check.init(num_fourier, period,
-        tmp_c_zeta);
-        tmp_theta_check.init(num_fourier, period,
-        tmp_c_theta);
-        tst_zeta = tmp_theta_check.eval(tends);
-        tst_theta = tmp_theta_check.eval(tends);
+        // update fourier coefficients
+        fourier_zeta.update(tmp_c_zeta);
+        fourier_theta.update(tmp_c_theta);
+        path_zeta.update(fourier_zeta);
+        path_theta.update(fourier_theta);
       }
-      while(abs(tst_zeta[0]-tst_zeta[1]) < 1e-8 ||
-      abs(tst_theta[0]-tst_theta[1]) < 1e-8);
+      while((!path_zeta.is_vaild()) || (!path_theta.is_vaild()));
       
-      tmp_zeta.init(0.0, tmax, zeta_min, zeta_max, period,
-      tmp_c_zeta);
-      tmp_theta.init(0.0, tmax, 0.0, pi, period,
-      tmp_c_theta);
-      tmp_action = eval_action(t, tmp_zeta, tmp_theta);
-      
+      tmp_action = eval_action(t, path_zeta, path_theta);
+
       delta_action = tmp_action - min_action;
       
       // adapt step size
@@ -128,22 +110,28 @@ HW3(double zeta_min, double t0, int n, int num_fourier, int num_iter,
         min_action = tmp_action;
         min_c_zeta = tmp_c_zeta;
         min_c_theta = tmp_c_theta;
-        n_accept++; // move is accepted when action decreases
+        n_accept++; // movement is accepted when action decreases
       }
     }
 
-  // minimal path
-  min_zeta.init(0.0, tmax, zeta_min, zeta_max,
-  period, min_c_zeta);
-  min_theta.init(0.0, tmax, 0.0, pi,
-  period, min_c_theta);
+    // update fourier coeffcients to minimum one
+    fourier_zeta.update(min_c_zeta);
+    fourier_theta.update(min_c_theta);
+    
+    // update fourier function to minimum one
+    path_zeta.update(fourier_zeta);
+    path_theta.update(fourier_theta);
+    
+    // minimum action
+    min_action = eval_action(t, path_zeta, path_theta);
 
-  // minimal action
-  min_action = eval_action(t, min_zeta, min_theta);
+    path_zeta_t = path_zeta.eval(t);
+    path_theta_t = path_theta.eval(t);
 
-  transform(t.begin(), t.end(), t.begin(), bind2nd(plus<double>(), t0));
+    // shift t by t0
+    transform(t.begin(), t.end(), t.begin(),
+    bind2nd(plus<double>(), t0));
 
   return make_tuple(n_accept, min_action, t,
-		    min_zeta.eval(t),
-		    min_theta.eval(t));
+  path_zeta_t, path_theta_t);
 }

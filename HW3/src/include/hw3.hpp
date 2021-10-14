@@ -27,7 +27,7 @@ const double pi = 3.141592653589793; ///<define pi
  */
 
 std::vector<double>
-move_step(std::vector<double> &init_guess, double step,
+move_step(std::vector<double> init_guess, double step,
 	  std::mt19937 &gen, std::uniform_real_distribution<double> &dist);
 
 /*!

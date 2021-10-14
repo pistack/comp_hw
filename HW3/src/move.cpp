@@ -11,7 +11,7 @@
 using namespace std;
 
 vector<double>
-move_step(vector<double> &init_guess, double step, mt19937 &gen,
+move_step(vector<double> init_guess, double step, mt19937 &gen,
 	  uniform_real_distribution<double> &dist)
 {
   int n = init_guess.size();

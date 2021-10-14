@@ -21,5 +21,5 @@
  * @return the action of given path
  */
 
-double eval_action(std::vector<double> &t,
-		   fourier_path &zeta, fourier_path &theta);
+double eval_action(std::vector<double> t,
+		   fourier_path zeta, fourier_path theta);
