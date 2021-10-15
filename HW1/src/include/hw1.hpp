@@ -8,7 +8,7 @@
 
 #ifndef HW1_H
 #define HW1_H
-#endif
+
 
 #include <cmath>
 #include <tuple>
@@ -26,4 +26,6 @@
  /// @see \ref theta
 std::tuple<std::vector<double>, std::vector<double>, std::vector<double>>
 HW1(double t0, double t1, int n, double y0, double y0p, double theta0);
+
+#endif
 

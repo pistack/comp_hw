@@ -7,7 +7,6 @@
 
 #ifndef FOURIER_H
 #define FOURIER_H
-#endif
 
 #include <vector>
 
@@ -151,5 +150,7 @@ class fourier_path
 	double nderiv(int n, double t);
 	std::vector<double> nderiv(int n, std::vector<double> t);
 };
+
+#endif
 
 

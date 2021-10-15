@@ -7,9 +7,8 @@
 
 #ifndef KEPLER_H
 #define KEPLER_H
-#endif
 
-#include <vector>
+#include "fourier.hpp"
 
 /*!
  * @brief evaluates the action of given path
@@ -23,3 +22,5 @@
 
 double eval_action(std::vector<double> t,
 		   fourier_path zeta, fourier_path theta);
+
+#endif

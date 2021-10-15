@@ -6,8 +6,8 @@
  */
 
 #include <algorithm>
-#include <functional>
 #include <cmath>
+#include <vector>
 #include "fourier.hpp"
 
 using namespace std;
@@ -107,7 +107,7 @@ vector<double> fourier::nderiv(int n, vector<double> t)
 		else
 		{
 			transform(c.begin(), c.end(), c.begin(), 
-			bind2nd(multiplies<double>(),-1.0));
+			[](double &x){return x *= -1.0;});
 		}
 	}
 	else
@@ -121,7 +121,7 @@ vector<double> fourier::nderiv(int n, vector<double> t)
 		else
 		{
 			transform(c.begin(), c.end(), c.begin(), 
-			bind2nd(multiplies<double>(),-1.0));
+			[](double &x){return x *= -1.0;});
 		}
 	}
 	
