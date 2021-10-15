@@ -145,4 +145,4 @@ dmypy.json
 /CMakeFiles/
 
 # vscode setting file
-.vscode
+.vscode/
