@@ -5,8 +5,7 @@
  * @date 2021. 10. 12.
  */
 
-#include <vector>
-#include <random>
+#include "hw3.hpp"
 
 using namespace std;
 

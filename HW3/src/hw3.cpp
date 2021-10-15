@@ -8,9 +8,7 @@
  */
 
 #include <algorithm>
-#include <functional>
 #include <cmath>
-#include <tuple>
 #include "fourier.hpp"
 #include "kepler.hpp"
 #include "hw3.hpp"
@@ -18,9 +16,10 @@
 using namespace std;
 
 tuple<int, double, vector<double>, vector<double>, vector<double>>
-HW3(double zeta_min, double t0, int n, int num_fourier, int num_iter,
-    double step, double lambda,
-    mt19937 &gen, uniform_real_distribution<double> &dist)
+HW3(double t0, double zeta_min, int num_action, 
+int num_fourier, int num_eval,
+int num_iter, double step, double lambda,
+mt19937 &gen, uniform_real_distribution<double> &dist)
 {
   // number of accepted move
   int n_accept = 0;
@@ -44,19 +43,19 @@ HW3(double zeta_min, double t0, int n, int num_fourier, int num_iter,
   double min_action;
 
   // time
-  vector<double> t(n, 0);
+  vector<double> t(num_action, 0);
 
   // fill time
-  for(int i = 0; i<n; i++)
-    t[i] = double(i)/double(n-1)*tmax;
-  
-  // store path
-  vector<double> path_zeta_t(n, 0);
-  vector<double> path_theta_t(n, 0);
+  for(int i = 0; i<num_action; i++)
+    t[i] = double(i)/double(num_action-1)*tmax;
 
   // guess minimial
   vector<double> min_c_zeta(size, 0);
   vector<double> min_c_theta(size, 0);
+
+  // store path
+  vector<double> path_zeta_t(num_eval, 0);
+  vector<double> path_theta_t(num_eval, 0);
 
   // initial guess
   min_c_zeta[0] = 0.5;
@@ -122,15 +121,19 @@ HW3(double zeta_min, double t0, int n, int num_fourier, int num_iter,
     path_zeta.update(fourier_zeta);
     path_theta.update(fourier_theta);
     
-    // minimum action
-    min_action = eval_action(t, path_zeta, path_theta);
+    // minimum action for debugging
+    // min_action = eval_action(t, path_zeta, path_theta);
 
+    // re-initialize time
+    t = vector<double>(num_eval, 0);
+    // fill time
+    for(int i=1; i<num_eval; i++)
+    t[i] = tmax*double(i)/double(num_eval-1);
     path_zeta_t = path_zeta.eval(t);
     path_theta_t = path_theta.eval(t);
 
-    // shift t by t0
     transform(t.begin(), t.end(), t.begin(),
-    bind2nd(plus<double>(), t0));
+    [t0](double &x){return x += t0;});
 
   return make_tuple(n_accept, min_action, t,
   path_zeta_t, path_theta_t);
