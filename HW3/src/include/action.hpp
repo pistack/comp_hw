@@ -1,4 +1,5 @@
 /*!
+ * @ingroup fourier
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
@@ -10,7 +11,11 @@
 
 #include "fourier_path.hpp"
 
-/// @brief class for compute action
+
+/// @brief class to compute action
+/// @warning If you give invaild path, then
+/// eval method will return always zero
+/// @ingroup fourier
 class action
 {
 	private:
@@ -53,11 +58,13 @@ class action
 	/// @param rel_tol relative tolerance
 	/// @param path path
 	/// @param lag lagranian of action
-	/// first param: t, second param: path at t,
-	/// third param: derivative of path at t
-	/// It assumes type of first param is double,
-	/// second and third param are vector<double>
-	/// and type of return value is double.
+	/// - first param:  t
+	/// - type of first param: double 
+	/// - second param: double path at t
+	/// - type of second param: vector<double>
+	/// - third param: derivative of path at t
+	/// - type of third param: vector<double>
+	/// - type of return value: double
 	action(double abs_tol, double rel_tol,
 	std::vector<fourier_path> path, 
 	double (*lag)(double, std::vector<double>, 
@@ -86,8 +93,7 @@ class action
 	/// @brief evaluate the action of given path
 	/// by adpative simpson's method
 	/// @return action of given path
-	/// @warning If you give invaild path, then
-	/// it returns always zero
+
 	double eval();
 };
 

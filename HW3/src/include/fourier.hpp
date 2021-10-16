@@ -1,5 +1,6 @@
 /*!
  * @file fourier.hpp
+ * @ingroup fourier
  * @brief headerfile for fourier function
  * @author pistack (Junho Lee)
  * @date 2021. 10. 12.
@@ -12,6 +13,7 @@
 #include <vector>
 
 /// @brief Class for sum of the sine and cosine function
+/// @ingroup fourier
 /// weighted by coefficients
 class fourier
 {

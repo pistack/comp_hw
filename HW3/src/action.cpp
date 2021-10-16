@@ -1,5 +1,6 @@
 /*!
  * @file action.cpp
+ * @ingroup fourier
  * @brief evaluates action
  * @author pistack (Junho Lee)
  * @date 2021. 10. 12.

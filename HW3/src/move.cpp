@@ -3,6 +3,7 @@
  * @brief randomly move initial guess, at most step size.
  * @author pistack (Junho Lee)
  * @date 2021. 10. 12.
+ * @ingroup hw3
  */
 
 #include "hw3.hpp"

@@ -5,10 +5,12 @@
  *        to solve Kepler problem
  * @author pistack (Junho Lee)
  * @date 2021. 10. 12.
+ * @ingroup hw3
  */
 
 #include <algorithm>
 #include <cmath>
+#include <cerrno>
 #include "fourier_path.hpp"
 #include "action.hpp"
 #include "hw3.hpp"
@@ -18,7 +20,8 @@ using namespace std;
 tuple<int, double, vector<double>, vector<double>, vector<double>>
 HW3(double t0, double zeta_min, double atol, double rtol, 
 int num_fourier, int num_eval,
-int num_iter, double step, double lambda,
+int max_iter, double conv_atol, double conv_rtol,
+double step, double lambda,
 mt19937 &gen, uniform_real_distribution<double> &dist)
 {
   // number of accepted move
@@ -26,6 +29,9 @@ mt19937 &gen, uniform_real_distribution<double> &dist)
 
   // number of terms (one fourier = one sine + one cosine => 2 terms)
   int size = 2*num_fourier;
+
+  // check converge
+  bool is_converged = false;
 
   // inital condition
   double zeta_max = zeta_min/(2*zeta_min-1);
@@ -41,6 +47,7 @@ mt19937 &gen, uniform_real_distribution<double> &dist)
 
   // variable used to store minimal action
   double min_action;
+  double min_action_past;
 
   // guess minimial
   vector<double> min_c_zeta(size, 0);
@@ -71,8 +78,9 @@ mt19937 &gen, uniform_real_distribution<double> &dist)
   {return 0.5*(pow(dp[0], 2.0)+pow(p[0]*dp[1], 2.0))+1/abs(p[0]);});
 
   min_action = kepler_action.eval();
+  min_action_past = min_action;
 
-  for(int i = 0; i < num_iter; i++)
+  for(int i = 0; i < max_iter; i++)
     {
       // init temporal variable
       double tmp_action;
@@ -109,8 +117,19 @@ mt19937 &gen, uniform_real_distribution<double> &dist)
         min_c_zeta = tmp_c_zeta;
         min_c_theta = tmp_c_theta;
         n_accept++; // movement is accepted when action decreases
+        if(abs(min_action-min_action_past)<
+        (conv_atol+conv_rtol*min_action)*adapt_step)
+        {
+          is_converged = true;
+          break;
+        }
+        min_action_past = min_action;
+        adapt_step = step;
       }
     }
+
+    if(! is_converged)
+    errno = ERANGE;
 
     // update fourier coeffcients to minimum one
     fourier_zeta.update(min_c_zeta);

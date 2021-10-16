@@ -1,0 +1,47 @@
+////////////////////////////////////////////////////////////////////
+/*!
+ * @mainpage Computer Homework 3
+ * Solve Kepler problem via Markov Chain Monte Carlo Method
+ * @section req Requirements
+ * To install this program, you should have
+ * - C++ compiler like g++
+ * - gnu make or cmake
+ * @section install Installation
+ * - gnu make
+ *   - Type make, then we can see hw3 executable file in bin directory
+ * - cmake
+ *   1. make build directory
+ *   2. go to build directory and type cmake ..
+ *   3. Type make then we can see hw3 executable in build directory
+ * @section hwoto How To Use
+ * Execute hw3 then, it will interactively read
+ * - inital condition
+ * - tolerance for the action integral
+ * - number of sine and cosine will be used to approximate the path
+ * - number of points to evaluate the minimized path 
+ * - initial step size
+ * - parameter for adaptation of step size 
+ * - number of iteration
+ * - output file name
+ *
+ * Then it computes and saves solution to file.
+ * You can plot the result using usual plotting software like gnuplot
+ * @section copyright Copyright
+ * Copyright 2021 pistack (Junho Lee). All rights reserved.
+ * @section license License
+ * This project is released under the GNU Lesser General Public License
+ * v3.0.
+ *
+ * @defgroup fourier libfourier
+ * @brief library to
+ *  1. define fourier function
+ *  2. approximate path using fourier function
+ *  3. compute the action of path approximated by fourier function
+ *
+ * @defgroup hw3 Computer_Homework3
+ * @brief Main module to solve kepler problem by Markov Chain
+ * Monte Carlo Method
+ * 
+ */
+///////////////////////////////////////////////////////////////////////
+

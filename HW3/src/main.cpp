@@ -8,6 +8,7 @@
  * @date 2021. 10. 10.
  */
 
+#include <cerrno>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -24,7 +25,9 @@ int main(void)
   double atol, rtol; // abs and rel tol of action integral
   int num_eval; // number of points to eval
   int num_fourier; // number of sine and cosine function used for guess
-  int num_iter; // number of iteration
+  int max_iter; // number of iteration
+  double conv_atol, conv_rtol; // converge criteria 
+  // abs and rel change of minimum action
   int num_move; // number of actual moves
   double zeta_min; // minimum value of zeta
   double t0; // initial time
@@ -55,18 +58,26 @@ int main(void)
   cin >> step;
   cout << " value for paramter to adapt step size: ";
   cin >> lambda;
-  cout << " number of iteration: ";
-  cin >> num_iter;
+  cout << " Maximum number of iteration: ";
+  cin >> max_iter;
+  cout << " Converge criteria: absoulte change of minimum action: ";
+  cin >> conv_atol;
+  cout << " Converge criteria: relative change of minimum action: ";
+  cin >> conv_rtol;
   cout << " file name to store result: ";
   cin >> filename;
   cout << " Now starts calculation" << endl;
   tie(num_move, min_action, t, zeta, theta) =				\
     HW3(t0, zeta_min, atol, rtol, 
-    num_fourier, num_eval, num_iter, step, lambda, gen, dist);
+    num_fourier, num_eval, max_iter,
+    conv_atol, conv_rtol, 
+    step, lambda, gen, dist);
   cout << " Calcuation is finished" << endl;
   cout << "======================result==============================" << endl;
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(8); // print 8 significant digits
+  if(errno == ERANGE)
+  cout << " Iteration does not meet converge ceriteria!" << endl;
   cout << " Minimum action is " << min_action << endl;
   cout << " Number of Actual move is " << num_move << endl;
 
