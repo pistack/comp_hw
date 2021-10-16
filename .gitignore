@@ -132,17 +132,21 @@ dmypy.json
 
 # emacs swap file
 *~
+*.bak
 
-# HW exe file and 
-/bin/*
+# HW exe file
+*/bin/hw1
+*/bin/hw2
+*/bin/hw3
+
 # doxygen build file
-/html
-/latex
+html
+latex
 
 # cmake files
-/CMakeCache.txt
-/cmake_install.cmake
-/CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CMakeFiles/
 
 # vscode setting file
 .vscode/

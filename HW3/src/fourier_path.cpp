@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <cmath>
 #include <vector>
-#include "fourier.hpp"
+#include "fourier_path.hpp"
 
 using namespace std;
 
@@ -33,13 +33,15 @@ void fourier_path::init_helper()
   f_ends = p_func.eval(t_ends);
   tstp = p_f - p_0;
   tstf = f_ends[1]-f_ends[0];
-  if(abs(tstp)<1e-8 && abs(tstf)<1e-8)
+  if(abs(tstp)<1e-8*(1+p_f) && 
+  abs(tstf)<1e-8*(1+f_ends[1]))
   {
     p_vaild = true;
     scale = 1.0;
     add = p_0 - f_ends[0];
   }
-  else if(abs(tstp)>1e-8 && abs(tstf)>1e-8)
+  else if(abs(tstp)>1e-8*(1+abs(p_f)) && 
+  abs(tstf)>1e-8*(1+abs(f_ends[1])))
   {
     p_vaild = true;
     scale = tstp/tstf;
@@ -62,6 +64,11 @@ void fourier_path::update(fourier fourier)
 bool fourier_path::is_vaild()
 {
   return p_vaild;
+}
+
+tuple<double, double> fourier_path::get_endtimes()
+{
+  return make_tuple(p_t0, p_tf);
 }
 
 double fourier_path::eval(double t)

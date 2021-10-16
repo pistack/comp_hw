@@ -24,10 +24,21 @@ void fourier::update(vector<double> c){ f_c = c;}
 
 double fourier::eval(double t)
 {
-	vector<double> v = {t};
-	vector<double> result(1, 0);
-	result = eval(v);
-	return result[0];
+	int term = 2*f_num_fourier;
+	double omega = 2*pi/f_period;
+	double tmp;
+	double y=0;
+	
+	for(int j=0; j<term; j += 2)
+	{
+		tmp = (j/2+1)*omega;
+		if(f_c[j] != 0.0)
+		y += f_c[j]*sin(tmp*t);
+		if(f_c[j+1] != 0.0)
+		y += f_c[j+1]*cos(tmp*t);
+	}
+
+	return y;
 }
 
 vector<double> fourier::eval(vector<double> t)
@@ -48,17 +59,28 @@ vector<double> fourier::eval(vector<double> t)
 			if(f_c[j+1] != 0.0)
 			y[i] += f_c[j+1]*cos(tmp*t[i]);
 		 }
-		}
+	}
 
-		return y;
+	return y;
 }
 
 double fourier::deriv(double t)
 {
-	vector<double> v = {t};
-	vector<double> result(1, 0);
-	result = deriv(v);
-	return result[0];
+	int term = 2*f_num_fourier;
+	double omega = 2*pi/f_period;
+	double tmp;
+	double yp=0;
+	
+	for(int j=0; j<term; j += 2)
+	{
+		tmp = (j/2+1)*omega;
+		if(f_c[j] != 0.0)
+		yp += f_c[j]*tmp*cos(tmp*t);
+		if(f_c[j+1] != 0.0)
+		yp -= f_c[j+1]*tmp*sin(tmp*t);
+	}
+
+	return yp;
 }
 
 vector<double> fourier::deriv(vector<double> t)
@@ -86,10 +108,34 @@ vector<double> fourier::deriv(vector<double> t)
 
 double fourier::nderiv(int n, double t)
 {
-	vector<double> v = {t};
-	vector<double> result(1, 0);
-	result = nderiv(n, v);
-	return result[0];
+	int term = 2*f_num_fourier;
+	double omega = 2*pi/f_period;
+	double tmp;
+	vector<double> c = f_c;
+	double yp=0;
+
+	if(n % 2 == 0)
+	{}
+	else
+	{
+		for(int j=0; j<term; j+=2)
+		{
+			iter_swap(c.begin()+j, c.begin()+j+1);
+			c[j] *= -1.0;
+		}
+	}
+	for(int j=0; j<term; j += 2)
+	{
+		tmp = pow((j/2+1)*omega, double(n));
+		if(c[j] != 0.0)
+		yp += c[j]*tmp*sin(tmp*t);
+		if(f_c[j+1] != 0.0)
+		yp += f_c[j+1]*tmp*cos(tmp*t);
+	}
+	if((n%2 == 0 && n/2 % 2 != 0) ||
+	(n%2 != 0 && (n-1)/2 % 2 != 0))
+	yp *= -1.0;
+	return yp;
 }
 
 vector<double> fourier::nderiv(int n, vector<double> t)

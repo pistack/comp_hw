@@ -77,9 +77,10 @@
 /// then we have following relation
 /// \f{align}{
 /// u_i &= f(v_i) \label{eq:fv} \\
-/// v_i &= f(u_i) \label{eq:fu}
+/// v_i &= f(u_i) \label{eq:fu} \\
+/// v_{n-i} &= u_i \label{eq:sym}
 ///\f}
-/// To exploit above relation \latexonly \eqref{eq:fv}--\eqref{eq:fu} \endlatexonly
+/// To exploit above relations \latexonly \eqref{eq:fv}--\eqref{eq:sym} \endlatexonly
 /// and gain more accurate results, I use Simpson's Rule for unequally spaced 
 /// ordinates (https://www.jstor.org/stable/2309244).
 /// Let 

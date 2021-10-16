@@ -21,7 +21,7 @@ int main(void)
   random_device rd;
   mt19937 gen(rd()); // set random number generator
   uniform_real_distribution<double> dist(-1, 1);   // set distribution
-  int num_action; // number of points to approximate kepler action integral
+  double atol, rtol; // abs and rel tol of action integral
   int num_eval; // number of points to eval
   int num_fourier; // number of sine and cosine function used for guess
   int num_iter; // number of iteration
@@ -43,8 +43,10 @@ int main(void)
   cin >> t0;
   cout << " minimum value of zeta: ";
   cin >> zeta_min;
-  cout << " number of points used for action: ";
-  cin >> num_action;
+  cout << " absolute tolerance of action: ";
+  cin >> atol;
+  cout << " relative tolerance of action: ";
+  cin >> rtol;
   cout << " number of sine and cosine function for approximation: ";
   cin >> num_fourier;
   cout << " number of points to evaluate path: ";
@@ -59,11 +61,12 @@ int main(void)
   cin >> filename;
   cout << " Now starts calculation" << endl;
   tie(num_move, min_action, t, zeta, theta) =				\
-    HW3(t0, zeta_min, 
-    num_action, num_fourier, 
-    num_eval, num_iter, step, lambda, gen, dist);
+    HW3(t0, zeta_min, atol, rtol, 
+    num_fourier, num_eval, num_iter, step, lambda, gen, dist);
   cout << " Calcuation is finished" << endl;
   cout << "======================result==============================" << endl;
+  cout.unsetf(ios::floatfield); // initialize floatfield
+  cout.precision(8); // print 8 significant digits
   cout << " Minimum action is " << min_action << endl;
   cout << " Number of Actual move is " << num_move << endl;
 

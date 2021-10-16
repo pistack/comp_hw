@@ -35,8 +35,8 @@ move_step(std::vector<double> init_guess, double step,
  * @param t0 initial time
  * @param zeta_min minimum value of zeta, 
     for constraint motion 0.5 < zeta_min < 1
- * @param num_action number of points for the 
- * approximation of kepler action integral
+ * @param atol absolute tolerance of action
+ * @param rtol relative tolerance of action
  * @param num_fourier number of sine and cosine functions to guess
  * @param num_eval number of points to evaluate minimum path
  * @param num_iter number of iteration
@@ -50,7 +50,7 @@ move_step(std::vector<double> init_guess, double step,
 
 std::tuple<int, double, 
 std::vector<double>, std::vector<double>, std::vector<double>>
-HW3(double t0, double zeta_min, int num_action, 
+HW3(double t0, double zeta_min, double atol, double rtol, 
 int num_fourier, int num_eval,
 int num_iter, double step, double lambda,
 std::mt19937 &gen, std::uniform_real_distribution<double> &dist);

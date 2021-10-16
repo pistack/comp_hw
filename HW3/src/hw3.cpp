@@ -9,14 +9,14 @@
 
 #include <algorithm>
 #include <cmath>
-#include "fourier.hpp"
-#include "kepler.hpp"
+#include "fourier_path.hpp"
+#include "action.hpp"
 #include "hw3.hpp"
 
 using namespace std;
 
 tuple<int, double, vector<double>, vector<double>, vector<double>>
-HW3(double t0, double zeta_min, int num_action, 
+HW3(double t0, double zeta_min, double atol, double rtol, 
 int num_fourier, int num_eval,
 int num_iter, double step, double lambda,
 mt19937 &gen, uniform_real_distribution<double> &dist)
@@ -42,13 +42,6 @@ mt19937 &gen, uniform_real_distribution<double> &dist)
   // variable used to store minimal action
   double min_action;
 
-  // time
-  vector<double> t(num_action, 0);
-
-  // fill time
-  for(int i = 0; i<num_action; i++)
-    t[i] = double(i)/double(num_action-1)*tmax;
-
   // guess minimial
   vector<double> min_c_zeta(size, 0);
   vector<double> min_c_theta(size, 0);
@@ -68,11 +61,16 @@ mt19937 &gen, uniform_real_distribution<double> &dist)
   fourier fourier_theta(num_fourier, period, min_c_theta);
 
   // init path
-  fourier_path path_zeta(0.0, tmax, zeta_min, zeta_max, fourier_zeta);
-  fourier_path path_theta(0.0, tmax, 0.0, pi, fourier_theta);
+  vector<fourier_path> path;
+  path.push_back(fourier_path(0.0, tmax, zeta_min, zeta_max, fourier_zeta));
+  path.push_back(fourier_path(0.0, tmax, 0.0, pi, fourier_theta));
 
-  // initial action
-  min_action = eval_action(t, path_zeta, path_theta);
+  // init action
+  action kepler_action(atol, rtol, path,
+  [](double t, vector<double> p, vector<double> dp)
+  {return 0.5*(pow(dp[0], 2.0)+pow(p[0]*dp[1], 2.0))+1/abs(p[0]);});
+
+  min_action = kepler_action.eval();
 
   for(int i = 0; i < num_iter; i++)
     {
@@ -90,12 +88,13 @@ mt19937 &gen, uniform_real_distribution<double> &dist)
         // update fourier coefficients
         fourier_zeta.update(tmp_c_zeta);
         fourier_theta.update(tmp_c_theta);
-        path_zeta.update(fourier_zeta);
-        path_theta.update(fourier_theta);
+        path[0].update(fourier_zeta);
+        path[1].update(fourier_theta);
+        kepler_action.update(path);
       }
-      while((!path_zeta.is_vaild()) || (!path_theta.is_vaild()));
-      
-      tmp_action = eval_action(t, path_zeta, path_theta);
+      while(!kepler_action.is_vaild());
+
+      tmp_action = kepler_action.eval();
 
       delta_action = tmp_action - min_action;
       
@@ -118,19 +117,20 @@ mt19937 &gen, uniform_real_distribution<double> &dist)
     fourier_theta.update(min_c_theta);
     
     // update fourier function to minimum one
-    path_zeta.update(fourier_zeta);
-    path_theta.update(fourier_theta);
+    path[0].update(fourier_zeta);
+    path[1].update(fourier_theta);
     
     // minimum action for debugging
-    // min_action = eval_action(t, path_zeta, path_theta);
+    // kepler_action.update(path_zeta, path_theta);
+    // min_action = kepler_action.eval();
 
-    // re-initialize time
-    t = vector<double>(num_eval, 0);
+    // initialize time
+    vector<double> t(num_eval, 0);
     // fill time
     for(int i=1; i<num_eval; i++)
     t[i] = tmax*double(i)/double(num_eval-1);
-    path_zeta_t = path_zeta.eval(t);
-    path_theta_t = path_theta.eval(t);
+    path_zeta_t = path[0].eval(t);
+    path_theta_t = path[1].eval(t);
 
     transform(t.begin(), t.end(), t.begin(),
     [t0](double &x){return x += t0;});
