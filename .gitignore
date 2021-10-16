@@ -7,6 +7,7 @@ __pycache__/
 *.so
 *.o
 *.obj
+*.a
 
 # Distribution / packaging
 .Python
