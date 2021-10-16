@@ -46,6 +46,9 @@ class action
 
 	public:
     /// @brief initialize action class
+	action(){}
+
+	/// @brief initialize action class
 	/// @param abs_tol absoulte tolerance
 	/// @param rel_tol relative tolerance
 	/// @param path path
@@ -55,7 +58,6 @@ class action
 	/// It assumes type of first param is double,
 	/// second and third param are vector<double>
 	/// and type of return value is double.
-	action(){}
 	action(double abs_tol, double rel_tol,
 	std::vector<fourier_path> path, 
 	double (*lag)(double, std::vector<double>, 

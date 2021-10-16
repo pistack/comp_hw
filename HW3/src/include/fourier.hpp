@@ -23,12 +23,14 @@ class fourier
 
 	public:
 
-    /// @brief initialize fourier class
+
+	/// @brief initialize fourier class
+	fourier() {}
+
+	/// @brief initialize fourier class
 	/// @param num_fourier number of sine and consine function to add
 	/// @param period period of fourier function
 	/// @param c coefficients of fourier function
-
-	fourier() {}
 
 	fourier(int num_fourier, double period, std::vector<double> c)
 	: f_num_fourier(num_fourier), f_period(period), f_c(c) {}
@@ -49,6 +51,10 @@ class fourier
 	/// @param t points to evaluate the fourier function
 	/// @return values of the fourier function evaluated at t
 	double eval(double t);
+
+	/// @brief evaluate the fourier function
+	/// @param t points to evaluate the fourier function
+	/// @return values of the fourier function evaluated at t
 	std::vector<double> eval(std::vector<double> t);
 
 
@@ -57,6 +63,11 @@ class fourier
 	/// @return values of the derivative of fourier function
 	/// evaluated at t
 	double deriv(double t);
+
+	/// @brief evaluate the derivative of fourier function
+	/// @param t points to evaluate the derivative of fourier function
+	/// @return values of the derivative of fourier function
+	/// evaluated at t
 	std::vector<double> deriv(std::vector<double> t);
 
 	/// @brief evaluate the nth derivative of fourier function
@@ -65,6 +76,12 @@ class fourier
 	/// @return values of the nth order derivative of fourier function
 	/// evaluated at t
 	double nderiv(int n, double t);
+
+	/// @brief evaluate the nth derivative of fourier function
+	/// @param n order of derivative to compute
+	/// @param t points to evaluate the derivative of fourier function
+	/// @return values of the nth order derivative of fourier function
+	/// evaluated at t
 	std::vector<double> nderiv(int n, std::vector<double> t);
 };
 

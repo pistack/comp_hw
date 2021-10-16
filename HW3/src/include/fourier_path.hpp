@@ -44,13 +44,15 @@ class fourier_path
 	public:
 
 	/// @brief initalize fourier path class
+
+	fourier_path() {}
+
+	/// @brief initalize fourier path class
 	/// @param t_init initial time
 	/// @param t_fin finial time
 	/// @param init initial value of path
 	/// @param fin finial value of path
 	/// @param fourier fourier function used to approximation of path
-
-	fourier_path() {}
 
 	fourier_path(double t_init, double t_fin,
 	double init, double fin, fourier fourier)
@@ -83,12 +85,20 @@ class fourier_path
 	/// @param t points to evaluate the path
 	/// @return the path evaluated at t
 	double eval(double t);
+
+	/// @brief evaluate the path
+	/// @param t points to evaluate the path
+	/// @return the path evaluated at t
 	std::vector<double> eval(std::vector<double> t);
 
 	/// @brief evaluate the derivative of path
 	/// @param t points to evaluate
 	/// @return the derivative of path evaluated at t
 	double deriv(double t);
+
+	/// @brief evaluate the path
+	/// @param t points to evaluate the path
+	/// @return the path evaluated at t
 	std::vector<double> deriv(std::vector<double> t);
 
 	/// @brief evaluate the nth derivative of path
@@ -96,6 +106,11 @@ class fourier_path
 	/// @param t points to evaluate
 	/// @return the nth order derivative of path evaluated at t
 	double nderiv(int n, double t);
+
+	/// @brief evaluate the nth derivative of path
+	/// @param n order of derivative to compute
+	/// @param t points to evaluate
+	/// @return the nth order derivative of path evaluated at t
 	std::vector<double> nderiv(int n, std::vector<double> t);
 };
 
