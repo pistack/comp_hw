@@ -8,6 +8,7 @@
  * @date 2021. 10. 10.
  */
 
+#include <algorithm>
 #include <cmath>
 #include <cerrno>
 #include <string>
@@ -99,6 +100,10 @@ int main(void)
   vector<vector<double>> result(2, vector<double>(num_eval, 0));
   result = kepler.min_eval(t);
   min_action = kepler.get_min_action();
+
+  // move t by t0
+  transform(t.begin(), t.end(), t.begin(),
+  [t0](double &x){return x += t0;});
 
   cout << " Calcuation is finished" << endl;
   cout << "======================result==============================" << endl;

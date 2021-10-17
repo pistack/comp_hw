@@ -3,10 +3,10 @@
 CXX = g++
 AR = ar
 INC = -I src/include/
-CXXFLAGS = -O -g -Wall -Wextra -pedantic $(INC) #debug
+#CXXFLAGS = -O -g -Wall -Wextra -pedantic $(INC) #debug
 #CXXFLAGS = -O2 -Wall -Wextra -pedantic $(INC) # default
 #CXXFLAGS = -O3 $(INC) # optimization
-#CXXFLAGS = -O3 -mavx2 $(INC) # optimization for avx2 architecture
+CXXFLAGS = -O3 -mavx2 $(INC) # optimization for avx2 architecture
 
 OBJS = ./src/hw3.o ./src/main.o ./src/move.o
 SRCS = ./src/hw3.cpp ./src/main.cpp \
@@ -39,11 +39,13 @@ new :
 	$(MAKE)
 # DO NOT DELETE
 
-./src/hw3.o: src/include/fourier_path.hpp src/include/fourier.hpp
+./src/hw3.o: src/include/fourier.hpp src/include/fourier_path.hpp
 ./src/hw3.o: src/include/action.hpp src/include/hw3.hpp
-./src/main.o: src/include/hw3.hpp
+./src/main.o: src/include/hw3.hpp src/include/fourier_path.hpp
+./src/main.o: src/include/fourier.hpp src/include/action.hpp
 ./src/action.o: src/include/action.hpp src/include/fourier_path.hpp
 ./src/action.o: src/include/fourier.hpp
 ./src/fourier_path.o: src/include/fourier_path.hpp src/include/fourier.hpp
 ./src/fourier.o: src/include/fourier.hpp
-./src/move.o: src/include/hw3.hpp
+./src/move.o: src/include/hw3.hpp src/include/fourier_path.hpp
+./src/move.o: src/include/fourier.hpp src/include/action.hpp
