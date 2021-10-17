@@ -51,8 +51,10 @@ class HW3
 
    std::random_device rd;
    std::mt19937 gen = std::mt19937(rd()); // set random number generator
+   std::normal_distribution<double> normal_dist = \
+   std::normal_distribution<double>(0.0, 1.0); // distribution for random walk
    std::uniform_real_distribution<double> uniform_dist = \
-   std::uniform_real_distribution<double>(-1, 1); // set distribution
+   std::uniform_real_distribution<double>(0.0, 1.0); // set distribution for random number
 
    /// @brief find the distance of two guess
    /// @param x 
@@ -115,6 +117,17 @@ class HW3
    /// @see fourier class
    void set_init_guess(std::vector<std::vector<double>> init_c);
 
+   /// @brief set initial guess
+   /// @param num_f number of sine and consine function to use
+   /// @param init_c initial coefficients to weight sum of
+   /// sine and cosine function
+   /// @see fourier class
+   void set_init_guess(int num_f, 
+   std::vector<std::vector<double>> init_c);
+
+   /// @brief set initial guess randomly
+   void set_init_guess();
+
    /// @brief get action of initial guess
    /// @return action of initial guess
    double get_init_action();
@@ -160,15 +173,10 @@ class HW3
    /// Monte Carlo Method
    /// @param max_iter maximum number of iteration
    /// @param max_step maximum step size
-   /// @param lambda parameter to adapt step size
-   /// @param conv_prob convergence criteria:
-   /// probability that guess is minimum
-   /// @return tuple of number of accepted move, number of iteration
-   /// to achive convergence, changes in minimum guess and
-   /// derivative of action
-   std::tuple<int, int, double>
-   optimize(int max_iter, double max_step, double lambda,
-   double conv_prob);
+   /// @param lambda parameter to accept move
+   /// @return tuple of number of accepted move and acceptance ratio.
+   std::tuple<int, double>
+   optimize(int max_iter, double max_step, double lambda);
 };
 
 #endif

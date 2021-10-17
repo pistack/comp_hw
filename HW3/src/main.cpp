@@ -10,7 +10,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <cerrno>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -26,12 +25,10 @@ int main(void)
   int num_eval; // number of points to eval
   int num_fourier; // number of sine and cosine function used for guess
   int max_iter; // number of iteration
-  double conv_prob; // converge criteria 
-  // abs and rel change of minimum action
   double zeta_min; // minimum value of zeta
   double t0; // initial time
   double max_step; // step size
-  double lambda; // parameter for adapt step size
+  double lambda; // parameter to accept move
   double min_action; // minimum action value
   string filename; // file name to store results
   ofstream fout; // file output stream
@@ -52,12 +49,10 @@ int main(void)
   cin >> num_eval;
   cout << " size of step: ";
   cin >> max_step;
-  cout << " value for paramter to adapt step size: ";
+  cout << " value for paramter to accept move: ";
   cin >> lambda;
-  cout << " Maximum number of iteration: ";
+  cout << " Number of iteration: ";
   cin >> max_iter;
-  cout << " Converge criteria: probability: ";
-  cin >> conv_prob;
   cout << " file name to store result: ";
   cin >> filename;
   cout << " Now starts calculation" << endl;
@@ -73,21 +68,13 @@ int main(void)
   period, [](double t, vector<double> x, vector<double> dx)
   {return 0.5*(pow(dx[0],2.0)+pow(x[0]*dx[1], 2.0))+1/abs(x[0]);});
 
-  // initial guess
-  // 2 of dimension of path
-  // 2*num_fourier for the number of terms
-  vector<vector<double>> c(2, vector<double>(2*num_fourier, 0));
-  c[0][0] = 0.5; c[0][1] = -0.5; c[1][0] = 0.5; c[1][1] = -0.5;
-
-  kepler.set_init_guess(c);
+  kepler.set_init_guess();
   // variable to get optimization state
   int num_move; // number of actual moves
-  int num_conv; // number of iteration to converge
-  double opt_prob; // probability that guess is minimum
+  double accept_ratio; // acceptance ratio
 
-  tie(num_move, num_conv, opt_prob) = \
-  kepler.optimize(max_iter, max_step, 
-  lambda, conv_prob);
+  tie(num_move, accept_ratio) = \
+  kepler.optimize(max_iter, max_step, lambda);
 
   // Now fill time
   vector<double> t(num_eval, 0);
@@ -107,15 +94,11 @@ int main(void)
 
   cout << " Calcuation is finished" << endl;
   cout << "======================result==============================" << endl;
-  if(errno == ERANGE)
-  cout << " Iteration does not meet converge ceriteria!" << endl;
-  else
-  cout << " Convergence criteria meets at " << num_conv << " iterations!" << endl;
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(8); // print 8 significant digits
   cout << " Minimum action is " << min_action << endl;
   cout << " Number of Actual move is " << num_move << endl;
-  cout << " Probability that guess is minimum: " << opt_prob << endl;
+  cout << " Acceptance ratio: " << accept_ratio << endl;
   // store results to file
   fout.open(filename);
   fout << '#' << 't' << '\t' << "zeta" << '\t' << "theta" << endl;

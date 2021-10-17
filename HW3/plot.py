@@ -22,7 +22,7 @@ ref = np.genfromtxt('zeta_ref.txt')
 
 
 plt.figure(1)
-plt.plot(r[:, 1]*np.cos(r[:, 2]), r[:, 1]*np.sin(r[:, 2]), marker='o', label='HW3')
+plt.plot(r[:, 1]*np.cos(r[:, 2]), r[:, 1]*np.sin(r[:, 2]), label='HW3')
 plt.plot(ref[:, 1]*np.cos(ref[:, 2]), ref[:, 1]*np.sin(ref[:, 2]), label='ref')
 plt.grid(True)
 plt.xlabel(r'$x$')

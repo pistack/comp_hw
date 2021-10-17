@@ -43,7 +43,7 @@ HW3::move(std::vector<std::vector<double>> guess, double max_step)
   {
     for(int j=0; j<dim_2; j++)
     {
-      moved_guess[i][j] = guess[i][j] + max_step*uniform_dist(gen);
+      moved_guess[i][j] = guess[i][j] + max_step*normal_dist(gen);
       // bound guess to [-1, 1]
       if(moved_guess[i][j]>1)
       moved_guess[i][j] = 1;

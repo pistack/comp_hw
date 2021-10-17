@@ -81,7 +81,7 @@ double action::eval_helper(double left, double mid, double right,
 double fleft, double fmid, double fright, 
 double integral, int depth)
 {
-  double tol = 15*atol + rtol*abs(integral);
+  double tol = 15*(atol + rtol*abs(integral));
   if(depth > MAXDEPTH)
   {
     errno = ERANGE;
