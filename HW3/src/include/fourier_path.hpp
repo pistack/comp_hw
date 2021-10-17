@@ -83,6 +83,14 @@ class fourier_path
 	/// @return tuple of initial and final time of path
 	std::tuple<double, double> get_endtimes();
 
+	/// @brief get adder
+	/// @return adder
+	double get_adder();
+
+	/// @brief get scaler
+	/// @return scaler
+	double get_scaler();
+
 	/// @brief evaluate the path
 	/// @param t points to evaluate the path
 	/// @return the path evaluated at t

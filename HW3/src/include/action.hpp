@@ -21,11 +21,11 @@ class action
 	private:
 	const double MAXDEPTH = 10; // maximum depth of recurrsion
 	double atol, rtol; // abs and relative tol
-	std::vector<fourier_path> path_action; // path
-	// lagranian of action
 	double (*lagranian)(double, std::vector<double>,
 	std::vector<double>);
-	bool vaildity; // vaildity of path
+	std::vector<fourier_path> path_action; // path
+	// lagranian of action
+	bool vaildity=false; // vaildity of path
 
 	/// @brief checks the vaildity of path
 	void check_vaild();
@@ -56,6 +56,25 @@ class action
 	/// @brief initialize action class
 	/// @param abs_tol absoulte tolerance
 	/// @param rel_tol relative tolerance
+	/// @param lag lagranian of action
+	/// - first param:  t
+	/// - type of first param: double 
+	/// - second param: double path at t
+	/// - type of second param: vector<double>
+	/// - third param: derivative of path at t
+	/// - type of third param: vector<double>
+	/// - type of return value: double
+
+	action(double abs_tol, double rel_tol, 
+	double (*lag)(double, std::vector<double>, 
+	std::vector<double>))
+	: atol(abs_tol), rtol(rel_tol), \
+	lagranian(lag)
+	{}
+
+	/// @brief initialize action class
+	/// @param abs_tol absoulte tolerance
+	/// @param rel_tol relative tolerance
 	/// @param path path
 	/// @param lag lagranian of action
 	/// - first param:  t
@@ -65,18 +84,19 @@ class action
 	/// - third param: derivative of path at t
 	/// - type of third param: vector<double>
 	/// - type of return value: double
+
 	action(double abs_tol, double rel_tol,
 	std::vector<fourier_path> path, 
 	double (*lag)(double, std::vector<double>, 
 	std::vector<double>))
 	: atol(abs_tol), rtol(rel_tol), \
-	path_action(path), lagranian(lag)
+	lagranian(lag), path_action(path) 
 	{check_vaild();}
 
 	/// @brief copy constructer of action class
 	action(const action &copy)
 	: atol(copy.atol), rtol(copy.rtol), \
-	path_action(copy.path_action), lagranian(copy.lagranian), \
+	lagranian(copy.lagranian), path_action(copy.path_action), \
 	vaildity(copy.vaildity)
 	{}
 

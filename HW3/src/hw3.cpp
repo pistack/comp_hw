@@ -11,149 +11,233 @@
 #include <algorithm>
 #include <cmath>
 #include <cerrno>
+#include <numeric>
+#include "fourier.hpp"
 #include "fourier_path.hpp"
 #include "action.hpp"
 #include "hw3.hpp"
 
 using namespace std;
 
-tuple<int, double, vector<double>, vector<double>, vector<double>>
-HW3(double t0, double zeta_min, double atol, double rtol, 
-int num_fourier, int num_eval,
-int max_iter, double conv_atol, double conv_rtol,
-double step, double lambda,
-mt19937 &gen, uniform_real_distribution<double> &dist)
+double HW3::dist(std::vector<std::vector<double>> x,
+std::vector<std::vector<double>> y)
 {
-  // number of accepted move
+  int dim_1 = x.size();
+  int dim_2 = x[0].size();
+  vector<double> z(dim_2, 0);
+  vector<double> norms(dim_1, 0);
+
+  for(int i=0; i<dim_1; i++)
+  {
+    for(int j=0; j<dim_2; j++)
+    z[j] = x[i][j] - y[i][j];
+    norms[i] = sqrt(inner_product(z.begin(), z.end(), 
+    z.begin(), 0.0));
+  }
+  return sqrt(inner_product(norms.begin(), norms.end(), 
+  norms.begin(), 0.0));
+}
+
+std::vector<std::vector<double>>
+HW3::move(std::vector<std::vector<double>> guess, double max_step)
+{
+  int dim_1 = guess.size();
+  int dim_2 = guess[0].size();
+  vector<vector<double>> moved_guess(dim_1,
+  vector<double>(dim_2, 0));
+
+  for(int i=0; i<dim_1; i++)
+  {
+    for(int j=0; j<dim_2; j++)
+    {
+      moved_guess[i][j] = guess[i][j] + max_step*uniform_dist(gen);
+      // bound guess to [-1, 1]
+      if(moved_guess[i][j]>1)
+      moved_guess[i][j] = 1;
+      if(moved_guess[i][j]<-1)
+      moved_guess[i][j] = -1;
+    }
+  }
+  return moved_guess;
+}
+
+HW3 & HW3::operator=(const HW3 &copy)
+{
+  t0 = copy.t0; t1 = copy.t1; p0 = copy.p0; p1 = copy.p1;
+  num_fourier = copy.num_fourier; hw3_period = copy.hw3_period;
+  hw3_action = copy.hw3_action; init_guess = copy.init_guess;
+  init_path = copy.init_path; init_action = copy.init_action;
+  min_guess = copy.min_guess; min_path = copy.min_path;
+  min_action = copy.min_action;
+  return *this;
+}
+
+void HW3::set_init_guess(std::vector<vector<double>> init_c)
+{
+  int dim_1 = init_c.size();
+  vector<fourier_path> paths(dim_1, fourier_path());
+  for(int i=0; i<dim_1; i++)
+  {
+    fourier tmp_fourier(num_fourier, hw3_period, init_c[i]);
+    paths[i] = fourier_path(t0, t1, p0[i], p1[i], tmp_fourier);
+  }
+  init_guess = init_c;
+  init_path = paths;
+  hw3_action.update(init_path);
+  init_action = hw3_action.eval();
+  min_guess = init_guess;
+  min_path = init_path;
+  min_action = init_action;
+}
+
+double HW3::get_init_action()
+{
+  return init_action;
+}
+
+tuple<vector<double>, vector<double>, vector<vector<double>>>
+HW3::get_init_coeff()
+{
+  int dim_1 = init_path.size();
+  vector<double> init_adder(dim_1, 0);
+  vector<double> init_scaler(dim_1, 0);
+  for(int i=0; i<dim_1; i++)
+  {
+    init_adder[i] = init_path[i].get_adder();
+    init_scaler[i] = init_path[i].get_scaler();
+  }
+  return make_tuple(init_adder, init_scaler, init_guess);
+}
+
+vector<double> HW3::init_eval(double t)
+{
+  int dim_1 = init_path.size();
+  vector<double> result(dim_1, 0);
+  for(int i=0; i<dim_1; i++)
+  result[i] = init_path[i].eval(t);
+  return result;
+}
+
+vector<vector<double>> HW3::init_eval(vector<double> t)
+{
+  int dim_1 = init_path.size();
+  int dim_2 = t.size();
+  vector<vector<double>> result(dim_1, vector<double>(dim_2, 0));
+  for(int i=0; i<dim_1; i++)
+  result[i] = init_path[i].eval(t);
+  return result;
+}
+
+double HW3::get_min_action()
+{
+  return min_action;
+}
+
+tuple<vector<double>, vector<double>, vector<vector<double>>>
+HW3::get_min_coeff()
+{
+  int dim_1 = min_path.size();
+  vector<double> min_adder(dim_1, 0);
+  vector<double> min_scaler(dim_1, 0);
+  for(int i=0; i<dim_1; i++)
+  {
+    min_adder[i] = min_path[i].get_adder();
+    min_scaler[i] = min_path[i].get_scaler();
+  }
+  return make_tuple(min_adder, min_scaler, min_guess);
+}
+
+vector<double> HW3::min_eval(double t)
+{
+  int dim_1 = min_path.size();
+  vector<double> result(dim_1, 0);
+  for(int i=0; i<dim_1; i++)
+  result[i] = min_path[i].eval(t);
+  return result;
+}
+
+vector<vector<double>> HW3::min_eval(vector<double> t)
+{
+  int dim_1 = min_path.size();
+  int dim_2 = t.size();
+  vector<vector<double>> result(dim_1, vector<double>(dim_2, 0));
+  for(int i=0; i<dim_1; i++)
+  result[i] = min_path[i].eval(t);
+  return result;
+}
+
+std::tuple<int, int, double>
+HW3::optimize(int max_iter, double max_step, double lambda,
+double conv_prob)
+{
+  // number_of_accepted move
   int n_accept = 0;
+  // probability that guess is minimum
+  double prob = 0;
 
-  // number of terms (one fourier = one sine + one cosine => 2 terms)
-  int size = 2*num_fourier;
-
-  // check converge
+  // check_converge
+  int n_conv = 0;
   bool is_converged = false;
 
-  // inital condition
-  double zeta_max = zeta_min/(2*zeta_min-1);
-  double a = 0.5*(zeta_min+zeta_max);
-  double tmax = pi*pow(a,1.5);
+  // variable used to adapt step size
 
-  // period of fourier function
-  double period = 2*tmax;
+  double adapt_step = max_step;
 
-  // variable used for adaptation of step size
-  double delta_action;
-  double adapt_step = step;
+  // variable store temporal variable
+  int dim_1 = init_path.size();
+  vector<vector<double>> tmp_guess = init_guess;
+  vector<fourier_path> tmp_path = init_path;
 
-  // variable used to store minimal action
-  double min_action;
-  double min_action_past;
+  for(int i=0; i<max_iter; i++)
+  {
+    double tmp_action;
+    double delta_action;
 
-  // guess minimial
-  vector<double> min_c_zeta(size, 0);
-  vector<double> min_c_theta(size, 0);
-
-  // store path
-  vector<double> path_zeta_t(num_eval, 0);
-  vector<double> path_theta_t(num_eval, 0);
-
-  // initial guess
-  min_c_zeta[0] = 0.5;
-  min_c_zeta[1] = -0.5;
-  min_c_theta[0] = 0.5;
-  min_c_theta[1] = -0.5;
-
-  // init fourier function
-  fourier fourier_zeta(num_fourier, period, min_c_zeta);
-  fourier fourier_theta(num_fourier, period, min_c_theta);
-
-  // init path
-  vector<fourier_path> path;
-  path.push_back(fourier_path(0.0, tmax, zeta_min, zeta_max, fourier_zeta));
-  path.push_back(fourier_path(0.0, tmax, 0.0, pi, fourier_theta));
-
-  // init action
-  action kepler_action(atol, rtol, path,
-  [](double t, vector<double> p, vector<double> dp)
-  {return 0.5*(pow(dp[0], 2.0)+pow(p[0]*dp[1], 2.0))+1/abs(p[0]);});
-
-  min_action = kepler_action.eval();
-  min_action_past = min_action;
-
-  for(int i = 0; i < max_iter; i++)
+    n_conv=i+1;
+    // sampling vaild path
+    do
     {
-      // init temporal variable
-      double tmp_action;
-
-      // guess temporal
-      vector<double> tmp_c_zeta(size, 0);
-      vector<double> tmp_c_theta(size, 0);
-
-      do
+      tmp_guess = move(min_guess, adapt_step);
+      for(int i=0; i<dim_1; i++)
       {
-        tmp_c_zeta = move_step(min_c_zeta, step, gen, dist);
-        tmp_c_theta = move_step(min_c_theta, step, gen, dist);
-        // update fourier coefficients
-        fourier_zeta.update(tmp_c_zeta);
-        fourier_theta.update(tmp_c_theta);
-        path[0].update(fourier_zeta);
-        path[1].update(fourier_theta);
-        kepler_action.update(path);
+        fourier tmp_fourier(num_fourier, hw3_period,
+        tmp_guess[i]);
+        tmp_path[i].update(tmp_fourier);
       }
-      while(!kepler_action.is_vaild());
-
-      tmp_action = kepler_action.eval();
-
-      delta_action = tmp_action - min_action;
-      
-      // adapt step size
-      if(adapt_step > exp(-lambda*delta_action*adapt_step))
-      adapt_step = exp(-lambda*delta_action*adapt_step);
-
-      // update action and guess
-      if(delta_action < 0)
-      {
-        min_action = tmp_action;
-        min_c_zeta = tmp_c_zeta;
-        min_c_theta = tmp_c_theta;
-        n_accept++; // movement is accepted when action decreases
-        if(abs(min_action-min_action_past)<
-        (conv_atol+conv_rtol*min_action)*adapt_step)
-        {
-          is_converged = true;
-          break;
-        }
-        min_action_past = min_action;
-        adapt_step = step;
-      }
+      hw3_action.update(tmp_path);
     }
+    while(!hw3_action.is_vaild());
 
-    if(! is_converged)
-    errno = ERANGE;
+    // evaluate action
+    tmp_action = hw3_action.eval();
 
-    // update fourier coeffcients to minimum one
-    fourier_zeta.update(min_c_zeta);
-    fourier_theta.update(min_c_theta);
-    
-    // update fourier function to minimum one
-    path[0].update(fourier_zeta);
-    path[1].update(fourier_theta);
-    
-    // minimum action for debugging
-    // kepler_action.update(path_zeta, path_theta);
-    // min_action = kepler_action.eval();
+    // adapt step
+    delta_action = tmp_action - min_action;
+    if(adapt_step > exp(-lambda*delta_action*adapt_step))
+    adapt_step = exp(-lambda*delta_action*adapt_step);
 
-    // initialize time
-    vector<double> t(num_eval, 0);
-    // fill time
-    for(int i=1; i<num_eval; i++)
-    t[i] = tmax*double(i)/double(num_eval-1);
-    path_zeta_t = path[0].eval(t);
-    path_theta_t = path[1].eval(t);
-
-    transform(t.begin(), t.end(), t.begin(),
-    [t0](double &x){return x += t0;});
-
-  return make_tuple(n_accept, min_action, t,
-  path_zeta_t, path_theta_t);
+    // update min_action, min_guess, min_path
+    // if action decreases
+    // (i.e. move is accepted)
+    if(delta_action < 0)
+    {
+      n_accept++;
+      // now update
+      min_action = tmp_action;
+      min_guess = tmp_guess;
+      min_path = tmp_path;
+      // reset adapt step
+      adapt_step = max_step;
+    }
+    // check convergence
+    prob = double(n_conv-n_accept-1)/double(n_conv);
+    if(prob>conv_prob)
+      {
+        is_converged = true;
+        break;
+      }
+  }
+  if(!is_converged)
+  errno=ERANGE;   
+  return make_tuple(n_accept, n_conv, prob);
 }

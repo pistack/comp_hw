@@ -24,7 +24,6 @@ action & action::operator=(const action &copy)
 void action::check_vaild()
 {
   if(!path_action[0].is_vaild())
-  vaildity = false;
   return;
 
   int n = path_action.size();
@@ -34,7 +33,6 @@ void action::check_vaild()
     if(! path_action[i].is_vaild() ||
     (path_action[i-1].get_endtimes() !=
     path_action[i].get_endtimes()))
-    vaildity = false;
     return;
   }
   vaildity = true;

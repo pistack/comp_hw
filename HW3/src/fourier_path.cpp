@@ -6,7 +6,6 @@
  * @date 2021. 10. 12.
  */
 
-
 #include <algorithm>
 #include <cmath>
 #include <vector>
@@ -65,6 +64,16 @@ void fourier_path::update(fourier fourier)
 bool fourier_path::is_vaild()
 {
   return p_vaild;
+}
+
+double fourier_path::get_adder()
+{
+  return add;
+}
+
+double fourier_path::get_scaler()
+{
+  return scale;
 }
 
 tuple<double, double> fourier_path::get_endtimes()

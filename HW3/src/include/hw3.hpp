@@ -14,50 +14,161 @@
 #include <tuple>
 #include <vector>
 #include <random>
+#include "fourier_path.hpp"
+#include "action.hpp"
 
-const double pi = 3.141592653589793; ///<define pi
+/// @brief class for HW3
+/// solve Kepler problem via Markov Chain
+/// Monte Carlo Method
+/// It uses mt19937 random number generator and
+/// uniform distribution form -1 to 1 to
+/// sample path.
+/// @ingroup hw3
 
-/*!
- * @brief randomly move initial guess by at most step
- * @param init_guess initial guess
- * @param step step size
- * @param gen random number generator (assume mt19937)
- * @param dist distribution
- * @return moved initial guess by at most step
- * @ingroup hw3
- */
+class HW3
+{
+   private:
 
-std::vector<double>
-move_step(std::vector<double> init_guess, double step,
-	  std::mt19937 &gen, std::uniform_real_distribution<double> &dist);
+   double t0, t1; // initial and final time
+   std::vector<double> p0, p1; // initial and final value of path
 
-/*!
- * @brief HW3: Solve Kepler problem via Markov Chain Monte Carlo Method
- * @param t0 initial time
- * @param zeta_min minimum value of zeta, 
-    for constraint motion 0.5 < zeta_min < 1
- * @param atol absolute tolerance of action
- * @param rtol relative tolerance of action
- * @param num_fourier number of sine and cosine functions to guess
- * @param num_eval number of points to evaluate minimum path
- * @param max_iter maximum number of iteration
- * @param conv_atol convergence criterion: changes of abs value of minimum action
- * @param conv_rtol convergence criterion: changes of rel value of minimum action
- * @param step step size
- * @param lambda paramter to adapt step size
- * @param gen random number generator (assume mt19937)
- * @param dist distribution
- * @return tuple of the number of actural moves, minimum action, 
- *  time and path(zeta, theta) evaluated at time
- * @ingroup hw3
- */
+   // setup for fourier function
+   int num_fourier;
+   double hw3_period;
 
-std::tuple<int, double, 
-std::vector<double>, std::vector<double>, std::vector<double>>
-HW3(double t0, double zeta_min, double atol, double rtol, 
-int num_fourier, int num_eval,
-int max_iter, double conv_atol, double conv_rtol, 
-double step, double lambda,
-std::mt19937 &gen, std::uniform_real_distribution<double> &dist);
+   // action
+   action hw3_action;
+
+   // initial guess
+   std::vector<std::vector<double>> init_guess;
+   std::vector<fourier_path> init_path;
+   double init_action;
+
+   // result
+   std::vector<std::vector<double>> min_guess;
+   std::vector<fourier_path> min_path;
+   double min_action;
+
+   std::random_device rd;
+   std::mt19937 gen = std::mt19937(rd()); // set random number generator
+   std::uniform_real_distribution<double> uniform_dist = \
+   std::uniform_real_distribution<double>(-1, 1); // set distribution
+
+   /// @brief find the distance of two guess
+   /// @param x 
+   /// @param y
+   /// @return the distance of two guess
+   double dist(std::vector<std::vector<double>> x,
+   std::vector<std::vector<double>> y);
+
+   /// @brief randomly
+   /// move guess by at most max_step
+   /// @param guess guess to move 
+   /// @param max_step maximum step size to move guess
+   /// @return moved guess by at most max_step
+   std::vector<std::vector<double>>
+   move(std::vector<std::vector<double>> guess,
+   double max_step);
+
+   public:
+
+   /// @brief initialize HW3 class
+   HW3(){};
+
+   /// @brief initialize HW3 class
+   /// @param t_0 initial time
+   /// @param t_1 finial time
+   /// @param p_0 value of path at initial time
+   /// @param p_1 value of path at finial time
+   /// @param abs_tol absolute tolerance for action integral
+   /// @param rel_tol relative tolerance for action integral
+   /// @param num_f number of sine and cosine function to use
+   /// @param period period of fourier function
+   /// @param lag lagranian of action
+   /// @see fourier class and action class
+   HW3(double t_0, double t_1, 
+   std::vector<double> p_0, std::vector<double> p_1,
+   double abs_tol, double rel_tol, int num_f, double period,
+   double (*lag)(double, std::vector<double>, 
+   std::vector<double>))
+   : t0(t_0), t1(t_1), p0(p_0), p1(p_1), \
+   num_fourier(num_f), hw3_period(period)
+   {
+      hw3_action = action(abs_tol, rel_tol, lag);
+   }
+
+   /// @brief copy constructer of HW3 class
+   HW3(const HW3 &copy)
+   : t0(copy.t0), t1(copy.t1), p0(copy.p0), p1(copy.p1), \
+   num_fourier(copy.num_fourier), hw3_period(copy.hw3_period), \
+   hw3_action(copy.hw3_action), init_guess(copy.init_guess), \
+   init_path(copy.init_path), init_action(copy.init_action), \
+   min_guess(copy.min_guess), min_path(copy.min_path), \
+   min_action(copy.min_action)
+   {}
+
+   HW3 & operator=(const HW3 &copy);
+
+   /// @brief set initial guess
+   /// @param init_c initial coefficients to weight sum of
+   /// sine and cosine function
+   /// @see fourier class
+   void set_init_guess(std::vector<std::vector<double>> init_c);
+
+   /// @brief get action of initial guess
+   /// @return action of initial guess
+   double get_init_action();
+
+   /// @brief get coefficients of initial guess
+   /// @return tuple of adder, scaler and fourier coefficient
+   std::tuple<std::vector<double>, std::vector<double>, 
+   std::vector<std::vector<double>>>
+   get_init_coeff();
+
+   /// @brief evaluate initial path at given t
+   /// @param t time to evaluate initial path
+   /// @return initial path evaluated at t
+   std::vector<double> init_eval(double t);
+
+   /// @brief evaluate initial path at given t
+   /// @param t time to evaluate initial path
+   /// @return initial path evaluated at t
+   std::vector<std::vector<double>> 
+   init_eval(std::vector<double> t);
+
+   /// @brief get action of minimum guess
+   /// @return action of minimum guess
+   double get_min_action();
+
+   /// @brief get coefficients of minimum guess
+   /// @return tuple of adder, scaler and fourier coefficient  
+   std::tuple<std::vector<double>, std::vector<double>, 
+   std::vector<std::vector<double>>>
+   get_min_coeff();
+
+   /// @brief evaluate minimum path at given t
+   /// @param t time to evaluate minimum path
+   /// @return minimum path evaluated at t
+   std::vector<double> min_eval(double t);
+
+   /// @brief evaluate minium path at given t
+   /// @param t time to evaluate minimum path
+   /// @return minimum path evaluated at t
+   std::vector<std::vector<double>> min_eval(std::vector<double> t);
+
+   /// @brief optimize path using Markov Chain
+   /// Monte Carlo Method
+   /// @param max_iter maximum number of iteration
+   /// @param max_step maximum step size
+   /// @param lambda parameter to adapt step size
+   /// @param conv_prob convergence criteria:
+   /// probability that guess is minimum
+   /// @return tuple of number of accepted move, number of iteration
+   /// to achive convergence, changes in minimum guess and
+   /// derivative of action
+   std::tuple<int, int, double>
+   optimize(int max_iter, double max_step, double lambda,
+   double conv_prob);
+};
 
 #endif
