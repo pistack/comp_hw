@@ -45,26 +45,6 @@ void HW3::set_init_guess(std::vector<vector<double>> init_c)
   min_action = init_action;
 }
 
-void HW3::set_init_guess(int num_f,
-std::vector<vector<double>> init_c)
-{
-  int dim_1 = init_c.size();
-  vector<fourier_path> paths(dim_1, fourier_path());
-  num_fourier = num_f;
-  for(int i=0; i<dim_1; i++)
-  {
-    fourier tmp_fourier(num_fourier, hw3_period, init_c[i]);
-    paths[i] = fourier_path(t0, t1, p0[i], p1[i], tmp_fourier);
-  }
-  init_guess = init_c;
-  init_path = paths;
-  hw3_action.update(init_path);
-  init_action = hw3_action.eval();
-  min_guess = init_guess;
-  min_path = init_path;
-  min_action = init_action;
-}
-
 void HW3::set_init_guess()
 {
   int dim_1 = p0.size();

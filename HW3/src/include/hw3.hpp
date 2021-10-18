@@ -117,14 +117,6 @@ class HW3
    /// @see fourier class
    void set_init_guess(std::vector<std::vector<double>> init_c);
 
-   /// @brief set initial guess
-   /// @param num_f number of sine and consine function to use
-   /// @param init_c initial coefficients to weight sum of
-   /// sine and cosine function
-   /// @see fourier class
-   void set_init_guess(int num_f, 
-   std::vector<std::vector<double>> init_c);
-
    /// @brief set initial guess randomly
    void set_init_guess();
 

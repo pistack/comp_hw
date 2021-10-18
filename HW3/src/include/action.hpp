@@ -44,10 +44,11 @@ class action
 	/// @param fmid value of lagrangian at mid pooint
 	/// @param fright value of lagrangian at right end point
 	/// @param integral integrated value
+	/// @param tol tolerance
 	/// @param depth recurrsion depth
 	double eval_helper(double left, double mid, double right,
 	double fleft, double fmid, double fright, 
-	double integral, int depth);
+	double integral, double tol, int depth);
 
 	public:
     /// @brief initialize action class

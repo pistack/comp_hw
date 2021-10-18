@@ -31,6 +31,7 @@ int main(void)
   double lambda; // parameter to accept move
   double min_action; // minimum action value
   string filename; // file name to store results
+  string filename_coeff; // file name to store coeffcients
   ofstream fout; // file output stream
 
   cout << "==========================================================" << endl;
@@ -55,6 +56,8 @@ int main(void)
   cin >> max_iter;
   cout << " file name to store result: ";
   cin >> filename;
+  cout << " file name to store coefficient: ";
+  cin >> filename_coeff;
   cout << " Now starts calculation" << endl;
 
   // initial condition
@@ -66,9 +69,36 @@ int main(void)
   vector<double> p1 = {zeta_max, pi};
   HW3 kepler(0.0, tmax, p0, p1, atol, rtol, num_fourier,
   period, [](double t, vector<double> x, vector<double> dx)
-  {return 0.5*(pow(dx[0],2.0)+pow(x[0]*dx[1], 2.0))+1/abs(x[0]);});
+  { if(abs(x[0])>1e-8)
+    return 0.5*(pow(dx[0],2.0)+pow(x[0]*dx[1], 2.0))+1/abs(x[0]);
+    else
+    return 0.0;});
 
   kepler.set_init_guess();
+  if(num_fourier > 1)
+  {
+    vector<vector<double>> guess_coeff(2, vector<double>(2*num_fourier, 0));
+    guess_coeff[0][0] = 0.71244995;
+    guess_coeff[0][1] = 0.52988264;
+    guess_coeff[1][0] = 0.068339101;
+    guess_coeff[1][1] = -0.70490328;
+    kepler.set_init_guess(guess_coeff);
+  }
+
+  if(num_fourier > 2)
+  {
+    vector<vector<double>> guess_coeff(2, vector<double>(2*num_fourier, 0));
+    guess_coeff[0][0] = 0.30764449;
+    guess_coeff[0][1] = 0.41525929;
+    guess_coeff[0][2] = 0.014532292;
+    guess_coeff[0][3] = 0.19074815;
+    guess_coeff[1][0] = 0.12219574;
+    guess_coeff[1][1] = -0.92994568;
+    guess_coeff[1][2] = 0.21226446;
+    guess_coeff[1][3] = -0.011647106;
+    kepler.set_init_guess(guess_coeff);
+  } 
+
   // variable to get optimization state
   int num_move; // number of actual moves
   double accept_ratio; // acceptance ratio
@@ -87,6 +117,14 @@ int main(void)
   vector<vector<double>> result(2, vector<double>(num_eval, 0));
   result = kepler.min_eval(t);
   min_action = kepler.get_min_action();
+
+  // store coefficients
+  vector<double> adder;
+  vector<double> scaler;
+  vector<vector<double>> coeff;
+
+  tie(adder, scaler, coeff) = \
+  kepler.get_min_coeff();
 
   // move t by t0
   transform(t.begin(), t.end(), t.begin(),
@@ -107,7 +145,18 @@ int main(void)
   for(int i=0; i < num_eval; i++)
     fout << t[i] << '\t' << result[0][i] << '\t' << result[1][i] << endl;
   fout.close();
+  fout.open(filename_coeff);
+  fout.unsetf(ios::floatfield); // initialize floatfield
+  fout.precision(8); // print 8 significant digits
+  fout << '#' << "adder" << '\t' << "scaler" << endl;
+  for(int i=0; i<adder.size(); i++)
+  fout << adder[i] << '\t' << scaler[i] << endl;
+  fout << '#' << "zeta" << '\t' << "theta" << endl;
+  for(int i=0; i<coeff[0].size(); i++)
+  fout << coeff[0][i] << '\t' << coeff[1][i] << endl;
+  fout.close();
   cout << " Save result to " << filename << endl;
+  cout << " Save coeffcients to " << filename_coeff << endl;
   cout << " Teriminates program, good bye :) " << endl;
   cout << "==========================================================" << endl;
 

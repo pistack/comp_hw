@@ -79,15 +79,15 @@ vector<double> action::eval_lagranian(vector<double> t)
 
 double action::eval_helper(double left, double mid, double right, 
 double fleft, double fmid, double fright, 
-double integral, int depth)
+double integral, double tol, int depth)
 {
-  double tol = 15*(atol + rtol*abs(integral));
+  double eps = 15*(tol + rtol*abs(integral));
   if(depth > MAXDEPTH)
   {
     errno = ERANGE;
     return integral;
   }
-  if(tol == tol/2 || left == mid)
+  if(eps == eps/2 || left == mid)
   {
     errno = EDOM;
     return integral;
@@ -101,12 +101,12 @@ double integral, int depth)
   double integral_l = stepsize_l/3.0*(fleft+4.0*flmid+fmid);
   double integral_r = stepsize_r/3.0*(fright+4.0*frmid+fmid);
   double delta = integral_l + integral_r - integral;
-  if(abs(delta) > tol || depth==0)
+  if(abs(delta) > eps || depth==0)
   {
     integral_l = eval_helper(left, lmid, mid,
-    fleft, flmid, fmid, integral_l, depth+1);
+    fleft, flmid, fmid, integral_l, tol/2, depth+1);
     integral_r = eval_helper(mid, rmid, right,
-    fmid, frmid, fright, integral_r, depth+1);
+    fmid, frmid, fright, integral_r, tol/2, depth+1);
     return integral_l + integral_r;
   }
   else
@@ -130,6 +130,6 @@ double action::eval()
   double integral = stepsize/3.0*(fleft+4.0*fmid+fright);
 
   return eval_helper(t_0, tmid, t_1, fleft, fmid, fright,
-  integral, 0);
+  integral, atol, 0);
 }
 
