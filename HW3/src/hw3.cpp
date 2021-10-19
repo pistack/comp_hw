@@ -1,10 +1,11 @@
 /*!
  * @file hw3.cpp
  * @brief code for homework3 of Computer1 class in Yonsei University
- *        Minimize the action by Markov Chain Monte Carlo Method 
- *        to solve Kepler problem
+ * Minimize the action by Monte Carlo Metropolis
+ * method described in 
+ * [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
  * @author pistack (Junho Lee)
- * @date 2021. 10. 12.
+ * @date 2021. 10. 19.
  * @ingroup hw3
  */
 

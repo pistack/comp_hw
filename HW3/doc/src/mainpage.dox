@@ -1,7 +1,9 @@
 ////////////////////////////////////////////////////////////////////
 /*!
  * @mainpage Computer Homework 3
- * Solve Kepler problem via Markov Chain Monte Carlo Method
+ * Solve Kepler problem via Solve Kepler problem via Monte Carlo Metropolis
+ * method described in 
+ * [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
  * @section req Requirements
  * To install this program, you should have
  * - C++ compiler like g++

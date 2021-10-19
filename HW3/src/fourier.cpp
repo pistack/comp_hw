@@ -3,7 +3,7 @@
  * @ingroup fourier
  * @brief evaluate sum and derivative of sine and cosine function
  * @author pistack (Junho Lee)
- * @date 2021. 10. 12.
+ * @date 2021. 10. 18.
  */
 
 #include <algorithm>

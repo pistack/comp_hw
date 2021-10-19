@@ -3,7 +3,7 @@
  * @brief Header file for homework1 of Computer1 class in Yonsei University
  * Use finite difference method to solve Kepler problem
  * @author pistack (Junho Lee)
- * @date 2021. 10. 10.
+ * @date 2021. 10. 15.
  */
 
 #ifndef HW1_H

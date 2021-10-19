@@ -5,7 +5,7 @@
  * number of gird points to evaluate, number of interation, step size and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 10. 10.
+ * @date 2021. 10. 18.
  */
 
 #include <algorithm>

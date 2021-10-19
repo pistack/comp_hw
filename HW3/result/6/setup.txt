@@ -1,8 +1,0 @@
-# step size: 0.001 lambda: 0 num_fourier: 4 num_pts: 10
-# iteration actual_move min_action
-10 5 7.03343
-100 54 6.47498
-1000 460 4.86417
-10000 1210 4.74354
-100000 1490 4.74222
-1000000 1722 4.74176
