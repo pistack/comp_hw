@@ -3,7 +3,7 @@
  * @brief code for homework2 of Computer1 class in Yonsei University
  * Use numerical integration to solve Kepler problem
  * @author pistack (Junho Lee)
- * @date 2021. 10. 10.
+ * @date 2021. 10. 16.
  */
 
 #include <algorithm>
