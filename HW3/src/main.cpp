@@ -5,7 +5,7 @@
  * number of gird points to evaluate, number of interation, step size and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 10. 18.
+ * @date 2021. 10. 22.
  */
 
 #include <algorithm>
@@ -32,6 +32,7 @@ int main(void)
   double min_action; // minimum action value
   string filename; // file name to store results
   string filename_coeff; // file name to store coeffcients
+  string filename_monitor; // file name to monitor optimization process
   ofstream fout; // file output stream
 
   cout << "==========================================================" << endl;
@@ -58,6 +59,8 @@ int main(void)
   cin >> filename;
   cout << " file name to store coefficient: ";
   cin >> filename_coeff;
+  cout << " file name to monitor optimization process: ";
+  cin >> filename_monitor;
   cout << " Now starts calculation" << endl;
 
   // initial condition
@@ -78,24 +81,24 @@ int main(void)
   if(num_fourier > 1)
   {
     vector<vector<double>> guess_coeff(2, vector<double>(2*num_fourier, 0));
-    guess_coeff[0][0] = 0.71244995;
-    guess_coeff[0][1] = 0.52988264;
-    guess_coeff[1][0] = 0.068339101;
-    guess_coeff[1][1] = -0.70490328;
+    guess_coeff[0][0] = -0.71876708;
+    guess_coeff[0][1] = -0.53458926;
+    guess_coeff[1][0] = -0.027881983;
+    guess_coeff[1][1] = 0.28787967;
     kepler.set_init_guess(guess_coeff);
   }
 
   if(num_fourier > 2)
   {
     vector<vector<double>> guess_coeff(2, vector<double>(2*num_fourier, 0));
-    guess_coeff[0][0] = 0.30764449;
-    guess_coeff[0][1] = 0.41525929;
-    guess_coeff[0][2] = 0.014532292;
-    guess_coeff[0][3] = 0.19074815;
-    guess_coeff[1][0] = 0.12219574;
-    guess_coeff[1][1] = -0.92994568;
-    guess_coeff[1][2] = 0.21226446;
-    guess_coeff[1][3] = -0.011647106;
+    guess_coeff[0][0] = -0.57920731;
+    guess_coeff[0][1] = -0.89324102;
+    guess_coeff[0][2] = -0.077075367;
+    guess_coeff[0][3] = -0.36377004;
+    guess_coeff[1][0] = -0.12627861;
+    guess_coeff[1][1] = 0.99027267;
+    guess_coeff[1][2] = -0.22496388;
+    guess_coeff[1][3] = 0.016038242;
     kepler.set_init_guess(guess_coeff);
   } 
 
@@ -104,7 +107,7 @@ int main(void)
   double accept_ratio; // acceptance ratio
 
   tie(num_move, accept_ratio) = \
-  kepler.optimize(max_iter, max_step, lambda);
+  kepler.optimize(max_iter, max_step, lambda, filename_monitor);
 
   // Now fill time
   vector<double> t(num_eval, 0);

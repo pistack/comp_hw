@@ -22,7 +22,7 @@
  * \f}
  * \f$\theta_i \f$ has \f$ O(n^{-3}) \f$ local turncation error for 
  * trapezoidal rule and additional \f$ O(n^{-3}) \f$ for the global turncation error of
- * \f$ \zeta \f$ (see \ref fdm \ref accurcay).
+ * \f$ \zeta \f$ (see \ref fdm \ref accuracy).
  * So the global turncation error of \f$ \theta \f$ can be estimated to
  * \f$ O(n^{-2}) \f$
  * @section complexity_theta Complexity

@@ -7,7 +7,7 @@
  * [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
  * to solve Kepler problem
  * @author pistack (Junho Lee)
- * @date 2021. 10. 19.
+ * @date 2021. 10. 22.
  */
 
 #ifndef HW3_H
@@ -15,6 +15,7 @@
 
 #include <tuple>
 #include <vector>
+#include <string>
 #include <random>
 #include "fourier_path.hpp"
 #include "action.hpp"
@@ -168,9 +169,11 @@ class HW3
    /// @param max_iter maximum number of iteration
    /// @param max_step maximum step size
    /// @param lambda parameter to accept move
+   /// @param monitor filename to monitor optimization process
    /// @return tuple of number of accepted move and acceptance ratio.
    std::tuple<int, double>
-   optimize(int max_iter, double max_step, double lambda);
+   optimize(int max_iter, double max_step, double lambda, 
+   std::string monitor);
 };
 
 #endif

@@ -6,9 +6,14 @@
  * @section req Requirements
  * To install this program, you should have
  * - C++ compiler like g++
- * - gnu make
+ * - gnu make or cmake
  * @section install Installation
- * Type make, then we can see hw1 executable file in bin directory
+ * - gnu make
+ *   - Type make, then we can see hw1 executable file in bin directory
+ * - cmake
+ *   1. make build directory
+ *   2. go to build directory and type cmake ..
+ *   3. Type make then we can see hw1 executable in build directory
  * @section hwoto How To Use
  * Execute hw1 then, it will interactively read
  * - inital condition

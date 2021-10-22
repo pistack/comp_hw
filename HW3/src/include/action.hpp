@@ -3,7 +3,7 @@
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
- * @date 2021. 10. 18.
+ * @date 2021. 10. 22.
  */
 
 #ifndef ACTION_H
@@ -19,7 +19,7 @@
 class action
 {
 	private:
-	const double MAXDEPTH = 10; // maximum depth of recurrsion
+	const double MAXDEPTH = 30; // maximum depth of recurrsion
 	double atol, rtol; // abs and relative tol
 	double (*lagranian)(double, std::vector<double>,
 	std::vector<double>);

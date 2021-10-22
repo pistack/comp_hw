@@ -5,11 +5,12 @@
  * method described in 
  * [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
  * @author pistack (Junho Lee)
- * @date 2021. 10. 19.
+ * @date 2021. 10. 22.
  * @ingroup hw3
  */
 
 #include <cmath>
+#include <fstream>
 #include "fourier.hpp"
 #include "fourier_path.hpp"
 #include "action.hpp"
@@ -147,7 +148,8 @@ vector<vector<double>> HW3::min_eval(vector<double> t)
 }
 
 std::tuple<int, double>
-HW3::optimize(int max_iter, double max_step, double lambda)
+HW3::optimize(int max_iter, double max_step, double lambda,
+string monitor)
 {
   // number_of_accepted move
   int n_accept = 0;
@@ -160,6 +162,13 @@ HW3::optimize(int max_iter, double max_step, double lambda)
   vector<vector<double>> accept_guess = init_guess;
   vector<vector<double>> tmp_guess = init_guess;
   vector<fourier_path> tmp_path = init_path;
+
+  // monitor optimization process
+  ofstream fout;
+  fout.open(monitor);
+  fout.unsetf(ios::floatfield);
+  fout.precision(8);
+
 
   for(int i=0; i<max_iter; i++)
   {
@@ -192,6 +201,8 @@ HW3::optimize(int max_iter, double max_step, double lambda)
       n_accept++;
       accept_action = tmp_action;
       accept_guess = tmp_guess;
+      // write accept_action to monitor
+      fout << n_accept << '\t' << accept_action << endl;
       if(accept_action < min_action)
       {
         min_action = accept_action;
@@ -201,5 +212,7 @@ HW3::optimize(int max_iter, double max_step, double lambda)
     }
     prob = double(n_accept)/double(max_iter);
   }
+  // file should be closed
+  fout.close();
   return make_tuple(n_accept, prob);
 }

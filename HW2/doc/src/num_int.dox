@@ -81,8 +81,8 @@
 /// v_{n-i} &= u_i \label{eq:sym}
 ///\f}
 /// To exploit above relations \latexonly \eqref{eq:fv}--\eqref{eq:sym} \endlatexonly
-/// and gain more accurate results, I use Simpson's Rule for unequally spaced 
-/// ordinates (https://www.jstor.org/stable/2309244).
+/// and gain more accurate results, I use [Simpson's Rule for unequally spaced 
+/// ordinates](https://www.jstor.org/stable/2309244).
 /// Let 
 /// \f{align*}{
 /// u_{i-1/2} &= \sqrt{(\zeta_{i-1}+\zeta_i)/2-\zeta_{min}} \\
