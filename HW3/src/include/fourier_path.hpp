@@ -1,6 +1,6 @@
 /*!
  * @file fourier_path.hpp
- * @ingroup fourier
+ * @ingroup libfourier
  * @brief headerfile for path approximated by fourier function
  * @author pistack (Junho Lee)
  * @date 2021. 10. 18.
@@ -8,12 +8,12 @@
 
 #ifndef FOURIER_PATH_H
 #define FOURIER_PATH_H
+
 #include <tuple>
-#include <vector>
 #include "fourier.hpp"
 
 /// @brief Class for the path approximated by fourier function
-/// @ingroup fourier
+/// @ingroup libfourier
 /// @warning If your fourier function is not vaild for 
 /// the approximation of path, eval and deriv method return
 /// always zero

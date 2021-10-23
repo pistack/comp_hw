@@ -1,9 +1,9 @@
 /*!
- * @ingroup fourier
+ * @ingroup libfourier
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
- * @date 2021. 10. 22.
+ * @date 2021. 10. 24.
  */
 
 #ifndef ACTION_H
@@ -15,7 +15,7 @@
 /// @brief class to compute action
 /// @warning If you give invaild path, then
 /// eval method will return always zero
-/// @ingroup fourier
+/// @ingroup libfourier
 class action
 {
 	private:
@@ -106,7 +106,7 @@ class action
 	/// @param path path to update
 	void update(std::vector<fourier_path> path);
 
-	/// @brief vaildity of path
+	/// @brief check vaildity of path
 	/// @return vaildity of path
 	bool is_vaild();
 

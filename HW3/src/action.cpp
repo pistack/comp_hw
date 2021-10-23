@@ -1,14 +1,13 @@
 /*!
  * @file action.cpp
- * @ingroup fourier
+ * @ingroup libfourier
  * @brief evaluates action
  * @author pistack (Junho Lee)
- * @date 2021. 10. 23.
+ * @date 2021. 10. 24.
  */
 
 #include <cmath>
 #include <cerrno>
-#include <vector>
 #include "action.hpp"
 
 using namespace std;

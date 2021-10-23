@@ -1,14 +1,13 @@
 /*!
  * @file fourier_path.cpp
- * @ingroup fourier
+ * @ingroup libfourier
  * @brief evaluate path and derivative
  * @author pistack (Junho Lee)
- * @date 2021. 10. 18.
+ * @date 2021. 10. 24.
  */
 
 #include <algorithm>
 #include <cmath>
-#include <vector>
 #include "fourier_path.hpp"
 
 using namespace std;

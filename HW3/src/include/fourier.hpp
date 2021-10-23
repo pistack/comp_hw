@@ -1,6 +1,6 @@
 /*!
  * @file fourier.hpp
- * @ingroup fourier
+ * @ingroup libfourier
  * @brief headerfile for fourier function
  * @author pistack (Junho Lee)
  * @date 2021. 10. 18.
@@ -9,11 +9,10 @@
 #ifndef FOURIER_H
 #define FOURIER_H
 
-#include <tuple>
 #include <vector>
 
 /// @brief Class for sum of the sine and cosine function
-/// @ingroup fourier
+/// @ingroup libfourier
 /// weighted by coefficients
 class fourier
 {

@@ -5,7 +5,7 @@
  * number of gird points to evaluate, number of interation, step size and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 10. 22.
+ * @date 2021. 10. 24.
  */
 
 #include <algorithm>
@@ -13,7 +13,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "hw3.hpp"
+#include "mcm.hpp"
 
 const double pi = 3.141592653589793; ///<define pi
 
@@ -70,7 +70,7 @@ int main(void)
   double period = 2*tmax;
   vector<double> p0 = {zeta_min, 0.0};
   vector<double> p1 = {zeta_max, pi};
-  HW3 kepler(0.0, tmax, p0, p1, atol, rtol, num_fourier,
+  mcm kepler(0.0, tmax, p0, p1, atol, rtol, num_fourier,
   period, [](double t, vector<double> x, vector<double> dx)
   { if(abs(x[0])>1e-8)
     return 0.5*(pow(dx[0],2.0)+pow(x[0]*dx[1], 2.0))+1/abs(x[0]);
@@ -78,6 +78,8 @@ int main(void)
     return 0.0;});
 
   kepler.set_init_guess();
+  
+  
   if(num_fourier > 1)
   {
     vector<vector<double>> guess_coeff(2, vector<double>(2*num_fourier, 0));
@@ -101,7 +103,7 @@ int main(void)
     guess_coeff[1][3] = 0.016038242;
     kepler.set_init_guess(guess_coeff);
   } 
-
+  
   // variable to get optimization state
   int num_move; // number of actual moves
   double accept_ratio; // acceptance ratio
@@ -129,6 +131,9 @@ int main(void)
   tie(adder, scaler, coeff) = \
   kepler.get_min_coeff();
 
+  int dim1 = adder.size();
+  int dim2 = coeff[0].size();
+
   // move t by t0
   transform(t.begin(), t.end(), t.begin(),
   [t0](double &x){return x += t0;});
@@ -152,10 +157,10 @@ int main(void)
   fout.unsetf(ios::floatfield); // initialize floatfield
   fout.precision(8); // print 8 significant digits
   fout << '#' << "adder" << '\t' << "scaler" << endl;
-  for(int i=0; i<adder.size(); i++)
+  for(int i=0; i<dim1; i++)
   fout << adder[i] << '\t' << scaler[i] << endl;
   fout << '#' << "zeta" << '\t' << "theta" << endl;
-  for(int i=0; i<coeff[0].size(); i++)
+  for(int i=0; i<dim2; i++)
   fout << coeff[0][i] << '\t' << coeff[1][i] << endl;
   fout.close();
   cout << " Save result to " << filename << endl;

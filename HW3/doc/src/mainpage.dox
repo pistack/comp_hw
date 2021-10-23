@@ -34,16 +34,14 @@
  * This project is released under the GNU Lesser General Public License
  * v3.0.
  *
- * @defgroup fourier libfourier
+ * @defgroup libfourier libfourier
  * @brief library to
  *  1. define fourier function
  *  2. approximate path using fourier function
  *  3. compute the action of path approximated by fourier function
  *
- * @defgroup hw3 Computer_Homework3
- * @brief Main module to solve kepler problem by Monte Carlo Metropolis
- * Method
- * 
+ * @defgroup libmcm libmcm
+ * @brief library to minimize action via Monte Carlo Metropolis Method
  */
 ///////////////////////////////////////////////////////////////////////
 

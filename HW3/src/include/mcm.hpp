@@ -1,34 +1,35 @@
 /*!
- * @file hw3.hpp
- * @ingroup hw3
- * @brief headerfile for homework3 of Computer1 class in Yonsei University
+ * @file mcm.hpp
+ * @ingroup libmcm
+ * @brief headerfile to
  * Minimize the action by Monte Carlo Metropolis
  * method described in 
  * [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
- * to solve Kepler problem
  * @author pistack (Junho Lee)
- * @date 2021. 10. 22.
+ * @date 2021. 10. 24.
  */
 
-#ifndef HW3_H
-#define HW3_H
+#ifndef MCM_H
+#define MCM_H
 
-#include <tuple>
-#include <vector>
 #include <string>
 #include <random>
 #include "fourier_path.hpp"
 #include "action.hpp"
 
-/// @brief class for HW3
-/// solve Kepler problem via Markov Chain
-/// Monte Carlo Method
-/// It uses mt19937 random number generator and
-/// uniform distribution form -1 to 1 to
-/// sample path.
+/// @brief class to
+/// Minimize the action via Monte Carlo
+/// Metropolis Method.
+/// It uses mt19937 random number generator to
+/// generates distribution.
+/// Moreover it samples path via random walk.
+/// To make random walk, it samples real number
+/// from normal distribution and move path by
+/// the sampled real number.
+/// @see \ref mcm
 /// @ingroup hw3
 
-class HW3
+class mcm
 {
    private:
 
@@ -37,10 +38,10 @@ class HW3
 
    // setup for fourier function
    int num_fourier;
-   double hw3_period;
+   double fourier_period;
 
    // action
-   action hw3_action;
+   action mcm_action;
 
    // initial guess
    std::vector<std::vector<double>> init_guess;
@@ -59,28 +60,20 @@ class HW3
    std::uniform_real_distribution<double> uniform_dist = \
    std::uniform_real_distribution<double>(0.0, 1.0); // set distribution for random number
 
-   /// @brief find the distance of two guess
-   /// @param x 
-   /// @param y
-   /// @return the distance of two guess
-   double dist(std::vector<std::vector<double>> x,
-   std::vector<std::vector<double>> y);
-
-   /// @brief randomly
-   /// move guess by at most max_step
+   /// @brief sample guess via random walk
    /// @param guess guess to move 
-   /// @param max_step maximum step size to move guess
-   /// @return moved guess by at most max_step
+   /// @param step_size step_size of random walk
+   /// @return moved guess via random walk
    std::vector<std::vector<double>>
    move(std::vector<std::vector<double>> guess,
-   double max_step);
+   double step_size);
 
    public:
 
-   /// @brief initialize HW3 class
-   HW3(){};
+   /// @brief initialize mcm class
+   mcm(){};
 
-   /// @brief initialize HW3 class
+   /// @brief initialize mcm class
    /// @param t_0 initial time
    /// @param t_1 finial time
    /// @param p_0 value of path at initial time
@@ -91,28 +84,29 @@ class HW3
    /// @param period period of fourier function
    /// @param lag lagranian of action
    /// @see fourier class and action class
-   HW3(double t_0, double t_1, 
+   mcm(double t_0, double t_1, 
    std::vector<double> p_0, std::vector<double> p_1,
    double abs_tol, double rel_tol, int num_f, double period,
    double (*lag)(double, std::vector<double>, 
    std::vector<double>))
    : t0(t_0), t1(t_1), p0(p_0), p1(p_1), \
-   num_fourier(num_f), hw3_period(period)
+   num_fourier(num_f), fourier_period(period)
    {
-      hw3_action = action(abs_tol, rel_tol, lag);
+      mcm_action = action(abs_tol, rel_tol, lag);
    }
 
    /// @brief copy constructer of HW3 class
-   HW3(const HW3 &copy)
+   mcm(const mcm &copy)
    : t0(copy.t0), t1(copy.t1), p0(copy.p0), p1(copy.p1), \
-   num_fourier(copy.num_fourier), hw3_period(copy.hw3_period), \
-   hw3_action(copy.hw3_action), init_guess(copy.init_guess), \
+   num_fourier(copy.num_fourier), \
+   fourier_period(copy.fourier_period), \
+   mcm_action(copy.mcm_action), init_guess(copy.init_guess), \
    init_path(copy.init_path), init_action(copy.init_action), \
    min_guess(copy.min_guess), min_path(copy.min_path), \
    min_action(copy.min_action)
    {}
 
-   HW3 & operator=(const HW3 &copy);
+   mcm & operator=(const mcm &copy);
 
    /// @brief set initial guess
    /// @param init_c initial coefficients to weight sum of
@@ -164,15 +158,24 @@ class HW3
    /// @return minimum path evaluated at t
    std::vector<std::vector<double>> min_eval(std::vector<double> t);
 
-   /// @brief optimize path using Markov Chain
-   /// Monte Carlo Method
-   /// @param max_iter maximum number of iteration
-   /// @param max_step maximum step size
+   /// @brief minimize the action via
+   /// Monte Carlo Metropolis method
+   /// @param num_iter number of iteration
+   /// @param step_size step size of random walk
+   /// @param lambda parameter to accept move
+   /// @return tuple of number of accepted move and acceptance ratio.
+   std::tuple<int, double>
+   optimize(int num_iter, double step_size, double lambda);
+
+   /// @brief minimize the action via
+   /// Monte Carlo Metropolis method
+   /// @param num_iter number of iteration
+   /// @param step_size step size of random walk
    /// @param lambda parameter to accept move
    /// @param monitor filename to monitor optimization process
    /// @return tuple of number of accepted move and acceptance ratio.
    std::tuple<int, double>
-   optimize(int max_iter, double max_step, double lambda, 
+   optimize(int num_iter, double step_size, double lambda, 
    std::string monitor);
 };
 

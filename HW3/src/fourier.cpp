@@ -1,14 +1,13 @@
 /*!
  * @file fourier.cpp
- * @ingroup fourier
+ * @ingroup libfourier
  * @brief evaluate sum and derivative of sine and cosine function
  * @author pistack (Junho Lee)
- * @date 2021. 10. 18.
+ * @date 2021. 10. 24.
  */
 
 #include <algorithm>
 #include <cmath>
-#include <vector>
 #include "fourier.hpp"
 
 using namespace std;
