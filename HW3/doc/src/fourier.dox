@@ -1,0 +1,29 @@
+/////////////////////////////////////////////////////////////////////////
+///
+/// @page approx_path Approximation of Path
+/// To approximate path, I use sine and cosine function as basis.
+/// \f{equation}{\label{eq:fourier}
+/// \phi(t) = \sum_{i=0}^{N_f-1} c_{2i} 
+/// \sin\left(\frac{2(i+1)\pi}{T}t\right) 
+/// + c_{2i+1} 
+/// \cos\left(\frac{2(i+1)\pi}{T}t\right)
+/// \f}
+/// , where \f$ N_f \f$ is the number of sine and cosine function to add,
+/// \f$ T \f$ is the period of the fourier function \f$ \phi(t) \f$, and
+/// \f$ c_i \f$ are coefficients.
+/// To match the boundary condition, I introduce adder \f$ a \f$ and 
+/// scaler \f$ s \f$.
+/// Then the path \f$ p(t) \f$ is approximated as following
+/// \f{equation}{\label{eq:fourier_path}
+/// p(t) \approx a + s\phi(t)
+/// \f}
+/// , where \f$ a, s \f$ are adder and scaler to match boundary condition
+/// and \f$ \phi(t) \f$ is the fourier function 
+/// \latexonly \eqref{eq:fourier} \endlatexonly.
+/// Using adder and scaler, we can confine coefficients of fourier function
+/// \f$ c_i \f$ to \f$ [-1, 1] \f$.
+/// Note that by the time translation symmetry of the Newtonian Mechanics,
+/// we can approximate the path \f$ p(t) \f$ to a periodic function with
+/// the period \f$ 2(t_f-t_0) \f$. 
+///
+////////////////////////////////////////////////////////////////////////////

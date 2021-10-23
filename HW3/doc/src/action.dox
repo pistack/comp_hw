@@ -1,0 +1,10 @@
+///////////////////////////////////////////////////////////
+/// @page action Evaluation of Action
+/// The action \f$ S \f$ is defined as following
+/// \f{equation}{\label{eq:action}
+/// S = \int_{t_0}^{t_f} L(t, x(t), x'(t)) \mathrm{d} t
+/// \f}
+///, where \f$ L(t, x(t), x'(t)) \f$ is Lagranian.
+/// To evaluate the action integral accurately, I use
+/// [Adaptive Simpson Method](https://dl.acm.org/doi/10.1145/321526.321537).
+///////////////////////////////////////////////////////////
