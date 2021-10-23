@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////
 /*!
  * @mainpage Computer Homework 3
- * Solve Kepler problem via Solve Kepler problem via Monte Carlo Metropolis
+ * Solve Kepler problem via Monte Carlo Metropolis
  * method described in 
  * [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
  * @section req Requirements
@@ -21,10 +21,10 @@
  * - tolerance for the action integral
  * - number of sine and cosine will be used to approximate the path
  * - number of points to evaluate the minimized path 
- * - initial step size
- * - parameter for adaptation of step size 
+ * - step size
+ * - parameter to accept move
  * - number of iteration
- * - output file name
+ * - output file names
  *
  * Then it computes and saves solution to file.
  * You can plot the result using usual plotting software like gnuplot
@@ -41,8 +41,8 @@
  *  3. compute the action of path approximated by fourier function
  *
  * @defgroup hw3 Computer_Homework3
- * @brief Main module to solve kepler problem by Markov Chain
- * Monte Carlo Method
+ * @brief Main module to solve kepler problem by Monte Carlo Metropolis
+ * Method
  * 
  */
 ///////////////////////////////////////////////////////////////////////

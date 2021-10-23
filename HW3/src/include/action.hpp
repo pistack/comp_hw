@@ -34,7 +34,6 @@ class action
 	/// @param t time to evaluate lagrangian
 	/// @return value of the lagranian at given t
 	double eval_lagranian(double t);
-	std::vector<double> eval_lagranian(std::vector<double> t);
 
     /// @brief helper function for action evaluation
     /// @param left left end point of interval

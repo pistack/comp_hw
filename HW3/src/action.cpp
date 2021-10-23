@@ -3,7 +3,7 @@
  * @ingroup fourier
  * @brief evaluates action
  * @author pistack (Junho Lee)
- * @date 2021. 10. 18.
+ * @date 2021. 10. 23.
  */
 
 #include <cmath>
@@ -56,25 +56,6 @@ double action::eval_lagranian(double t)
     dp[i] = path_action[i].deriv(t);
   }
   return lagranian(t, p, dp);
-}
-
-vector<double> action::eval_lagranian(vector<double> t)
-{
-  int n_t = t.size();
-  int n = path_action.size();
-  vector<double> p(n, 0); // path
-  vector<double> dp(n, 0); // derivative of path
-  vector<double> lag(n_t, 0); // lagranian
-  for(int i=0; i<n_t; i++)
-  {
-    for(int j=0; j<n; j++)
-    {
-      p[j] = path_action[j].eval(t[i]);
-      dp[j] = path_action[j].deriv(t[i]);
-    }
-    lag[i] = lagranian(t[i], p, dp);
-  }
-  return lag;
 }
 
 double action::eval_helper(double left, double mid, double right, 
