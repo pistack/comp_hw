@@ -78,29 +78,28 @@ int main(void)
     return 0.0;});
 
   kepler.set_init_guess();
-  
-  
+
   if(num_fourier > 1)
   {
     vector<vector<double>> guess_coeff(2, vector<double>(2*num_fourier, 0));
-    guess_coeff[0][0] = -0.71876708;
-    guess_coeff[0][1] = -0.53458926;
-    guess_coeff[1][0] = -0.027881983;
-    guess_coeff[1][1] = 0.28787967;
+    guess_coeff[0][0] = -0.9783287;
+    guess_coeff[0][1] = -0.72761454;
+    guess_coeff[1][0] = -0.071760075;
+    guess_coeff[1][1] = 0.74102022;
     kepler.set_init_guess(guess_coeff);
-  }
-
+  } 
+ 
   if(num_fourier > 2)
   {
     vector<vector<double>> guess_coeff(2, vector<double>(2*num_fourier, 0));
-    guess_coeff[0][0] = -0.57920731;
-    guess_coeff[0][1] = -0.89324102;
-    guess_coeff[0][2] = -0.077075367;
-    guess_coeff[0][3] = -0.36377004;
-    guess_coeff[1][0] = -0.12627861;
-    guess_coeff[1][1] = 0.99027267;
-    guess_coeff[1][2] = -0.22496388;
-    guess_coeff[1][3] = 0.016038242;
+    guess_coeff[0][0] = -0.48707975;
+    guess_coeff[0][1] = -0.76026237;
+    guess_coeff[0][2] = -0.057953384;
+    guess_coeff[0][3] = -0.30365066;
+    guess_coeff[1][0] = -0.1178401;
+    guess_coeff[1][1] = 0.92354616;
+    guess_coeff[1][2] = -0.20888379;
+    guess_coeff[1][3] = 0.014099131;
     kepler.set_init_guess(guess_coeff);
   } 
   

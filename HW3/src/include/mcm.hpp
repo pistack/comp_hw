@@ -12,6 +12,8 @@
 #ifndef MCM_H
 #define MCM_H
 
+#include <tuple>
+#include <vector>
 #include <string>
 #include <random>
 #include "fourier_path.hpp"
@@ -27,7 +29,7 @@
 /// from normal distribution and move path by
 /// the sampled real number.
 /// @see \ref mcm
-/// @ingroup hw3
+/// @ingroup libmcm
 
 class mcm
 {

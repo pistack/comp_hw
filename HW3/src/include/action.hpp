@@ -9,8 +9,8 @@
 #ifndef ACTION_H
 #define ACTION_H
 
+#include <vector>
 #include "fourier_path.hpp"
-
 
 /// @brief class to compute action
 /// @warning If you give invaild path, then

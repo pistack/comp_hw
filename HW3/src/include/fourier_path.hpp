@@ -10,6 +10,7 @@
 #define FOURIER_PATH_H
 
 #include <tuple>
+#include <vector>
 #include "fourier.hpp"
 
 /// @brief Class for the path approximated by fourier function

@@ -5,8 +5,8 @@ AR = ar
 INC = -I src/include/
 #CXXFLAGS = -O -g -Wall -Wextra -pedantic $(INC) #debug
 #CXXFLAGS = -O2 -Wall -Wextra -pedantic $(INC) # default
-#CXXFLAGS = -O3 $(INC) # optimization
-CXXFLAGS = -O3 -mavx2 $(INC) # optimization for avx2 architecture
+CXXFLAGS = -O3 $(INC) # optimization
+#CXXFLAGS = -O3 -mavx2 $(INC) # optimization for avx2 architecture
 
 OBJS = ./src/main.o \
        ./src/mcm_basic.o ./src/mcm_move.o ./src/mcm_opt.o \
