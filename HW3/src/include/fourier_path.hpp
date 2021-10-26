@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief headerfile for path approximated by fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 10. 18.
+ * @date 2021. 10. 26.
  */
 
 #ifndef FOURIER_PATH_H
@@ -36,7 +36,7 @@ class fourier_path
 	/// Whether or not the fourier function is valid to approximate path
 	bool p_vaild; 
 
-	/// scaler used to math initial condition
+	/// scaler used to match initial condition
 	double scale; 
 	/// adder used to match initial condition
 	double add; 

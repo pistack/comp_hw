@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief headerfile for fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 10. 18.
+ * @date 2021. 10. 26.
  */
 
 #ifndef FOURIER_H
@@ -12,8 +12,8 @@
 #include <vector>
 
 /// @brief Class for sum of the sine and cosine function
-/// @ingroup libfourier
 /// weighted by coefficients
+/// @ingroup libfourier
 class fourier
 {
 	private:
@@ -87,5 +87,3 @@ class fourier
 };
 
 #endif
-
-

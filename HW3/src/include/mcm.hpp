@@ -2,11 +2,11 @@
  * @file mcm.hpp
  * @ingroup libmcm
  * @brief headerfile to
- * Minimize the action by Monte Carlo Metropolis
+ * minimize the action by Monte Carlo Metropolis
  * method described in 
  * [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
  * @author pistack (Junho Lee)
- * @date 2021. 10. 24.
+ * @date 2021. 10. 26.
  */
 
 #ifndef MCM_H
@@ -164,7 +164,7 @@ class mcm
    /// Monte Carlo Metropolis method
    /// @param num_iter number of iteration
    /// @param step_size step size of random walk
-   /// @param lambda parameter to accept move
+   /// @param lambda parameter which controls acceptance of move
    /// @return tuple of number of accepted move and acceptance ratio.
    std::tuple<int, double>
    optimize(int num_iter, double step_size, double lambda);
@@ -173,7 +173,7 @@ class mcm
    /// Monte Carlo Metropolis method
    /// @param num_iter number of iteration
    /// @param step_size step size of random walk
-   /// @param lambda parameter to accept move
+   /// @param lambda parameter which controls acceptance of move
    /// @param monitor filename to monitor optimization process
    /// @return tuple of number of accepted move and acceptance ratio.
    std::tuple<int, double>

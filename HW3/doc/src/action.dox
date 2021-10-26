@@ -4,7 +4,29 @@
 /// \f{equation}{\label{eq:action}
 /// S = \int_{t_0}^{t_f} L(t, x(t), x'(t)) \mathrm{d} t
 /// \f}
-///, where \f$ L(t, x(t), x'(t)) \f$ is Lagranian.
+///, where \f$ L(t, x(t), x'(t)) \f$ is Lagrangian.
 /// To evaluate the action integral accurately, I use
 /// [Adaptive Simpson Method](https://dl.acm.org/doi/10.1145/321526.321537).
+/// @section action_complex Complexity 
+/// Since error bound of Simpson interation is roughly 
+/// \f$ O(n^{-4}) \f$ and complexity of adaptive Simpson Method is
+/// clearly \f$ O(n) \f$, where \f$ n = 2^{\text{depth}} \f$.
+/// So, error bound of adaptive Simpson Method is
+/// \f$ O(2^{-4\text{depth}}) \f$.
+/// Adaptive Simpson Method is terminated only when
+/// \f{equation}{\label{eq:terminate_cond}
+/// O(2^{-4\cdot \text{depth}}) < \text{abs_tol} + 
+/// \text{rel_tol} \cdot \text{Integration}
+/// \f}
+/// By this we can find
+/// \f{equation}{\label{eq:n_bound}
+/// n = 2^{\text{depth}} = \left(\text{abs_tol} + 
+/// \text{rel_tol} \cdot \text{Integration}\right)^{-1/4}
+/// \f}
+/// Therefore the complexity is
+/// \f{equation}{\label{eq:action_complex}
+/// O\left(\left(\text{abs_tol} + 
+/// \text{rel_tol} \cdot \text{Integration}\right)^{-1/4}
+/// \right)
+/// \f}
 ///////////////////////////////////////////////////////////

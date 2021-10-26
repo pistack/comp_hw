@@ -3,7 +3,7 @@
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
- * @date 2021. 10. 24.
+ * @date 2021. 10. 26.
  */
 
 #ifndef ACTION_H
@@ -12,7 +12,7 @@
 #include <vector>
 #include "fourier_path.hpp"
 
-/// @brief class to compute action
+/// @brief class which computes action
 /// @warning If you give invaild path, then
 /// eval method will return always zero
 /// @ingroup libfourier
@@ -20,18 +20,19 @@ class action
 {
 	private:
 	const double MAXDEPTH = 30; // maximum depth of recurrsion
-	double atol, rtol; // abs and relative tol
+	double atol, rtol; // absoulte and relative tol
+	// lagranian of action
 	double (*lagranian)(double, std::vector<double>,
 	std::vector<double>);
 	std::vector<fourier_path> path_action; // path
-	// lagranian of action
+
 	bool vaildity=false; // vaildity of path
 
 	/// @brief checks the vaildity of path
 	void check_vaild();
 
 	/// @brief evaluate lagranian at given t
-	/// @param t time to evaluate lagrangian
+	/// @param t time at which evaluate lagrangian
 	/// @return value of the lagranian at given t
 	double eval_lagranian(double t);
 
@@ -40,7 +41,7 @@ class action
 	/// @param mid mid point of interval
 	/// @param right right end point of interval
 	/// @param fleft value of lagrangian at left end point
-	/// @param fmid value of lagrangian at mid pooint
+	/// @param fmid value of lagrangian at mid point
 	/// @param fright value of lagrangian at right end point
 	/// @param integral integrated value
 	/// @param tol tolerance

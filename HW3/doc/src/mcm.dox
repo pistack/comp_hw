@@ -1,4 +1,62 @@
-///////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 /// @page mcm Monte Carlo Metropolis method
+/// Details for the Monte Carlo Metropolis are described in
+/// [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
+/// @tableofcontents
+/// @section mcm_pseudo Pseudo Code
+/// 1. intialize mcm class
+///   1. set initial condition
+///   2. set absoulte and relative tolerance for the
+///   action integration see @ref action
+///   3. set number of sine and cosine function used to approximate
+///      path
+///   4. set period of fourier function usually \f$ 2(t_f-t_0) \f$.
+///   5. set lagrangian \f$ L(t, x(t), x'(t)) \f$.
+/// 2. set initial guess, iteration number n_iter, 
+///    step size and \f$ \lambda \f$.
+/// 3. evaluate action and assign 
+///    accept_action, min_action to such action
+/// 4. assign accept_guess and min_guess to initial guess
+/// 5. initialize i and n_accept to 0.
+/// 6. check \f$ i < \text{n_iter} \f$.
+///    1. If yes, continue
+///    2. If no, go to 15.
+/// 7. sample path via random walk at accept_guess
+///    see @ref random_walk to get detailed infomation
+/// 8. check vaildity of path
+///    1. If path is vaild, update tmp_guess to that path
+///    and raise i by 1.
+///    2. If path is not vaild, go to 4.
+/// 9. evaluate action at that path
+/// 10. compute difference of action
+///    \f$ \Delta A = \text{tmp_action} - \text{min_action} \f$ 
+/// 11. Sample real number \f$ R \f$ from the uniform distribution
+///     which ranges 0 to 1.
+/// 12. Check \f$ R < \exp(-\lambda\Delta A) \f$.
+///     1. If yes, accept move.
+///        Update accept_action and accept_guess
+///        increase n_accept and i by 1.
+///     2. If no, reject move.
+///        increase i by 1 and go to 5.
+/// 13. Check \f$ \text{accept_action} < \text{min_action} \f$.
+///     1. If yes, update min_action and min_guess to
+///        accept_action and accept_guess, respectively.
+///     2. If no, do nothing.
+/// 14. Go to 5.
+/// 15. Finish iteration and report number of accepted move
+///     num_accept and acceptance ratio (num_accept/num_iter)
 ///
-///////////////////////////////////////////////////////////
+/// After optimization, you can evaluate path at given points
+/// via min_eval method of mcm class and get coefficients of
+/// minimum path using get_min_coeff method.
+/// @section random_walk Random Walk
+/// To generate random walk, I use normal distribution whoose
+/// mean and standard deviation is 0 and step_size respectively.
+/// To move guess, \f$ \Delta c_i \f$ is sampled via normal distribution
+/// then add \f$ \Delta c_i \f$ to initial guess \f$ c_i \f$.
+/// Moreover since guess \f$ c_i \f$ is confined to 
+/// \f$ -1 \f$ from \f$ 1 \f$, if
+/// moved guess \f$ c'_i = c_i + \Delta c_i \f$ is above \f$ 1 \f$ or
+/// below \f$ -1 \f$, then \f$ c'_i = 1 \f$ when \f$ c'_i > 1 \f$ or
+/// \f$ c_i = -1 \f$ when \f$ c'_i < -1 \f$.
+/////////////////////////////////////////////////////////////////
