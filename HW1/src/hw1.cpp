@@ -3,7 +3,7 @@
  * @brief code for homework1 of Computer1 class in Yonsei University
  * Use finite difference method to solve Kepler problem
  * @author pistack (Junho Lee)
- * @date 2021. 10. 16.
+ * @date 2021. 10. 25.
  */
 
 #include <algorithm>
@@ -49,7 +49,7 @@ int n, double y0, double y0p, double theta0)
 
     for(int i = 2; i < n+1; i++)
     {
-      spacing = (t[i] - t[i-2])/2.0; /// spacing for zeta
+      spacing = (t[i] - t[i-2])/2.0; // spacing for zeta
       y_inv = 1 / y[i-1];
       y[i] = pow(spacing/y[i-1], 2.0) * \
       (y_inv - 1.0) + \
