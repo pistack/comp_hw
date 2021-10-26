@@ -18,7 +18,7 @@
 ///    accept_action, min_action to such action
 /// 4. assign accept_guess and min_guess to initial guess
 /// 5. initialize i and n_accept to 0.
-/// 6. check \f$ i < \text{n_iter} \f$.
+/// 6. check \f$ i < \f$ n_iter.
 ///    1. If yes, continue
 ///    2. If no, go to 15.
 /// 7. sample path via random walk at accept_guess
@@ -26,10 +26,10 @@
 /// 8. check vaildity of path
 ///    1. If path is vaild, update tmp_guess to that path
 ///    and raise i by 1.
-///    2. If path is not vaild, go to 4.
+///    2. If path is not vaild, go to 7.
 /// 9. evaluate action at that path
 /// 10. compute difference of action
-///    \f$ \Delta A = \text{tmp_action} - \text{min_action} \f$ 
+///    \f$ \Delta A = \f$ tmp_action \f$ - \f$ min_action
 /// 11. Sample real number \f$ R \f$ from the uniform distribution
 ///     which ranges 0 to 1.
 /// 12. Check \f$ R < \exp(-\lambda\Delta A) \f$.
@@ -37,26 +37,41 @@
 ///        Update accept_action and accept_guess
 ///        increase n_accept and i by 1.
 ///     2. If no, reject move.
-///        increase i by 1 and go to 5.
-/// 13. Check \f$ \text{accept_action} < \text{min_action} \f$.
+///        increase i by 1 and go to 6.
+/// 13. Check if accept_action \f$ < \f$ min_action.
 ///     1. If yes, update min_action and min_guess to
 ///        accept_action and accept_guess, respectively.
 ///     2. If no, do nothing.
-/// 14. Go to 5.
+/// 14. Go to 6.
 /// 15. Finish iteration and report number of accepted move
-///     num_accept and acceptance ratio (num_accept/num_iter)
+///     num_accept and acceptance ratio 
+///     (num_accept/num_iter)
 ///
 /// After optimization, you can evaluate path at given points
 /// via min_eval method of mcm class and get coefficients of
 /// minimum path using get_min_coeff method.
 /// @section random_walk Random Walk
 /// To generate random walk, I use normal distribution whoose
-/// mean and standard deviation is 0 and step_size respectively.
+/// mean and standard deriviation is 0 and step_size respectively.
 /// To move guess, \f$ \Delta c_i \f$ is sampled via normal distribution
-/// then add \f$ \Delta c_i \f$ to initial guess \f$ c_i \f$.
+/// then add \f$ \Delta c_i \f$ to guess \f$ c_i \f$.
 /// Moreover since guess \f$ c_i \f$ is confined to 
 /// \f$ -1 \f$ from \f$ 1 \f$, if
 /// moved guess \f$ c'_i = c_i + \Delta c_i \f$ is above \f$ 1 \f$ or
 /// below \f$ -1 \f$, then \f$ c'_i = 1 \f$ when \f$ c'_i > 1 \f$ or
 /// \f$ c_i = -1 \f$ when \f$ c'_i < -1 \f$.
+/// Below is a pseudo code for such process.
+/// 
+/// 1. Get guess \f$ c_i \f$ to move
+/// 2. Sample real number \f$ \Delta c_i \f$ from 
+///    the normal distribution whoose mean and standard derivation
+///    is 0 and step_size, respectively.
+/// 3. add such real number to guess
+///    \f$ c'_i = c_i + \Delta c_i \f$
+/// 4. If \f$ c'_i > 1 \f$, then set \f$ c'_i = 1 \f$.
+/// 5. If \f$ c'_i < -1 \f$, then set \f$ c'_i = -1 \f$.
+/// 6. Return \f$ c'_i \f$.
+///
+/// @section kepler Applicate to Kepler Action
+/// 
 /////////////////////////////////////////////////////////////////

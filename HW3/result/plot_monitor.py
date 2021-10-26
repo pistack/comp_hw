@@ -14,7 +14,7 @@ plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
 plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
 plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
-monitor = np.genfromtxt('monitor_nf4_1.txt')
+monitor = np.genfromtxt('monitor_nf3.txt')
 plt.plot(monitor[:, 0], monitor[:, 1], marker='o', 
 mfc='none', linestyle='none', color='red')
 plt.xlabel('Number of Accepted moves')

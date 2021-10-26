@@ -19,7 +19,8 @@ task_lst = [10, 20, 100, 1000, 10000]
 
 r = np.genfromtxt('zeta_nf1.txt')
 r2 = np.genfromtxt('zeta_nf2.txt')
-r3 = np.genfromtxt('zeta_nf4.txt')
+r3 = np.genfromtxt('zeta_nf3.txt')
+r4 = np.genfromtxt('zeta_nf4.txt')
 ref = np.genfromtxt('zeta_ref.txt')
 
 
@@ -31,6 +32,9 @@ plt.plot(r2[:, 1]*np.cos(r2[:, 2]), r2[:, 1]*np.sin(r2[:, 2]), marker='o',
 markersize=3, linestyle='none',
 label='nf=2')
 plt.plot(r3[:, 1]*np.cos(r3[:, 2]), r3[:, 1]*np.sin(r3[:, 2]), marker='o',
+markersize=3, linestyle='none',
+label='nf=3')
+plt.plot(r4[:, 1]*np.cos(r4[:, 2]), r4[:, 1]*np.sin(r4[:, 2]), marker='o',
 markersize=3, linestyle='none',
 label='nf=4')
 plt.plot(ref[:, 1]*np.cos(ref[:, 2]), ref[:, 1]*np.sin(ref[:, 2]), color='black')
@@ -50,6 +54,9 @@ markersize=3, linestyle='none',
 label='nf=2')
 plt.plot(r3[:, 0], r3[:, 1], marker='o',
 markersize=3, linestyle='none',
+label='nf=3')
+plt.plot(r4[:, 0], r4[:, 1], marker='o',
+markersize=3, linestyle='none',
 label='nf=4')
 plt.plot(ref[:, 0], ref[:, 1], label='ref',
 color='black')
@@ -68,6 +75,9 @@ plt.plot(r2[:, 0], r2[:, 2], marker='o',
 markersize=3, linestyle='none',
 label='nf=2')
 plt.plot(r3[:, 0], r3[:, 2], marker='o',
+markersize=3, linestyle='none',
+label='nf=3')
+plt.plot(r4[:, 0], r4[:, 2], marker='o',
 markersize=3, linestyle='none',
 label='nf=4')
 plt.plot(ref[:, 0], ref[:, 2], label='ref',

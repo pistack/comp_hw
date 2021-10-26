@@ -51,7 +51,7 @@ int main(void)
   cin >> num_eval;
   cout << " size of step: ";
   cin >> max_step;
-  cout << " value for paramter to accept move: ";
+  cout << " value of paramter which controls acceptance of move: ";
   cin >> lambda;
   cout << " Number of iteration: ";
   cin >> max_iter;
@@ -78,7 +78,7 @@ int main(void)
     return 0.0;});
 
   kepler.set_init_guess();
-
+/*
   if(num_fourier > 1)
   {
     vector<vector<double>> guess_coeff(2, vector<double>(2*num_fourier, 0));
@@ -102,7 +102,7 @@ int main(void)
     guess_coeff[1][3] = 0.014099131;
     kepler.set_init_guess(guess_coeff);
   } 
-  
+*/
   // variable to get optimization state
   int num_move; // number of actual moves
   double accept_ratio; // acceptance ratio

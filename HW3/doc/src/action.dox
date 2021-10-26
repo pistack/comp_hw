@@ -10,23 +10,17 @@
 /// @section action_complex Complexity 
 /// Since error bound of Simpson interation is roughly 
 /// \f$ O(n^{-4}) \f$ and complexity of adaptive Simpson Method is
-/// clearly \f$ O(n) \f$, where \f$ n = 2^{\text{depth}} \f$.
+/// clearly \f$ O(n) \f$, where \f$ n = 2^{d} \f$. and \f$ d \f$ is
+/// recurrsion depth.
 /// So, error bound of adaptive Simpson Method is
-/// \f$ O(2^{-4\text{depth}}) \f$.
-/// Adaptive Simpson Method is terminated only when
-/// \f{equation}{\label{eq:terminate_cond}
-/// O(2^{-4\cdot \text{depth}}) < \text{abs_tol} + 
-/// \text{rel_tol} \cdot \text{Integration}
-/// \f}
-/// By this we can find
-/// \f{equation}{\label{eq:n_bound}
-/// n = 2^{\text{depth}} = \left(\text{abs_tol} + 
-/// \text{rel_tol} \cdot \text{Integration}\right)^{-1/4}
-/// \f}
-/// Therefore the complexity is
+/// \f$ O(2^{-4d}) \f$.
+/// Adaptive Simpson Method is terminated only when error is less than
+/// \f$ a + r \cdot I \f$, 
+/// where \f$ a \f$ is absolute tolerance of action integration,
+/// \f$ r \f$ is relative tolerance of action integration and \f$ I \f$ is the
+/// absolute value of integration
+/// So, the complexity is
 /// \f{equation}{\label{eq:action_complex}
-/// O\left(\left(\text{abs_tol} + 
-/// \text{rel_tol} \cdot \text{Integration}\right)^{-1/4}
-/// \right)
+/// O(\frac{1}{\sqrt[4]{a+r \cdot I}})
 /// \f}
 ///////////////////////////////////////////////////////////

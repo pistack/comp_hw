@@ -17,22 +17,15 @@ plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 task_lst = [10, 20, 100, 1000, 10000]
 
-r = np.genfromtxt('zeta_nf1.txt')
-r2 = np.genfromtxt('zeta_nf2.txt')
-r3 = np.genfromtxt('zeta_nf4_lambda100000.txt')
+r3 = np.genfromtxt('zeta_nf3.txt')
 ref = np.genfromtxt('zeta_ref.txt')
 
 
 plt.figure(1)
-plt.plot(r[:, 1]*np.cos(r[:, 2]), r[:, 1]*np.sin(r[:, 2]), marker='o',
-markersize=3, linestyle='none',
-label='nf=1')
-plt.plot(r2[:, 1]*np.cos(r2[:, 2]), r2[:, 1]*np.sin(r2[:, 2]), marker='o',
-markersize=3, linestyle='none',
-label='nf=2')
+
 plt.plot(r3[:, 1]*np.cos(r3[:, 2]), r3[:, 1]*np.sin(r3[:, 2]), marker='o',
 markersize=3, linestyle='none',
-label='nf=4')
+label='nf=3')
 plt.plot(ref[:, 1]*np.cos(ref[:, 2]), ref[:, 1]*np.sin(ref[:, 2]), color='black')
 plt.grid(True)
 plt.xlabel(r'$x$')
@@ -42,15 +35,9 @@ plt.ylabel(r'$y$')
 plt.legend(loc='upper right')
 
 plt.figure(2)
-plt.plot(r[:, 0], r[:, 1], marker='o',
-markersize=3, linestyle='none',
-label='nf=1')
-plt.plot(r2[:, 0], r2[:, 1], marker='o',
-markersize=3, linestyle='none',
-label='nf=2')
 plt.plot(r3[:, 0], r3[:, 1], marker='o',
 markersize=3, linestyle='none',
-label='nf=4')
+label='nf=3')
 plt.plot(ref[:, 0], ref[:, 1], label='ref',
 color='black')
 plt.grid(True)
@@ -61,15 +48,9 @@ plt.ylabel(r'$\zeta$')
 plt.legend(loc='upper right')
 
 plt.figure(3)
-plt.plot(r[:, 0], r[:, 2], marker='o',
-markersize=3, linestyle='none',
-label='nf=1')
-plt.plot(r2[:, 0], r2[:, 2], marker='o',
-markersize=3, linestyle='none',
-label='nf=2')
 plt.plot(r3[:, 0], r3[:, 2], marker='o',
 markersize=3, linestyle='none',
-label='nf=4')
+label='nf=3')
 plt.plot(ref[:, 0], ref[:, 2], label='ref',
 color='black')
 plt.grid(True)

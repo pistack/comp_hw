@@ -22,7 +22,7 @@
  * - number of sine and cosine will be used to approximate the path
  * - number of points to evaluate the minimized path 
  * - step size
- * - parameter to accept move
+ * - parameter which controls acceptance of move
  * - number of iteration
  * - output file names
  *
