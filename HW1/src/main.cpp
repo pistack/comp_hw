@@ -12,6 +12,14 @@
 #include <fstream>
 #include "hw1.hpp"
 
+#if PRECISION_LEVEL == 0
+    #define PRECISION float
+    #define DIGITS 8
+#elif PRECISION_LEVEL == 1
+    #define PRECISION double
+    #define DIGITS 15
+#endif
+
 using namespace std;
 
 int main(void) {
@@ -55,7 +63,7 @@ int main(void) {
   fout << '#' << 't' << '\t' << "zeta" << '\t' \
   << "theta" << endl;
   fout.unsetf(ios::floatfield); // initialize floatfield
-  fout.precision(8); // print 8 significant digits
+  fout.precision(DIGITS); // print significant digits
   for(int i=0; i < n+1; i++) // one more point needed for end point
       fout << t[i] << '\t' << y[i] << '\t' << theta[i] << endl;
   fout.close();

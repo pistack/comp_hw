@@ -10,13 +10,21 @@
 
 #include <algorithm>
 #include <cmath>
+#include <limits>
 #include <string>
 #include <iostream>
 #include <fstream>
 #include "mcm.hpp"
 
-const PRECISION pi = \
-3.1415926535897932384626433832795028841971693993751058209749445923078164062; // define pi
+#if PRECISION_LEVEL == 0
+    #define PRECISION float
+    #define DIGITS 8
+#elif PRECISION_LEVEL == 1
+    #define PRECISION double
+    #define DIGITS 15
+#endif
+
+const PRECISION pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062; // define pi
 
 using namespace std;
 
@@ -71,12 +79,13 @@ int main(void)
   PRECISION period = 2*tmax;
   vector<PRECISION> p0 = {zeta_min, 0.0};
   vector<PRECISION> p1 = {zeta_max, pi};
-  mcm<PRECISION> kepler(0.0, tmax, p0, p1, atol, rtol, num_fourier,
+  mcm<PRECISION> kepler(PRECISION(0.0), 
+  tmax, p0, p1, atol, rtol, num_fourier,
   period, [](PRECISION t, vector<PRECISION> x, vector<PRECISION> dx)
-  { if(abs(x[0])>1e-8)
-    return 0.5*(pow(dx[0],2.0)+pow(x[0]*dx[1], 2.0))+1/abs(x[0]);
+  { if(abs(x[0])>numeric_limits<PRECISION>::epsilon())
+    return PRECISION(0.5*(pow(dx[0],2.0)+pow(x[0]*dx[1], 2.0))+1/abs(x[0]));
     else
-    return 0.0;});
+    return PRECISION(0.0);});
 
   kepler.set_init_guess();
 
@@ -117,7 +126,7 @@ int main(void)
   cout << " Calcuation is finished" << endl;
   cout << "======================result==============================" << endl;
   cout.unsetf(ios::floatfield); // initialize floatfield
-  cout.precision(8); // print 8 significant digits
+  cout.precision(DIGITS); // print significant digits
   cout << " Minimum action is " << min_action << endl;
   cout << " Number of Actual move is " << num_move << endl;
   cout << " Acceptance ratio: " << accept_ratio << endl;
@@ -125,13 +134,13 @@ int main(void)
   fout.open(filename);
   fout << '#' << 't' << '\t' << "zeta" << '\t' << "theta" << endl;
   fout.unsetf(ios::floatfield); // initialize floatfield
-  fout.precision(8); // print 8 significant digits
+  fout.precision(DIGITS); // print significant digits
   for(int i=0; i < num_eval; i++)
     fout << t[i] << '\t' << result[0][i] << '\t' << result[1][i] << endl;
   fout.close();
   fout.open(filename_coeff);
   fout.unsetf(ios::floatfield); // initialize floatfield
-  fout.precision(8); // print 8 significant digits
+  fout.precision(DIGITS); // print significant digits
   fout << '#' << "adder" << '\t' << "scaler" << endl;
   for(int i=0; i<dim1; i++)
   fout << adder[i] << '\t' << scaler[i] << endl;

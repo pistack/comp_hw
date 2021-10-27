@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief headerfile for path approximated by fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 10. 26.
+ * @date 2021. 10. 28.
  */
 
 #ifndef FOURIER_PATH_H

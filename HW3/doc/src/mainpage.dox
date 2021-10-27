@@ -13,7 +13,9 @@
  *   - Type make, then we can see hw3 executable file in bin directory
  * - cmake
  *   1. make build directory
- *   2. go to build directory and type cmake ..
+ *   2. go to build directory and type cmake .. -DPRECISION_LEVEL precision_level
+ *      - precison_level 0: float
+ *      - precison_level 1: double
  *   3. Type make then we can see hw3 executable in build directory
  * @section hwoto How To Use
  * Execute hw3 then, it will interactively read
