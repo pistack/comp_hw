@@ -11,7 +11,8 @@
  *   - Type make, then we can see hw2 executable file in bin directory
  * - cmake
  *   1. make build directory
- *   2. go to build directory and type cmake ..
+ *   2. go to build directory and type cmake .. -DPRECISION precision
+ *      precison should be float or double.
  *   3. Type make then we can see hw2 executable in build directory
  * @section hwoto How To Use
  * Execute hw2 then, it will interactively read

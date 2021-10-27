@@ -4,7 +4,7 @@
  * Interactively reads inital condition, number of gird points to evaluate and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 10. 15.
+ * @date 2021. 10. 28.
  */
 
 #include <string>
@@ -17,13 +17,13 @@ using namespace std;
 int main(void) {
 
   // init variables
-  double t0; // initial time
-  double t1; // finial time
+  PRECISION t0; // initial time
+  PRECISION t1; // finial time
   int n; // number of points to evaluate
-  double y0; // intial condition zeta(0)
-  double y0p; // initial condition zeta'(0)
-  double theta0; // initial condition theta(0)
-  vector<double> t, y, theta; // store results
+  PRECISION y0; // intial condition zeta(0)
+  PRECISION y0p; // initial condition zeta'(0)
+  PRECISION theta0; // initial condition theta(0)
+  vector<PRECISION> t, y, theta; // store results
   string filename; // file name to store results
   ofstream fout; // file output stream
   
@@ -46,7 +46,7 @@ int main(void) {
   cout << " file name to store result: ";
   cin >> filename;
   cout << " Now starts calculation" << endl;
-  tie(t, y, theta) = HW1(t0, t1, n, y0, y0p, theta0);
+  tie(t, y, theta) = HW1<PRECISION>(t0, t1, n, y0, y0p, theta0);
   cout << " Calcuation is finished" << endl;
 
   // store result to file

@@ -3,28 +3,35 @@
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
- * @date 2021. 10. 26.
+ * @date 2021. 10. 28.
  */
 
 #ifndef ACTION_H
 #define ACTION_H
 
+#include <cmath>
+#include <cerrno>
 #include <vector>
 #include "fourier_path.hpp"
 
 /// @brief class which computes action
+/// Only defined when type T is one of float, double
+/// and long double.
 /// @warning If you give invaild path, then
 /// eval method will return always zero
 /// @ingroup libfourier
+template<typename T>
 class action
 {
 	private:
-	const double MAXDEPTH = 30; // maximum depth of recurrsion
-	double atol, rtol; // absoulte and relative tol
+	const int MAXDEPTH = 30; // maximum depth of recurrsion
+	T atol, rtol; // absoulte and relative tol
+
 	// lagranian of action
-	double (*lagranian)(double, std::vector<double>,
-	std::vector<double>);
-	std::vector<fourier_path> path_action; // path
+	T (*lagranian)(T, std::vector<T>,
+	std::vector<T>);
+
+	std::vector<fourier_path<T>> path_action; // path
 
 	bool vaildity=false; // vaildity of path
 
@@ -34,7 +41,7 @@ class action
 	/// @brief evaluate lagranian at given t
 	/// @param t time at which evaluate lagrangian
 	/// @return value of the lagranian at given t
-	double eval_lagranian(double t);
+	T eval_lagranian(T t);
 
     /// @brief helper function for action evaluation
     /// @param left left end point of interval
@@ -46,9 +53,9 @@ class action
 	/// @param integral integrated value
 	/// @param tol tolerance
 	/// @param depth recurrsion depth
-	double eval_helper(double left, double mid, double right,
-	double fleft, double fmid, double fright, 
-	double integral, double tol, int depth);
+	T eval_helper(T left, T mid, T right,
+	T fleft, T fmid, T fright, 
+	T integral, T tol, int depth);
 
 	public:
     /// @brief initialize action class
@@ -59,16 +66,16 @@ class action
 	/// @param rel_tol relative tolerance
 	/// @param lag lagranian of action
 	/// - first param:  t
-	/// - type of first param: double 
-	/// - second param: double path at t
-	/// - type of second param: vector<double>
+	/// - type of first param: T 
+	/// - second param: T path at t
+	/// - type of second param: vector<T>
 	/// - third param: derivative of path at t
-	/// - type of third param: vector<double>
-	/// - type of return value: double
+	/// - type of third param: vector<T>
+	/// - type of return value: T
 
-	action(double abs_tol, double rel_tol, 
-	double (*lag)(double, std::vector<double>, 
-	std::vector<double>))
+	action(T abs_tol, T rel_tol, 
+	T (*lag)(T, std::vector<T>, 
+	std::vector<T>))
 	: atol(abs_tol), rtol(rel_tol), \
 	lagranian(lag)
 	{}
@@ -79,33 +86,33 @@ class action
 	/// @param path path
 	/// @param lag lagranian of action
 	/// - first param:  t
-	/// - type of first param: double 
-	/// - second param: double path at t
-	/// - type of second param: vector<double>
+	/// - type of first param: T 
+	/// - second param: T path at t
+	/// - type of second param: vector<T>
 	/// - third param: derivative of path at t
-	/// - type of third param: vector<double>
-	/// - type of return value: double
+	/// - type of third param: vector<T>
+	/// - type of return value: T
 
-	action(double abs_tol, double rel_tol,
-	std::vector<fourier_path> path, 
-	double (*lag)(double, std::vector<double>, 
-	std::vector<double>))
+	action(T abs_tol, T rel_tol,
+	std::vector<fourier_path<T>> path, 
+	T (*lag)(T, std::vector<T>, 
+	std::vector<T>))
 	: atol(abs_tol), rtol(rel_tol), \
 	lagranian(lag), path_action(path) 
 	{check_vaild();}
 
 	/// @brief copy constructer of action class
-	action(const action &copy)
+	action(const action<T> &copy)
 	: atol(copy.atol), rtol(copy.rtol), \
 	lagranian(copy.lagranian), path_action(copy.path_action), \
 	vaildity(copy.vaildity)
 	{}
 
-	action & operator=(const action &copy);
+	action<T> & operator=(const action<T> &copy);
 
 	/// @brief update path
 	/// @param path path to update
-	void update(std::vector<fourier_path> path);
+	void update(std::vector<fourier_path<T>> path);
 
 	/// @brief check vaildity of path
 	/// @return vaildity of path
@@ -115,7 +122,9 @@ class action
 	/// by adpative simpson's method
 	/// @return action of given path
 
-	double eval();
+	T eval();
 };
+
+#include "action/action.tpp"
 
 #endif

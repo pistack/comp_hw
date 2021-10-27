@@ -1,30 +1,26 @@
 /*!
- * @file hw2.cpp
- * @brief code for homework2 of Computer1 class in Yonsei University
+ * @file hw2.tpp
+ * @brief template for homework2 of Computer1 class in Yonsei University
  * Use numerical integration to solve Kepler problem
  * @author pistack (Junho Lee)
- * @date 2021. 10. 16.
+ * @date 2021. 10. 28.
  */
 
-#include <algorithm>
-#include "hw2.hpp"
-
-using namespace std;
-
-tuple<vector<double>, vector<double>>
-HW2(double zeta_min, double t0, int n)
+template<typename T>
+std::tuple<std::vector<T>, std::vector<T>>
+HW2(T zeta_min, T t0, int n)
 {
   //initialize variable
-  double grid_space; // grid spacing
-  double a; 
-  double zeta_max; // maximum value of zeta
-  double tmp, tmp2;
-  double c1, c2;
-  vector<double> t(n+1, 0);
-  vector<double> zeta(n+1, 0);
-  vector<double> u(n+1, 0);
-  vector<double> u_mid(n, 0);
-  vector<double> integral(n+1, 0);
+  T grid_space; // grid spacing
+  T a; 
+  T zeta_max; // maximum value of zeta
+  T tmp, tmp2;
+  T c1, c2;
+  std::vector<T> t(n+1, 0);
+  std::vector<T> zeta(n+1, 0);
+  std::vector<T> u(n+1, 0);
+  std::vector<T> u_mid(n, 0);
+  std::vector<T> integral(n+1, 0);
 
   // Note a = zeta_min**(-2)-2*zeta_min**(-1)
   //        = zeta_max**(-2)-2*zeta_max**(-1)
@@ -38,14 +34,14 @@ HW2(double zeta_min, double t0, int n)
   tmp = zeta_max - zeta_min;
   c1 = 2*zeta_min/tmp;
   c2 = 2*zeta_max/tmp;
-  tmp = sqrt(-a);
+  tmp = std::sqrt(-a);
   c1 /= tmp;
   c2 /= tmp;
 
   // use uniform n pts between zeta_min and zeta_max
   // additional one point needed for end point.
 
-  grid_space = (zeta_max-zeta_min)/double(n);
+  grid_space = (zeta_max-zeta_min)/T(n);
 
   // change of variable
   // and seperate integral
@@ -54,14 +50,14 @@ HW2(double zeta_min, double t0, int n)
   for(int i=1; i<n; i++)
     {
       zeta[i] = zeta[i-1] + grid_space;
-      u[i] = sqrt(zeta[i]);
-      u_mid[i-1] = sqrt(0.5*(zeta[i]+zeta[i-1]));
+      u[i] = std::sqrt(zeta[i]);
+      u_mid[i-1] = std::sqrt(0.5*(zeta[i]+zeta[i-1]));
     }
 
   // end point
   zeta[n] = zeta_max-zeta_min;
-  u[n] = sqrt(zeta[n]);
-  u_mid[n-1] = sqrt(0.5*(zeta[n]+zeta[n-1]));
+  u[n] = std::sqrt(zeta[n]);
+  u_mid[n-1] = std::sqrt(0.5*(zeta[n]+zeta[n-1]));
 
   // numerical integration using 
   // non equi-spacing Simpson's rule
@@ -71,9 +67,9 @@ HW2(double zeta_min, double t0, int n)
   // integral_1[n+1-i] = integral_2[i]
   for(int i=1; i<n+1; i++)
     {
-      double h0 = u_mid[i-1]-u[i-1];
-      double h1 = u[i] - u_mid[i-1];
-      double d = u[i] - u[i-1];
+      T h0 = u_mid[i-1]-u[i-1];
+      T h1 = u[i] - u_mid[i-1];
+      T d = u[i] - u[i-1];
 
       tmp = d/6.0*((2.0-h1/h0)*u[n+1-i]+
       (d/h0)*(d/h1)*u_mid[n-i]+
@@ -88,11 +84,11 @@ HW2(double zeta_min, double t0, int n)
   // 1. t_0 = t0 
   // 2. zeta_0 = zeta_min
   // 3. zeta_n = zeta_max
-  transform(t.begin(), t.end(), t.begin(),
-  [t0](double &x){x += t0;});
-  transform(zeta.begin(), zeta.end(), zeta.begin(),
-  [zeta_min](double &x){x += zeta_min;});
+  std::transform(t.begin(), t.end(), t.begin(),
+  [t0](T &x){x += t0;});
+  std::transform(zeta.begin(), zeta.end(), zeta.begin(),
+  [zeta_min](T &x){x += zeta_min;});
   zeta[n] = zeta_max;
 
-  return make_tuple(t, zeta);
+  return std::make_tuple(t, zeta);
 }

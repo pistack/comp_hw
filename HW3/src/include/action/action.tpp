@@ -1,18 +1,13 @@
 /*!
  * @file action.cpp
  * @ingroup libfourier
- * @brief evaluates action
+ * @brief evaluates action<T>
  * @author pistack (Junho Lee)
- * @date 2021. 10. 24.
+ * @date 2021. 10. 28.
  */
 
-#include <cmath>
-#include <cerrno>
-#include "action.hpp"
-
-using namespace std;
-
-action & action::operator=(const action &copy)
+template<typename T>
+action<T> & action<T>::operator=(const action<T> &copy)
 {
   atol = copy.atol; rtol = copy.rtol;
   path_action = copy.path_action; lagranian = copy.lagranian;
@@ -20,7 +15,8 @@ action & action::operator=(const action &copy)
   return *this;
 }
 
-void action::check_vaild()
+template<typename T>
+void action<T>::check_vaild()
 {
   if(!path_action[0].is_vaild())
   return;
@@ -38,17 +34,20 @@ void action::check_vaild()
   return;
 }
 
-void action::update(vector<fourier_path> path)
+template<typename T>
+void action<T>::update(std::vector<fourier_path<T>> path)
 {path_action = path; check_vaild();}
 
-bool action::is_vaild()
+template<typename T>
+bool action<T>::is_vaild()
 {return vaildity;}
 
-double action::eval_lagranian(double t)
+template<typename T>
+T action<T>::eval_lagranian(T t)
 {
   int n = path_action.size();
-  vector<double> p(n, 0); // path
-  vector<double> dp(n, 0); // derivative of path
+  std::vector<T> p(n, 0); // path
+  std::vector<T> dp(n, 0); // derivative of path
   for(int i=0; i<n; i++)
   {
     p[i] = path_action[i].eval(t);
@@ -57,11 +56,12 @@ double action::eval_lagranian(double t)
   return lagranian(t, p, dp);
 }
 
-double action::eval_helper(double left, double mid, double right, 
-double fleft, double fmid, double fright, 
-double integral, double tol, int depth)
+template<typename T>
+T action<T>::eval_helper(T left, T mid, T right, 
+T fleft, T fmid, T fright, 
+T integral, T tol, int depth)
 {
-  double eps = 15*(tol + rtol*abs(integral));
+  T eps = 15*(tol + rtol*abs(integral));
   if(depth > MAXDEPTH)
   {
     errno = ERANGE;
@@ -72,15 +72,15 @@ double integral, double tol, int depth)
     errno = EDOM;
     return integral;
   }
-  double lmid = 0.5*(left+mid);
-  double rmid = 0.5*(right+mid);
-  double flmid = eval_lagranian(lmid);
-  double frmid = eval_lagranian(rmid);
-  double stepsize_l = lmid - left;
-  double stepsize_r = right - rmid;
-  double integral_l = stepsize_l/3.0*(fleft+4.0*flmid+fmid);
-  double integral_r = stepsize_r/3.0*(fright+4.0*frmid+fmid);
-  double delta = integral_l + integral_r - integral;
+  T lmid = 0.5*(left+mid);
+  T rmid = 0.5*(right+mid);
+  T flmid = eval_lagranian(lmid);
+  T frmid = eval_lagranian(rmid);
+  T stepsize_l = lmid - left;
+  T stepsize_r = right - rmid;
+  T integral_l = stepsize_l/3.0*(fleft+4.0*flmid+fmid);
+  T integral_r = stepsize_r/3.0*(fright+4.0*frmid+fmid);
+  T delta = integral_l + integral_r - integral;
   if(abs(delta) > eps || depth==0)
   {
     integral_l = eval_helper(left, lmid, mid,
@@ -93,21 +93,22 @@ double integral, double tol, int depth)
   return integral_l + integral_r + delta/15;
 }
 
-double action::eval()
+template<typename T>
+T action<T>::eval()
 {
   if(! vaildity)
   {
     errno = EINVAL;
     return 0;
   }
-  double t_0, t_1;
-  tie(t_0, t_1) = path_action[0].get_endtimes();
-  double tmid = 0.5*(t_0+t_1);
-  double fleft = eval_lagranian(t_0);
-  double fmid = eval_lagranian(tmid);
-  double fright = eval_lagranian(t_1);
-  double stepsize = tmid - t_0;
-  double integral = stepsize/3.0*(fleft+4.0*fmid+fright);
+  T t_0, t_1;
+  std::tie(t_0, t_1) = path_action[0].get_endtimes();
+  T tmid = 0.5*(t_0+t_1);
+  T fleft = eval_lagranian(t_0);
+  T fmid = eval_lagranian(tmid);
+  T fright = eval_lagranian(t_1);
+  T stepsize = tmid - t_0;
+  T integral = stepsize/3.0*(fleft+4.0*fmid+fright);
 
   return eval_helper(t_0, tmid, t_1, fleft, fmid, fright,
   integral, atol, 0);

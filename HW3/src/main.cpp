@@ -5,7 +5,7 @@
  * number of gird points to evaluate, number of interation, step size and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 10. 24.
+ * @date 2021. 10. 28.
  */
 
 #include <algorithm>
@@ -15,21 +15,22 @@
 #include <fstream>
 #include "mcm.hpp"
 
-const double pi = 3.141592653589793; ///<define pi
+const PRECISION pi = \
+3.1415926535897932384626433832795028841971693993751058209749445923078164062; // define pi
 
 using namespace std;
 
 int main(void)
 {
-  double atol, rtol; // abs and rel tol of action integral
+  PRECISION atol, rtol; // abs and rel tol of action integral
   int num_eval; // number of points to eval
   int num_fourier; // number of sine and cosine function used for guess
   int max_iter; // number of iteration
-  double zeta_min; // minimum value of zeta
-  double t0; // initial time
-  double max_step; // step size
-  double lambda; // parameter to accept move
-  double min_action; // minimum action value
+  PRECISION zeta_min; // minimum value of zeta
+  PRECISION t0; // initial time
+  PRECISION max_step; // step size
+  PRECISION lambda; // parameter to accept move
+  PRECISION min_action; // minimum action value
   string filename; // file name to store results
   string filename_coeff; // file name to store coeffcients
   string filename_monitor; // file name to monitor optimization process
@@ -64,68 +65,44 @@ int main(void)
   cout << " Now starts calculation" << endl;
 
   // initial condition
-  double zeta_max = zeta_min/(2*zeta_min-1);
-  double a = 0.5*(zeta_min+zeta_max);
-  double tmax = pi*pow(a, 1.5);
-  double period = 2*tmax;
-  vector<double> p0 = {zeta_min, 0.0};
-  vector<double> p1 = {zeta_max, pi};
-  mcm kepler(0.0, tmax, p0, p1, atol, rtol, num_fourier,
-  period, [](double t, vector<double> x, vector<double> dx)
+  PRECISION zeta_max = zeta_min/(2*zeta_min-1);
+  PRECISION a = 0.5*(zeta_min+zeta_max);
+  PRECISION tmax = pi*pow(a, 1.5);
+  PRECISION period = 2*tmax;
+  vector<PRECISION> p0 = {zeta_min, 0.0};
+  vector<PRECISION> p1 = {zeta_max, pi};
+  mcm<PRECISION> kepler(0.0, tmax, p0, p1, atol, rtol, num_fourier,
+  period, [](PRECISION t, vector<PRECISION> x, vector<PRECISION> dx)
   { if(abs(x[0])>1e-8)
     return 0.5*(pow(dx[0],2.0)+pow(x[0]*dx[1], 2.0))+1/abs(x[0]);
     else
     return 0.0;});
 
   kepler.set_init_guess();
-/*
-  if(num_fourier > 1)
-  {
-    vector<vector<double>> guess_coeff(2, vector<double>(2*num_fourier, 0));
-    guess_coeff[0][0] = -0.9783287;
-    guess_coeff[0][1] = -0.72761454;
-    guess_coeff[1][0] = -0.071760075;
-    guess_coeff[1][1] = 0.74102022;
-    kepler.set_init_guess(guess_coeff);
-  } 
- 
-  if(num_fourier > 2)
-  {
-    vector<vector<double>> guess_coeff(2, vector<double>(2*num_fourier, 0));
-    guess_coeff[0][0] = -0.48707975;
-    guess_coeff[0][1] = -0.76026237;
-    guess_coeff[0][2] = -0.057953384;
-    guess_coeff[0][3] = -0.30365066;
-    guess_coeff[1][0] = -0.1178401;
-    guess_coeff[1][1] = 0.92354616;
-    guess_coeff[1][2] = -0.20888379;
-    guess_coeff[1][3] = 0.014099131;
-    kepler.set_init_guess(guess_coeff);
-  } 
-*/
+
   // variable to get optimization state
   int num_move; // number of actual moves
-  double accept_ratio; // acceptance ratio
+  PRECISION accept_ratio; // acceptance ratio
 
   tie(num_move, accept_ratio) = \
   kepler.optimize(max_iter, max_step, lambda, filename_monitor);
 
   // Now fill time
-  vector<double> t(num_eval, 0);
-  double grid_space = tmax/double(num_eval-1);
+  vector<PRECISION> t(num_eval, 0);
+  PRECISION grid_space = tmax/PRECISION(num_eval-1);
   for(int i=1; i<num_eval; i++)
   t[i] = t[i-1]+grid_space;
   t[num_eval-1] = tmax;
 
   // store result
-  vector<vector<double>> result(2, vector<double>(num_eval, 0));
+  vector<vector<PRECISION>> result(2, vector<PRECISION>(num_eval, 0));
   result = kepler.min_eval(t);
   min_action = kepler.get_min_action();
 
   // store coefficients
-  vector<double> adder;
-  vector<double> scaler;
-  vector<vector<double>> coeff;
+  vector<PRECISION> adder;
+  vector<PRECISION> scaler;
+  vector<vector<PRECISION>> coeff;
 
   tie(adder, scaler, coeff) = \
   kepler.get_min_coeff();
@@ -135,7 +112,7 @@ int main(void)
 
   // move t by t0
   transform(t.begin(), t.end(), t.begin(),
-  [t0](double &x){return x += t0;});
+  [t0](PRECISION &x){return x += t0;});
 
   cout << " Calcuation is finished" << endl;
   cout << "======================result==============================" << endl;

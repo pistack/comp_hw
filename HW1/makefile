@@ -3,9 +3,11 @@
 CXX = g++
 INC = -I src/include/
 CXXFLAGS = -O3 $(INC)
+# CPPFLAGS = -D PRECISION=float # for float precision
+CPPFLAGS = -D PRECISION=double # for double precision
 
-OBJS = ./src/hw1.o ./src/main.o
-SRCS = ./src/hw1.cpp ./src/main.cpp
+OBJS = ./src/main.o
+SRCS = ./src/main.cpp
 
 TARGET = ./bin/hw1
 
@@ -25,5 +27,4 @@ new :
 	$(MAKE)
 # DO NOT DELETE
 
-./src/hw1.o: src/include/hw1.hpp
-./src/main.o: src/include/hw1.hpp
+./src/main.o: src/include/hw1.hpp src/include/hw1.tpp

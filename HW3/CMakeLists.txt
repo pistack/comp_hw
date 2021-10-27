@@ -1,19 +1,40 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(Compter_HW3 VERSION 0.1.0)
+if(DEFINED PRECISION)
+add_compile_definitions(PRECISION=${PRECISION})
+else()
+add_compile_definitions(PRECISION=double)
+endif()
 
 include(CTest)
 enable_testing()
 include_directories(src/include)
-add_library(fourier STATIC
-src/fourier.cpp src/fourier_path.cpp
-src/action.cpp src/include/fourier.hpp
+
+if(PRECISION EQUAL "float")
+add_executable(hw3f
+src/main.cpp src/include/action.hpp
+src/include/fourier.hpp
 src/include/fourier_path.hpp
-src/include/action.hpp)
-add_library(mcm STATIC
-src/mcm_basic.cpp src/mcm_move.cpp
-src/mcm_opt.cpp src/include/mcm.hpp)
-add_executable(hw3 src/main.cpp)
-target_link_libraries(hw3 mcm fourier)
+src/include/mcm.hpp
+src/include/action/action.tpp
+src/include/fourier/fourier.tpp
+src/include/fourier_path/fourier_path.tpp
+src/include/mcm/mcm_basic.tpp
+src/include/mcm/mcm_move.tpp
+src/include/mcm/mcm_opt.tpp)
+else()
+add_executable(hw3d
+src/main.cpp src/include/action.hpp
+src/include/fourier.hpp
+src/include/fourier_path.hpp
+src/include/mcm.hpp
+src/include/action/action.tpp
+src/include/fourier/fourier.tpp
+src/include/fourier_path/fourier_path.tpp
+src/include/mcm/mcm_basic.tpp
+src/include/mcm/mcm_move.tpp
+src/include/mcm/mcm_opt.tpp)
+endif()
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
