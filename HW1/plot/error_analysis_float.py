@@ -4,7 +4,7 @@
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-# matplotlib.rcParams['text.usetex'] = True
+matplotlib.rcParams['text.usetex'] = True
 
 SMALL_SIZE = 10
 MEDIUM_SIZE = 15

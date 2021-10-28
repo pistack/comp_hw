@@ -21,11 +21,11 @@ task_lst = [5, 10, 100, 1000, 10000]
 exact = np.pi*((0.9+1.125)/2.0)**(1.5) # t_f
 error = np.zeros(5)
 
-r1 = np.genfromtxt('zeta5.txt')
-r2 = np.genfromtxt('zeta10.txt')
-r3 = np.genfromtxt('zeta100.txt')
-r4 = np.genfromtxt('zeta1000.txt')
-r5 = np.genfromtxt('zeta10000.txt')
+r1 = np.genfromtxt('zeta5f.txt')
+r2 = np.genfromtxt('zeta10f.txt')
+r3 = np.genfromtxt('zeta100f.txt')
+r4 = np.genfromtxt('zeta1000f.txt')
+r5 = np.genfromtxt('zeta10000f.txt')
 
 
 error[0] = np.abs(exact-r1[-1, 0])
@@ -41,8 +41,8 @@ plt.xlabel(r'$n$')
 plt.ylabel('error')
 plt.xscale('log')
 plt.yscale('log')
-plt.savefig('plot_error.png', dpi=100)
-plt.savefig('plot_error.eps', dpi=300)
+plt.savefig('plot_error_float.png', dpi=100)
+plt.savefig('plot_error_float.eps', dpi=300)
 
 log_n = np.log(np.array(task_lst))
 log_error = np.log(error)

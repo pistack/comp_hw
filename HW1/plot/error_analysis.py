@@ -5,7 +5,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 import matplotlib
 import matplotlib.pyplot as plt
-# matplotlib.rcParams['text.usetex'] = True
+matplotlib.rcParams['text.usetex'] = True
 
 SMALL_SIZE = 10
 MEDIUM_SIZE = 15

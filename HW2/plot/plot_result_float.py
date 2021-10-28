@@ -17,11 +17,11 @@ plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 task_lst = [5, 10, 100, 1000, 10000]
 
-r1 = np.genfromtxt('zeta5.txt')
-r2 = np.genfromtxt('zeta10.txt')
-r3 = np.genfromtxt('zeta100.txt')
-r4 = np.genfromtxt('zeta1000.txt')
-r5 = np.genfromtxt('zeta10000.txt')
+r1 = np.genfromtxt('zeta5f.txt')
+r2 = np.genfromtxt('zeta10f.txt')
+r3 = np.genfromtxt('zeta100f.txt')
+r4 = np.genfromtxt('zeta1000f.txt')
+r5 = np.genfromtxt('zeta10000f.txt')
 ref = np.genfromtxt('zeta_ref.txt')
 
 plt.plot(r1[:, 0], r1[:, 1], marker='o', linestyle='none', label='n=5' )
@@ -36,5 +36,5 @@ plt.ylabel(r'$\zeta$')
 plt.xlim(0, 3.2)
 plt.ylim(0.85, 1.15)
 plt.legend()
-plt.savefig('plot_converge.png', dpi=100)
-plt.savefig('plot_converge.eps', dpi=300)
+plt.savefig('plot_converge_float.png', dpi=100)
+plt.savefig('plot_converge_float.eps', dpi=300)
