@@ -34,6 +34,7 @@ for i in range(5):
                 (r[j*offset, 1]*np.sin(r[j*offset, 2]) -
                 ref[j*offset_ref, 1]*np.sin(ref[j*offset_ref, 2]))**2
 
+EA = np.sqrt(EA)
 for i in range(1, 11, 1):
     plt.plot(task_list, EA[i-1, :], label=f't={i}', marker='o')
 plt.yscale('log')

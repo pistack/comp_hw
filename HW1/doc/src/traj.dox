@@ -28,6 +28,9 @@
 /// Since trajectory approximated by finite difference method is converges to exact epllise trajectory,
 /// when double precision, I assume \f$ n=10^5 \f$ with double precision result as exact path.
 /// Then we can estimate error at the selected points \f$(t=1,2,...,10)\f$.
+/// \f{equation}{\label{eq:traj_error}
+/// \mathrm{error} = \sqrt{(x(t)-x_{ref}(t))^2+(y(t)-y_{ref}(t))^2}
+///\f}
 /// @image html plot_error_analysis_float.png "Error Analysis: single precision"
 /// @image latex plot_error_analysis_float.eps "Error Analysis: single precision" width=10cm
 /// As you can see due to tuncation error, accuracy is worsen when \f$ n > 10^3 \f$.
@@ -37,7 +40,7 @@
 /// Therefore we can estimate the order of error using above plot.
 /// Order of error is estimated to
 /// \f{equation}{\label{eq:order_of_error}
-/// O(n^{-4})
+/// O(n^{-2})
 /// \f}
-/// Practical error bound is much better than estimated error bound \f$ O(n^{-2}) \f$.
+/// Practical error bound is same as estimated error bound \f$ O(n^{-2}) \f$.
 //////////////////////////////////////////////////////////////////////////////////////////////////////
