@@ -6,8 +6,8 @@ CXXFLAGS = -O3 $(INC)
 # CPPFLAGS = -D PRECISION_LEVEL=0 # for float precision
 CPPFLAGS = -D PRECISION_LEVEL=1 # for double precision
 
-OBJS = ./src/hw2.o ./src/main.o
-SRCS = ./src/hw2.cpp ./src/main.cpp
+OBJS = ./src/main.o
+SRCS = ./src/main.cpp
 
 TARGET = ./bin/hw2
 
@@ -27,5 +27,4 @@ new :
 	$(MAKE)
 # DO NOT DELETE
 
-./src/hw2.o: src/include/hw2.hpp
-./src/main.o: src/include/hw2.hpp
+./src/main.o: src/include/hw2.hpp src/include/hw2.tpp

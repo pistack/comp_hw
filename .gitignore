@@ -139,6 +139,7 @@ dmypy.json
 */bin/hw1
 */bin/hw2
 */bin/hw3
+*.exe
 
 # doxygen build file
 html

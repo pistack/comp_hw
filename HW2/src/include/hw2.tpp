@@ -19,15 +19,13 @@ HW2(T zeta_min, T t0, int n)
   std::vector<T> t(n+1, 0);
   std::vector<T> zeta(n+1, 0);
   std::vector<T> u(n+1, 0);
-  std::vector<T> u_mid(n, 0);
-  std::vector<T> integral(n+1, 0);
 
   // Note a = zeta_min**(-2)-2*zeta_min**(-1)
   //        = zeta_max**(-2)-2*zeta_max**(-1)
 
   tmp = 1/zeta_min;
   a = tmp*(tmp-2);
-  tmp = 1.0+sqrt(1.0+a);
+  tmp = 1.0+std::sqrt(1.0+a);
   zeta_max = -tmp/a;
 
   // calculates c1 and c2
@@ -51,13 +49,11 @@ HW2(T zeta_min, T t0, int n)
     {
       zeta[i] = zeta[i-1] + grid_space;
       u[i] = std::sqrt(zeta[i]);
-      u_mid[i-1] = std::sqrt(0.5*(zeta[i]+zeta[i-1]));
     }
 
   // end point
   zeta[n] = zeta_max-zeta_min;
   u[n] = std::sqrt(zeta[n]);
-  u_mid[n-1] = std::sqrt(0.5*(zeta[n]+zeta[n-1]));
 
   // numerical integration using 
   // non equi-spacing Simpson's rule
@@ -66,29 +62,21 @@ HW2(T zeta_min, T t0, int n)
   // integral_1[0] = integral_2[0]
   // integral_1[n+1-i] = integral_2[i]
   for(int i=1; i<n+1; i++)
-    {
-      T h0 = u_mid[i-1]-u[i-1];
-      T h1 = u[i] - u_mid[i-1];
-      T d = u[i] - u[i-1];
-
-      tmp = d/6.0*((2.0-h1/h0)*u[n+1-i]+
-      (d/h0)*(d/h1)*u_mid[n-i]+
-      (2.0-h0/h1)*u[n-i]);
-      integral[i] = tmp;
-    }
-
-  for(int i=1; i<n+1; i++)
-  t[i] = t[i-1] + c1*integral[i] + c2*integral[n+1-i];
+  {
+    T integral_part1;
+    T integral_part2;
+    integral_part1 = (u[i]-u[i-1])/2.0*(u[n-i]+u[n+1-i]);
+    integral_part2 = (u[n+1-i]-u[n-i])/2.0*(u[i]+u[i-1]);
+    t[i] = t[i-1] + c1*integral_part1 + c2*integral_part2;
+  }
 
   // initial condition
   // 1. t_0 = t0 
   // 2. zeta_0 = zeta_min
-  // 3. zeta_n = zeta_max
   std::transform(t.begin(), t.end(), t.begin(),
-  [t0](T &x){x += t0;});
+  [t0](T &x){return x += t0;});
   std::transform(zeta.begin(), zeta.end(), zeta.begin(),
-  [zeta_min](T &x){x += zeta_min;});
-  zeta[n] = zeta_max;
+  [zeta_min](T &x){return x += zeta_min;});
 
   return std::make_tuple(t, zeta);
 }
