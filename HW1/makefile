@@ -3,7 +3,7 @@
 CXX = g++
 INC = -I src/include/
 CXXFLAGS = -O3 $(INC)
-#CPPFLAGS = -D PRECISION_LEVEL=0 # for float precision
+CPPFLAGS = -D PRECISION_LEVEL=0 # for float precision
 #CPPFLAGS = -D PRECISION_LEVEL=1 # for double precision
 
 OBJS = ./src/main.o

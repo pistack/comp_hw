@@ -14,10 +14,10 @@
 
 #if PRECISION_LEVEL == 0
     #define PRECISION float
-    #define DIGITS 8
+    #define DIGITS 6
 #elif PRECISION_LEVEL == 1
     #define PRECISION double
-    #define DIGITS 15
+    #define DIGITS 14
 #endif
 
 using namespace std;

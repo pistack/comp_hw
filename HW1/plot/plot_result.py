@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-matplotlib.rcParams['text.usetex'] = True
+# matplotlib.rcParams['text.usetex'] = True
 
 SMALL_SIZE = 10
 MEDIUM_SIZE = 15
@@ -17,12 +17,12 @@ plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 task_lst = [10, 20, 100, 1000, 10000]
 
-r1 = np.genfromtxt('zeta10.txt')
-r2 = np.genfromtxt('zeta20.txt')
-r3 = np.genfromtxt('zeta100.txt')
-r4 = np.genfromtxt('zeta1000.txt')
-r5 = np.genfromtxt('zeta10000.txt')
-r6 = np.genfromtxt('zeta100000.txt')
+r1 = np.genfromtxt('zeta10f.txt')
+r2 = np.genfromtxt('zeta20f.txt')
+r3 = np.genfromtxt('zeta100f.txt')
+r4 = np.genfromtxt('zeta1000f.txt')
+r5 = np.genfromtxt('zeta10000f.txt')
+r6 = np.genfromtxt('zeta100000f.txt')
 
 plt.figure(1)
 plt.plot(r1[:, 0], r1[:, 1], marker='o', linestyle='none', label='n=10' )
@@ -37,8 +37,8 @@ plt.ylabel(r'$\zeta$')
 plt.xlim(0, 10)
 plt.ylim(0.85, 1.15)
 plt.legend()
-plt.savefig('plot_converge_zeta.png', dpi=100)
-plt.savefig('plot_converge_zeta.eps', dpi=300)
+plt.savefig('plot_converge_zeta_float.png', dpi=100)
+plt.savefig('plot_converge_zeta_float.eps', dpi=300)
 
 plt.figure(2)
 plt.plot(r1[:, 0], r1[:, 2], marker='o', linestyle='none', label='n=10' )
@@ -53,8 +53,8 @@ plt.ylabel(r'$\theta$')
 plt.xlim(0, 10)
 plt.ylim(0, 10)
 plt.legend()
-plt.savefig('plot_converge_theta.png', dpi=100)
-plt.savefig('plot_converge_theta.eps', dpi=300)
+plt.savefig('plot_converge_theta_float.png', dpi=100)
+plt.savefig('plot_converge_theta_float.eps', dpi=300)
 
 plt.figure(3)
 plt.plot(r1[:, 1]*np.cos(r1[:, 2]), r1[:, 1]*np.sin(r1[:, 2]), 
@@ -75,8 +75,5 @@ plt.ylabel(r'$y$')
 plt.xlim(-1.15, 0.95)
 plt.ylim(-1.1, 1.1)
 plt.legend(loc='upper right')
-plt.savefig('plot_converge_traj.png', dpi=100)
-plt.savefig('plot_converge_traj.eps', dpi=300)
-
-# Error Analysis
-# Assume n=10^5 is accurate evaluate L^2 error
+plt.savefig('plot_converge_traj_float.png', dpi=100)
+plt.savefig('plot_converge_traj_float.eps', dpi=300)
