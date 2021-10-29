@@ -15,21 +15,22 @@
 #include "fourier_path.hpp"
 
 /// @brief class which computes action
-/// Only defined when type T is one of float, double
-/// and long double.
+/// @param T precision should be one of
+/// float, double and long double
+/// @param Lag lagranian of action
+/// functor class which has
+/// time, path and derivative of path
+/// as variable and it returns
+/// value of lagranian at given time
 /// @warning If you give invaild path, then
 /// eval method will return always zero
 /// @ingroup libfourier
-template<typename T>
+template<typename T, typename Lag>
 class action
 {
 	private:
 	const int MAXDEPTH = 30; // maximum depth of recurrsion
 	T atol, rtol; // absoulte and relative tol
-
-	// lagranian of action
-	T (*lagranian)(T, std::vector<T>,
-	std::vector<T>);
 
 	std::vector<fourier_path<T>> path_action; // path
 
@@ -64,51 +65,30 @@ class action
 	/// @brief initialize action class
 	/// @param abs_tol absoulte tolerance
 	/// @param rel_tol relative tolerance
-	/// @param lag lagranian of action
-	/// - first param:  t
-	/// - type of first param: T 
-	/// - second param: T path at t
-	/// - type of second param: vector<T>
-	/// - third param: derivative of path at t
-	/// - type of third param: vector<T>
-	/// - type of return value: T
 
-	action(T abs_tol, T rel_tol, 
-	T (*lag)(T, std::vector<T>, 
-	std::vector<T>))
-	: atol(abs_tol), rtol(rel_tol), \
-	lagranian(lag)
+	action(T abs_tol, T rel_tol)
+	: atol(abs_tol), rtol(rel_tol)
 	{}
 
 	/// @brief initialize action class
 	/// @param abs_tol absoulte tolerance
 	/// @param rel_tol relative tolerance
 	/// @param path path
-	/// @param lag lagranian of action
-	/// - first param:  t
-	/// - type of first param: T 
-	/// - second param: T path at t
-	/// - type of second param: vector<T>
-	/// - third param: derivative of path at t
-	/// - type of third param: vector<T>
-	/// - type of return value: T
 
 	action(T abs_tol, T rel_tol,
-	std::vector<fourier_path<T>> path, 
-	T (*lag)(T, std::vector<T>, 
-	std::vector<T>))
+	std::vector<fourier_path<T>> path)
 	: atol(abs_tol), rtol(rel_tol), \
-	lagranian(lag), path_action(path) 
+	path_action(path) 
 	{check_vaild();}
 
 	/// @brief copy constructer of action class
-	action(const action<T> &copy)
+	action(const action<T, Lag> &copy)
 	: atol(copy.atol), rtol(copy.rtol), \
-	lagranian(copy.lagranian), path_action(copy.path_action), \
+	path_action(copy.path_action), \
 	vaildity(copy.vaildity)
 	{}
 
-	action<T> & operator=(const action<T> &copy);
+	action<T, Lag> & operator=(const action<T, Lag> &copy);
 
 	/// @brief update path
 	/// @param path path to update

@@ -2,10 +2,10 @@
  * @file main.cpp
  * @brief main program for homework3 of Computer1 class in Yonsei University
  * Interactively reads inital condition, number of sine function used for guess,
- * number of gird points to evaluate, number of interation, step size and
+ * number of points to evaluate, number of interation, step size and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 10. 28.
+ * @date 2021. 10. 29.
  */
 
 #include <algorithm>
@@ -18,15 +18,36 @@
 
 #if PRECISION_LEVEL == 0
     #define PRECISION float
-    #define DIGITS 8
+    #define DIGITS 6
 #elif PRECISION_LEVEL == 1
     #define PRECISION double
-    #define DIGITS 15
+    #define DIGITS 14
 #endif
 
 const PRECISION pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062; // define pi
 
 using namespace std;
+
+/// @brief functor class for the kepler lagranian
+/// @param t time
+/// @param p path
+/// @param dp derivative of path
+/// @return lagranian evaluated at given time
+
+class kepler_lag{
+
+  public :
+
+  kepler_lag() {}
+
+  PRECISION operator()(PRECISION t, 
+  vector<PRECISION> p, vector<PRECISION> dp) const
+  {
+    return PRECISION(0.5*(pow(dp[0], 2.0)+pow(p[0]*dp[1], 2.0))+
+    1/abs(p[0]));
+  }
+
+};
 
 int main(void)
 {
@@ -79,13 +100,8 @@ int main(void)
   PRECISION period = 2*tmax;
   vector<PRECISION> p0 = {zeta_min, 0.0};
   vector<PRECISION> p1 = {zeta_max, pi};
-  mcm<PRECISION> kepler(PRECISION(0.0), 
-  tmax, p0, p1, atol, rtol, num_fourier,
-  period, [](PRECISION t, vector<PRECISION> x, vector<PRECISION> dx)
-  { if(abs(x[0])>numeric_limits<PRECISION>::epsilon())
-    return PRECISION(0.5*(pow(dx[0],2.0)+pow(x[0]*dx[1], 2.0))+1/abs(x[0]));
-    else
-    return PRECISION(0.0);});
+  mcm<PRECISION, kepler_lag> kepler(PRECISION(0.0), 
+  tmax, p0, p1, atol, rtol, num_fourier, period);
 
   kepler.set_init_guess();
 
@@ -94,7 +110,8 @@ int main(void)
   PRECISION accept_ratio; // acceptance ratio
 
   tie(num_move, accept_ratio) = \
-  kepler.optimize(max_iter, max_step, lambda, filename_monitor);
+  kepler.optimize(max_iter, max_step, lambda, 
+  filename_monitor, DIGITS);
 
   // Now fill time
   vector<PRECISION> t(num_eval, 0);

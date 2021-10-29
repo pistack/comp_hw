@@ -7,9 +7,9 @@
  * @ingroup libmcm
  */
 
-template<typename T>
+template<typename T, typename Lag>
 std::tuple<int, T>
-mcm<T>::optimize(int num_iter, T step_size, T lambda)
+mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda)
 {
   // number_of_accepted move
   int n_accept = 0;
@@ -66,10 +66,10 @@ mcm<T>::optimize(int num_iter, T step_size, T lambda)
   return std::make_tuple(n_accept, prob);
 }
 
-template<typename T>
+template<typename T, typename Lag>
 std::tuple<int, T>
-mcm<T>::optimize(int num_iter, T step_size, T lambda,
-std::string monitor)
+mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda,
+std::string monitor, int digits)
 {
   // number_of_accepted move
   int n_accept = 0;
@@ -87,7 +87,7 @@ std::string monitor)
   std::ofstream fout;
   fout.open(monitor);
   fout.unsetf(std::ios::floatfield);
-  fout.precision(8);
+  fout.precision(digits);
 
 
   for(int i=0; i<num_iter; i++)

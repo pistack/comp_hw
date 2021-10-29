@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief headerfile for fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 10. 28.
+ * @date 2021. 10. 29.
  */
 
 #ifndef FOURIER_H
@@ -15,8 +15,8 @@
 
 /// @brief Class for sum of the sine and cosine function
 /// weighted by coefficients
-/// class is undefined when type T is not one of
-/// float, double, long double
+/// @param T precision should be one of float, double,
+/// and long double
 /// @ingroup libfourier
 
 template<typename T>

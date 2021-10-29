@@ -30,12 +30,17 @@
 /// To make random walk, it samples real number
 /// from normal distribution and move path by
 /// the sampled real number.
-/// If type T is not one of float, double and
-/// long doulbe then class is undefined.
+/// @param T precision should be one of
+/// float, double and long double
+/// @param Lag lagranian of action
+/// functor class which has
+/// time, path and derivative of path
+/// as variable and it returns
+/// value of lagranian at given time
 /// @see \ref mcm
 /// @ingroup libmcm
 
-template<typename T>
+template<typename T, typename Lag>
 class mcm
 {
    private:
@@ -48,7 +53,7 @@ class mcm
    T fourier_period;
 
    // action
-   action<T> mcm_action;
+   action<T, Lag> mcm_action;
 
    // initial guess
    std::vector<std::vector<T>> init_guess;
@@ -89,21 +94,18 @@ class mcm
    /// @param rel_tol relative tolerance for action integral
    /// @param num_f number of sine and cosine function to use
    /// @param period period of fourier function
-   /// @param lag lagranian of action
    /// @see fourier class and action class
    mcm(T t_0, T t_1, 
    std::vector<T> p_0, std::vector<T> p_1,
-   T abs_tol, T rel_tol, int num_f, T period,
-   T (*lag)(T, std::vector<T>, 
-   std::vector<T>))
+   T abs_tol, T rel_tol, int num_f, T period)
    : t0(t_0), t1(t_1), p0(p_0), p1(p_1), \
    num_fourier(num_f), fourier_period(period)
    {
-      mcm_action = action<T>(abs_tol, rel_tol, lag);
+      mcm_action = action<T, Lag>(abs_tol, rel_tol);
    }
 
    /// @brief copy constructer of HW3 class
-   mcm(const mcm<T> &copy)
+   mcm(const mcm<T, Lag> &copy)
    : t0(copy.t0), t1(copy.t1), p0(copy.p0), p1(copy.p1), \
    num_fourier(copy.num_fourier), \
    fourier_period(copy.fourier_period), \
@@ -113,7 +115,7 @@ class mcm
    min_action(copy.min_action)
    {}
 
-   mcm<T> & operator=(const mcm<T> &copy);
+   mcm<T, Lag> & operator=(const mcm<T, Lag> &copy);
 
    /// @brief set initial guess
    /// @param init_c initial coefficients to weight sum of
@@ -180,10 +182,12 @@ class mcm
    /// @param step_size step size of random walk
    /// @param lambda parameter which controls acceptance of move
    /// @param monitor filename to monitor optimization process
+   /// @param digits number of digits to be printed during monitoring
+   /// optimization process
    /// @return tuple of number of accepted move and acceptance ratio.
    std::tuple<int, T>
    optimize(int num_iter, T step_size, T lambda, 
-   std::string monitor);
+   std::string monitor, int digits);
 };
 
 #include "mcm/mcm_basic.tpp"

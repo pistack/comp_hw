@@ -3,20 +3,20 @@
  * @ingroup libfourier
  * @brief evaluates action<T>
  * @author pistack (Junho Lee)
- * @date 2021. 10. 28.
+ * @date 2021. 10. 29.
  */
 
-template<typename T>
-action<T> & action<T>::operator=(const action<T> &copy)
+template<typename T, typename Lag>
+action<T, Lag> & action<T, Lag>::operator=(const action<T, Lag> &copy)
 {
   atol = copy.atol; rtol = copy.rtol;
-  path_action = copy.path_action; lagranian = copy.lagranian;
+  path_action = copy.path_action;
   vaildity = copy.vaildity;
   return *this;
 }
 
-template<typename T>
-void action<T>::check_vaild()
+template<typename T, typename Lag>
+void action<T, Lag>::check_vaild()
 {
   if(!path_action[0].is_vaild())
   return;
@@ -34,16 +34,16 @@ void action<T>::check_vaild()
   return;
 }
 
-template<typename T>
-void action<T>::update(std::vector<fourier_path<T>> path)
+template<typename T, typename Lag>
+void action<T, Lag>::update(std::vector<fourier_path<T>> path)
 {path_action = path; check_vaild();}
 
-template<typename T>
-bool action<T>::is_vaild()
+template<typename T, typename Lag>
+bool action<T, Lag>::is_vaild()
 {return vaildity;}
 
-template<typename T>
-T action<T>::eval_lagranian(T t)
+template<typename T, typename Lag>
+T action<T, Lag>::eval_lagranian(T t)
 {
   int n = path_action.size();
   std::vector<T> p(n, 0); // path
@@ -53,11 +53,12 @@ T action<T>::eval_lagranian(T t)
     p[i] = path_action[i].eval(t);
     dp[i] = path_action[i].deriv(t);
   }
-  return lagranian(t, p, dp);
+  Lag lag; // lagrangian
+  return lag(t, p, dp);
 }
 
-template<typename T>
-T action<T>::eval_helper(T left, T mid, T right, 
+template<typename T, typename Lag>
+T action<T, Lag>::eval_helper(T left, T mid, T right, 
 T fleft, T fmid, T fright, 
 T integral, T tol, int depth)
 {
@@ -93,8 +94,8 @@ T integral, T tol, int depth)
   return integral_l + integral_r + delta/15;
 }
 
-template<typename T>
-T action<T>::eval()
+template<typename T, typename Lag>
+T action<T, Lag>::eval()
 {
   if(! vaildity)
   {

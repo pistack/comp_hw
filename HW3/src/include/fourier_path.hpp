@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief headerfile for path approximated by fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 10. 28.
+ * @date 2021. 10. 29.
  */
 
 #ifndef FOURIER_PATH_H
@@ -19,6 +19,7 @@
 
 /// @brief Class for the path approximated by fourier function
 /// @ingroup libfourier
+/// @param T precision should be one of float, double, long double
 /// @warning If your fourier function is not vaild for 
 /// the approximation of path, eval and deriv method return
 /// always zero

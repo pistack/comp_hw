@@ -3,12 +3,12 @@
  * @brief template which init, define initial guess
  * store minimum guess and evaluate guesses.
  * @author pistack (Junho Lee)
- * @date 2021. 10. 28.
+ * @date 2021. 10. 29.
  * @ingroup libmcm
  */
 
-template<typename T>
-mcm<T> & mcm<T>::operator=(const mcm<T> &copy)
+template<typename T, typename Lag>
+mcm<T, Lag> & mcm<T, Lag>::operator=(const mcm<T, Lag> &copy)
 {
   t0 = copy.t0; t1 = copy.t1; p0 = copy.p0; p1 = copy.p1;
   num_fourier = copy.num_fourier; 
@@ -20,8 +20,8 @@ mcm<T> & mcm<T>::operator=(const mcm<T> &copy)
   return *this;
 }
 
-template<typename T>
-void mcm<T>::set_init_guess(std::vector<std::vector<T>> init_c)
+template<typename T, typename Lag>
+void mcm<T, Lag>::set_init_guess(std::vector<std::vector<T>> init_c)
 {
   int dim_1 = init_c.size();
   std::vector<fourier_path<T>> paths(dim_1, fourier_path<T>());
@@ -39,8 +39,8 @@ void mcm<T>::set_init_guess(std::vector<std::vector<T>> init_c)
   min_action = init_action;
 }
 
-template<typename T>
-void mcm<T>::set_init_guess()
+template<typename T, typename Lag>
+void mcm<T, Lag>::set_init_guess()
 {
   int dim_1 = p0.size();
   int dim_2 = 2*num_fourier;
@@ -64,15 +64,15 @@ void mcm<T>::set_init_guess()
   min_action = init_action;
 }
 
-template<typename T>
-T mcm<T>::get_init_action()
+template<typename T, typename Lag>
+T mcm<T, Lag>::get_init_action()
 {
   return init_action;
 }
 
-template<typename T>
+template<typename T, typename Lag>
 std::tuple<std::vector<T>, std::vector<T>, std::vector<std::vector<T>>>
-mcm<T>::get_init_coeff()
+mcm<T, Lag>::get_init_coeff()
 {
   int dim_1 = init_path.size();
   std::vector<T> init_adder(dim_1, 0);
@@ -85,8 +85,8 @@ mcm<T>::get_init_coeff()
   return std::make_tuple(init_adder, init_scaler, init_guess);
 }
 
-template<typename T>
-std::vector<T> mcm<T>::init_eval(T t)
+template<typename T, typename Lag>
+std::vector<T> mcm<T, Lag>::init_eval(T t)
 {
   int dim_1 = init_path.size();
   std::vector<T> result(dim_1, 0);
@@ -95,8 +95,8 @@ std::vector<T> mcm<T>::init_eval(T t)
   return result;
 }
 
-template<typename T>
-std::vector<std::vector<T>> mcm<T>::init_eval(std::vector<T> t)
+template<typename T, typename Lag>
+std::vector<std::vector<T>> mcm<T, Lag>::init_eval(std::vector<T> t)
 {
   int dim_1 = init_path.size();
   int dim_2 = t.size();
@@ -106,15 +106,15 @@ std::vector<std::vector<T>> mcm<T>::init_eval(std::vector<T> t)
   return result;
 }
 
-template<typename T>
-T mcm<T>::get_min_action()
+template<typename T, typename Lag>
+T mcm<T, Lag>::get_min_action()
 {
   return min_action;
 }
 
-template<typename T>
+template<typename T, typename Lag>
 std::tuple<std::vector<T>, std::vector<T>, std::vector<std::vector<T>>>
-mcm<T>::get_min_coeff()
+mcm<T, Lag>::get_min_coeff()
 {
   int dim_1 = min_path.size();
   std::vector<T> min_adder(dim_1, 0);
@@ -127,8 +127,8 @@ mcm<T>::get_min_coeff()
   return std::make_tuple(min_adder, min_scaler, min_guess);
 }
 
-template<typename T>
-std::vector<T> mcm<T>::min_eval(T t)
+template<typename T, typename Lag>
+std::vector<T> mcm<T, Lag>::min_eval(T t)
 {
   int dim_1 = min_path.size();
   std::vector<T> result(dim_1, 0);
@@ -137,8 +137,8 @@ std::vector<T> mcm<T>::min_eval(T t)
   return result;
 }
 
-template<typename T>
-std::vector<std::vector<T>> mcm<T>::min_eval(std::vector<T> t)
+template<typename T, typename Lag>
+std::vector<std::vector<T>> mcm<T, Lag>::min_eval(std::vector<T> t)
 {
   int dim_1 = min_path.size();
   int dim_2 = t.size();
