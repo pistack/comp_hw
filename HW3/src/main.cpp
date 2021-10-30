@@ -5,12 +5,11 @@
  * number of points to evaluate, number of interation, step size and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 10. 29.
+ * @date 2021. 10. 30.
  */
 
 #include <algorithm>
 #include <cmath>
-#include <limits>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -34,24 +33,25 @@ using namespace std;
 /// @param dp derivative of path
 /// @return lagranian evaluated at given time
 
+template<typename T>
 class kepler_lag{
 
   public :
 
   kepler_lag() {}
 
-  PRECISION operator()(PRECISION t, 
-  vector<PRECISION> p, vector<PRECISION> dp) const
+  T operator()(T t, 
+  vector<T> p, vector<T> dp) const
   {
-    return PRECISION(0.5*(pow(dp[0], 2.0)+pow(p[0]*dp[1], 2.0))+
-    1/abs(p[0]));
+    return 0.5*(pow(dp[0], 2.0)+pow(p[0]*dp[1], 2.0))+
+    1/abs(p[0]);
   }
 
 };
 
 int main(void)
 {
-  PRECISION atol, rtol; // abs and rel tol of action integral
+  PRECISION atol, rtol; // abs tol and rel tol of action integral
   int num_eval; // number of points to eval
   int num_fourier; // number of sine and cosine function used for guess
   int max_iter; // number of iteration
@@ -62,8 +62,10 @@ int main(void)
   PRECISION min_action; // minimum action value
   string filename; // file name to store results
   string filename_coeff; // file name to store coeffcients
-  string filename_monitor; // file name to monitor optimization process
   ofstream fout; // file output stream
+  #ifdef MONITOR
+  string filename_monitor; // file name to monitor optimization process
+  #endif
 
   cout << "==========================================================" << endl;
   cout << "               hw3: main program for homework3            " << endl;
@@ -89,8 +91,10 @@ int main(void)
   cin >> filename;
   cout << " file name to store coefficient: ";
   cin >> filename_coeff;
+  #ifdef MONITOR
   cout << " file name to monitor optimization process: ";
   cin >> filename_monitor;
+  #endif
   cout << " Now starts calculation" << endl;
 
   // initial condition
@@ -100,18 +104,47 @@ int main(void)
   PRECISION period = 2*tmax;
   vector<PRECISION> p0 = {zeta_min, 0.0};
   vector<PRECISION> p1 = {zeta_max, pi};
-  mcm<PRECISION, kepler_lag> kepler(PRECISION(0.0), 
+  mcm<PRECISION, kepler_lag<PRECISION>> kepler(PRECISION(0.0), 
   tmax, p0, p1, atol, rtol, num_fourier, period);
 
   kepler.set_init_guess();
+
+  if(num_fourier > 1)
+  {
+    vector<vector<PRECISION>> c(2, vector<PRECISION>(2*num_fourier, 0));
+    c[0][0] = -0.18902;
+    c[0][1] = -0.140571;
+    c[1][0] = 0.0219818;
+    c[1][1] = -0.22574;
+    kepler.set_init_guess(c);
+  }
+
+  if(num_fourier > 2)
+  {
+    vector<vector<PRECISION>> c(2, vector<PRECISION>(2*num_fourier, 0));
+    c[0][0] = 0.465087;
+    c[0][1] = 0.629676;
+    c[0][2] = 0.0211421;
+    c[0][3] = 0.277477;
+    c[1][0] = 0.0990907;
+    c[1][1] = -0.794892;
+    c[1][2] = 0.18191;
+    c[1][3] = -0.0111723;
+    kepler.set_init_guess(c);
+  }
 
   // variable to get optimization state
   int num_move; // number of actual moves
   PRECISION accept_ratio; // acceptance ratio
 
+  #ifdef MONITOR
   tie(num_move, accept_ratio) = \
   kepler.optimize(max_iter, max_step, lambda, 
   filename_monitor, DIGITS);
+  #else
+  tie(num_move, accept_ratio) = \
+  kepler.optimize(max_iter, max_step, lambda);
+  #endif
 
   // Now fill time
   vector<PRECISION> t(num_eval, 0);

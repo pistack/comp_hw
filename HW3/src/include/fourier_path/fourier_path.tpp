@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief evaluate path and derivative
  * @author pistack (Junho Lee)
- * @date 2021. 10. 28.
+ * @date 2021. 10. 30.
  */
 
 template<typename T>
@@ -23,7 +23,7 @@ void fourier_path<T>::init_helper()
   // init variable
   T tstp, tstf;
   std::vector<T> t_ends = {p_t0, p_tf};
-  std::vector<T> f_ends(2, 0);
+  std::vector<T> f_ends(2, 0.0);
   T eps = std::numeric_limits<T>::epsilon();
 
   f_ends = p_func.eval(t_ends);
@@ -32,16 +32,18 @@ void fourier_path<T>::init_helper()
 
   T deltap = std::abs(tstp);
   T deltaf = std::abs(tstf);
+  T pmean = 0.5*(std::abs(p_f) + std::abs(p_0));
+  T fmean = 0.5*(std::abs(f_ends[1])+std::abs(f_ends[0]));
 
-  if(deltap < eps*(1.0+deltap) && 
-  deltaf < eps*(1.0+deltaf))
+  if(deltap < eps*(1.0+pmean) && 
+  deltaf < eps*(1.0+fmean))
   {
     p_vaild = true;
     scale = 1.0;
     add = p_0 - f_ends[0];
   }
-  else if(deltap > eps*(1.0+deltap) 
-  && deltaf > eps*(1.0+deltaf))
+  else if(deltap > eps*(1.0+pmean) 
+  && deltaf > eps*(1.0+fmean))
   {
     p_vaild = true;
     scale = tstp/tstf;

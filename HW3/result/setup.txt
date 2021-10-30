@@ -1,2 +1,25 @@
-# nf step lambda iter 
-1 0.01 10000 1000000 
+systematic approach (double precision)
+step_size 0.01 lambda 100 atol, rtol 1e-8 iter 10^6
+1  5.0317269398578 0.87211
+2  4.758040059945 0.722633
+3  4.7440989634416 0.567122
+decrease step_size and increase lambda
+step_size 0.001 lambda 10000
+3 4.7424927174008 0.536722 ---> finished
+
+systematic approach (single precision)
+step_size 0.01 lambda 100 atol, rtol 1e-4 iter 10^6
+1  5.03172 0.869725
+2  4.75816 0.7249
+3  4.74514 0.56537
+decrease step_size and increase lambda
+step_size 0.001 lambda 10000
+3  4.74276 0.540439 ---> finished
+
+
+exact 4.74173906770319 10^5
+
+num_fourier 4
+1e-4 4.7376983481238
+1e-5 4.7386163743315
+1e-6 4.7397757770526

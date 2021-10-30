@@ -1,9 +1,9 @@
 /*!
- * @file action.cpp
+ * @file action.tpp
  * @ingroup libfourier
  * @brief evaluates action<T>
  * @author pistack (Junho Lee)
- * @date 2021. 10. 29.
+ * @date 2021. 10. 30.
  */
 
 template<typename T, typename Lag>
@@ -18,16 +18,12 @@ action<T, Lag> & action<T, Lag>::operator=(const action<T, Lag> &copy)
 template<typename T, typename Lag>
 void action<T, Lag>::check_vaild()
 {
-  if(!path_action[0].is_vaild())
-  return;
-
   int n = path_action.size();
+  vaildity = false;
 
-  for(int i=1; i<n; i++)
+  for(int i=0; i<n; i++)
   {
-    if(! path_action[i].is_vaild() ||
-    (path_action[i-1].get_endtimes() !=
-    path_action[i].get_endtimes()))
+    if(! path_action[i].is_vaild())
     return;
   }
   vaildity = true;
@@ -60,9 +56,10 @@ T action<T, Lag>::eval_lagranian(T t)
 template<typename T, typename Lag>
 T action<T, Lag>::eval_helper(T left, T mid, T right, 
 T fleft, T fmid, T fright, 
-T integral, T tol, int depth)
+T integral, T eps, T D, int depth)
 {
-  T eps = 15*(tol + rtol*abs(integral));
+  T tol = 8.0*(eps + rtol*std::abs(integral)); // for safety
+  T Dab;
   if(depth > MAXDEPTH)
   {
     errno = ERANGE;
@@ -82,15 +79,15 @@ T integral, T tol, int depth)
   T integral_l = stepsize_l/3.0*(fleft+4.0*flmid+fmid);
   T integral_r = stepsize_r/3.0*(fright+4.0*frmid+fmid);
   T delta = integral_l + integral_r - integral;
-  if(abs(delta) > eps || depth==0)
+  Dab = 0.25*(fleft-4.0*flmid+6.0*fmid-4.0*frmid+fright); 
+  if(std::abs(delta) > tol || std::abs(Dab) > std::abs(D))
   {
     integral_l = eval_helper(left, lmid, mid,
-    fleft, flmid, fmid, integral_l, tol/2, depth+1);
+    fleft, flmid, fmid, integral_l, eps/2, Dab, depth+1);
     integral_r = eval_helper(mid, rmid, right,
-    fmid, frmid, fright, integral_r, tol/2, depth+1);
+    fmid, frmid, fright, integral_r, eps/2, Dab, depth+1);
     return integral_l + integral_r;
   }
-  else
   return integral_l + integral_r + delta/15;
 }
 
@@ -112,6 +109,6 @@ T action<T, Lag>::eval()
   T integral = stepsize/3.0*(fleft+4.0*fmid+fright);
 
   return eval_helper(t_0, tmid, t_1, fleft, fmid, fright,
-  integral, atol, 0);
+  integral, atol, 0.0, 0);
 }
 

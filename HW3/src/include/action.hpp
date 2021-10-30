@@ -3,7 +3,7 @@
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
- * @date 2021. 10. 28.
+ * @date 2021. 10. 30.
  */
 
 #ifndef ACTION_H
@@ -52,11 +52,14 @@ class action
 	/// @param fmid value of lagrangian at mid point
 	/// @param fright value of lagrangian at right end point
 	/// @param integral integrated value
-	/// @param tol tolerance
+	/// @param eps absolute tolerance
+	/// @param D  variable used to 
+	/// determine sign change of 
+	/// 4th derivative of lagranian
 	/// @param depth recurrsion depth
 	T eval_helper(T left, T mid, T right,
 	T fleft, T fmid, T fright, 
-	T integral, T tol, int depth);
+	T integral, T eps, T D, int depth);
 
 	public:
     /// @brief initialize action class

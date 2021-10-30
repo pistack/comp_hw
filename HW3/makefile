@@ -3,10 +3,8 @@
 CXX = g++
 INC = -I src/include/
 # CXXFLAGS = -O -g -Wall -Werror -pedantic $(INC)
-CXXFLAGS = -O -g -Wall -pedantic $(INC)
-# CXXFLAGS = -O3 $(INC)
-# CPPFLAGS = -D PRECISION_LEVEL=0 # for float precision
-# CPPFLAGS = -D PRECISION_LEVEL=1 # for double precision
+# CPPFLAGS = -O3 -D PRECISION_LEVEL=0 $(INC) # for single precision
+CPPFLAGS = -O3 -D PRECISION_LEVEL=1 $(INC) # for double precision
 
 OBJS = ./src/main.o
 SRCS = ./src/main.cpp

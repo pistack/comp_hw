@@ -3,7 +3,7 @@
  * @brief template for minimization of the action
  * using Monte Carlo Metropolis method
  * @author pistack (Junho Lee)
- * @date 2021. 10. 28.
+ * @date 2021. 10. 30.
  * @ingroup libmcm
  */
 

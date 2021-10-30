@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief headerfile for fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 10. 29.
+ * @date 2021. 10. 28.
  */
 
 #ifndef FOURIER_H
