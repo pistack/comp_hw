@@ -1,5 +1,5 @@
 /*!
- * @file test_action_simple.cpp
+ * @file test_action_kepler.cpp
  * @brief test action::eval() routine with kepler action
  * @author pistack (Junho Lee)
  * @date 2021. 10. 30.

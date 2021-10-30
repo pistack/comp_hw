@@ -108,10 +108,8 @@ template<typename T, typename Lag>
 T action<T, Lag>::eval()
 {
   if(! vaildity)
-  {
-    errno = EINVAL;
-    return 0;
-  }
+  return 0;
+  
   T t0, t1;
   std::tie(t0, t1) = path_action[0].get_endtimes();
   D_tol = 180.0*atol/(t1-t0);

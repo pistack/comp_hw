@@ -9,9 +9,7 @@
 #ifndef ACTION_H
 #define ACTION_H
 
-#include <algorithm>
 #include <cmath>
-#include <cerrno>
 #include <limits>
 #include <vector>
 #include "fourier_path.hpp"
