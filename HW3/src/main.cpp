@@ -51,7 +51,7 @@ class kepler_lag{
 
 int main(void)
 {
-  PRECISION atol, rtol; // abs tol and rel tol of action integral
+  PRECISION atol; // abs tol of action integral
   int num_eval; // number of points to eval
   int num_fourier; // number of sine and cosine function used for guess
   int max_iter; // number of iteration
@@ -75,8 +75,6 @@ int main(void)
   cin >> zeta_min;
   cout << " absolute tolerance of action: ";
   cin >> atol;
-  cout << " relative tolerance of action: ";
-  cin >> rtol;
   cout << " number of sine and cosine function for approximation: ";
   cin >> num_fourier;
   cout << " number of points to evaluate path: ";
@@ -105,31 +103,31 @@ int main(void)
   vector<PRECISION> p0 = {zeta_min, 0.0};
   vector<PRECISION> p1 = {zeta_max, pi};
   mcm<PRECISION, kepler_lag<PRECISION>> kepler(PRECISION(0.0), 
-  tmax, p0, p1, atol, rtol, num_fourier, period);
+  tmax, p0, p1, atol, num_fourier, period);
 
   kepler.set_init_guess();
 
   if(num_fourier > 1)
   {
     vector<vector<PRECISION>> c(2, vector<PRECISION>(2*num_fourier, 0));
-    c[0][0] = -0.18902;
-    c[0][1] = -0.140571;
-    c[1][0] = 0.0219818;
-    c[1][1] = -0.22574;
+    c[0][0] = -0.845392;
+    c[0][1] = -0.628871;
+    c[1][0] = -0.0880765;
+    c[1][1] = 0.907381;
     kepler.set_init_guess(c);
   }
 
   if(num_fourier > 2)
   {
     vector<vector<PRECISION>> c(2, vector<PRECISION>(2*num_fourier, 0));
-    c[0][0] = 0.465087;
-    c[0][1] = 0.629676;
-    c[0][2] = 0.0211421;
-    c[0][3] = 0.277477;
-    c[1][0] = 0.0990907;
-    c[1][1] = -0.794892;
-    c[1][2] = 0.18191;
-    c[1][3] = -0.0111723;
+    c[0][0] = -0.638579;
+    c[0][1] = -0.931356;
+    c[0][2] = -0.0523613;
+    c[0][3] = -0.432764;
+    c[1][0] = -0.0989751;
+    c[1][1] = 0.768637;
+    c[1][2] = -0.176795;
+    c[1][3] = 0.0110902;
     kepler.set_init_guess(c);
   }
 

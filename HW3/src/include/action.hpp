@@ -3,14 +3,16 @@
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
- * @date 2021. 10. 30.
+ * @date 2021. 10. 31.
  */
 
 #ifndef ACTION_H
 #define ACTION_H
 
+#include <algorithm>
 #include <cmath>
 #include <cerrno>
+#include <limits>
 #include <vector>
 #include "fourier_path.hpp"
 
@@ -22,19 +24,24 @@
 /// time, path and derivative of path
 /// as variable and it returns
 /// value of lagranian at given time
+/// @warning finial time of path should be greater than
+/// initial time of it.
 /// @warning If you give invaild path, then
-/// eval method will return always zero
+/// eval method will return always zero.
+/// @see [J. ACM 16, 3 (July 1969), 
+/// 483–495.](https://dl.acm.org/doi/10.1145/321526.321537)
 /// @ingroup libfourier
 template<typename T, typename Lag>
 class action
 {
 	private:
-	const int MAXDEPTH = 30; // maximum depth of recurrsion
-	T atol, rtol; // absoulte and relative tol
-
+	T atol; // absoulte tolerance
+	
 	std::vector<fourier_path<T>> path_action; // path
 
 	bool vaildity=false; // vaildity of path
+
+	T D_tol; // tolerance of D factor
 
 	/// @brief checks the vaildity of path
 	void check_vaild();
@@ -52,42 +59,41 @@ class action
 	/// @param fmid value of lagrangian at mid point
 	/// @param fright value of lagrangian at right end point
 	/// @param integral integrated value
-	/// @param eps absolute tolerance
-	/// @param D  variable used to 
-	/// determine sign change of 
-	/// 4th derivative of lagranian
-	/// @param depth recurrsion depth
+	/// @param D previous D value 
 	T eval_helper(T left, T mid, T right,
 	T fleft, T fmid, T fright, 
-	T integral, T eps, T D, int depth);
+	T integral, T D);
 
 	public:
     /// @brief initialize action class
 	action(){}
 
 	/// @brief initialize action class
-	/// @param abs_tol absoulte tolerance
-	/// @param rel_tol relative tolerance
+	/// @param path path
 
-	action(T abs_tol, T rel_tol)
-	: atol(abs_tol), rtol(rel_tol)
+	action(std::vector<fourier_path<T>> path)
+	: path_action(path)
+	{check_vaild();}
+
+	/// @brief initialize action class
+	/// @param abs_tol absoulte tolerance
+
+	action(T abs_tol)
+	: atol(abs_tol)
 	{}
 
 	/// @brief initialize action class
 	/// @param abs_tol absoulte tolerance
-	/// @param rel_tol relative tolerance
 	/// @param path path
 
-	action(T abs_tol, T rel_tol,
+	action(T abs_tol,
 	std::vector<fourier_path<T>> path)
-	: atol(abs_tol), rtol(rel_tol), \
-	path_action(path) 
+	: atol(abs_tol), path_action(path) 
 	{check_vaild();}
 
 	/// @brief copy constructer of action class
 	action(const action<T, Lag> &copy)
-	: atol(copy.atol), rtol(copy.rtol), \
-	path_action(copy.path_action), \
+	: atol(copy.atol), path_action(copy.path_action), \
 	vaildity(copy.vaildity)
 	{}
 
@@ -96,6 +102,16 @@ class action
 	/// @brief update path
 	/// @param path path to update
 	void update(std::vector<fourier_path<T>> path);
+
+    /// @brief update absolute tolerance
+	/// @param abs_tol absolute tolerance
+	void update(T abs_tol);
+
+	/// @brief update absolute tolerance and path
+	/// @param path path to update
+	/// @param abs_tol absolute tolerance
+	void update(std::vector<fourier_path<T>> path,
+	T abs_tol);
 
 	/// @brief check vaildity of path
 	/// @return vaildity of path

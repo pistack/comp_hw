@@ -91,17 +91,16 @@ class mcm
    /// @param p_0 value of path at initial time
    /// @param p_1 value of path at finial time
    /// @param abs_tol absolute tolerance for action integral
-   /// @param rel_tol relative tolerance for action integral
    /// @param num_f number of sine and cosine function to use
    /// @param period period of fourier function
    /// @see fourier class and action class
    mcm(T t_0, T t_1, 
    std::vector<T> p_0, std::vector<T> p_1,
-   T abs_tol, T rel_tol, int num_f, T period)
+   T abs_tol, int num_f, T period)
    : t0(t_0), t1(t_1), p0(p_0), p1(p_1), \
    num_fourier(num_f), fourier_period(period)
    {
-      mcm_action = action<T, Lag>(abs_tol, rel_tol);
+      mcm_action = action<T, Lag>(abs_tol);
    }
 
    /// @brief copy constructer of HW3 class
