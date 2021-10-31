@@ -2,10 +2,10 @@
  * @file test_action_simple.cpp
  * @brief test action::eval() routine with simple function
  * @author pistack (Junho Lee)
- * @date 2021. 10. 30.
+ * @date 2021. 10. 31.
  */
 
-#include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <string>
 #include <iostream>
@@ -65,33 +65,58 @@ int main(void)
   cout << " Test 2. integrate 1/(2.0+sin(pi*x)+cos(pi*x)) from 0 to 2    " << endl;
   cout << " Test 3. Test 1 + Test 2 = 2.0 + Test 2 " << endl;
 
+  // execution time
+  std::chrono::steady_clock::time_point start;
+  std::chrono::steady_clock::time_point end;
+
   // initial condition
   vector<PRECISION> c = {1.0, 1.0};
-  vector<PRECISION> tol = {1e-4, 1e-6, 1e-8, 0.0};
+  vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6, 1e-8, 1e-10, 1e-12, 1e-14, 1e-16, 0.0};
   fourier<PRECISION> tmp(1, 2.0, c);
   vector<fourier_path<PRECISION>> path(1, fourier_path<PRECISION>(0.0, 2.0, 3.0, 3.0, tmp));
-  action<PRECISION, id_lag<PRECISION>> id_action(path);
-  action<PRECISION, inv_lag<PRECISION>> inv_action(path);
-  action<PRECISION, id_inv_lag<PRECISION>> id_inv_action(path);
+  action<PRECISION, id_lag<PRECISION>> tst1(path);
+  action<PRECISION, inv_lag<PRECISION>> tst2(path);
+  action<PRECISION, id_inv_lag<PRECISION>> tst3(path);
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(DIGITS); // print significant digits
-  for(int i=0; i<4; i++)
+  for(int i=0; i<9; i++)
   {
-    id_action.update(tol[i]);
-    cout << " Test 1. atol: " << tol[i] << endl;
-    cout << "Integration value: " << id_action.eval() << endl;
+    tst1.update(tol[i]);
+    cout << " Test 1. atol: " << tol[i] <<  endl;
+    start = std::chrono::steady_clock::now();
+    for(int j=0; j<10000; j++)
+    tst1.eval();
+    end = std::chrono::steady_clock::now();
+    cout << "Integration value: " << tst1.eval() << endl;
+    cout << "Execution time: " << \
+    std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
+    " microsecond" << endl;
   }
-  for(int i=0; i<4; i++)
+    for(int i=0; i<9; i++)
   {
-    inv_action.update(tol[i]);
-    cout << " Test 1. atol: " << tol[i] << endl;
-    cout << "Integration value: " << inv_action.eval() << endl;
+    tst2.update(tol[i]);
+    cout << " Test 1. atol: " << tol[i] <<  endl;
+    start = std::chrono::steady_clock::now();
+    for(int j=0; j<10000; j++)
+    tst2.eval();
+    end = std::chrono::steady_clock::now();
+    cout << "Integration value: " << tst2.eval() << endl;
+    cout << "Execution time: " << \
+    std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
+    " microsecond" << endl;
   }
-  for(int i=0; i<4; i++)
+  for(int i=0; i<9; i++)
   {
-    id_inv_action.update(tol[i]);
-    cout << " Test 1. atol: " << tol[i] << endl;
-    cout << "Integration value: " << id_inv_action.eval() << endl;
+    tst3.update(tol[i]);
+    cout << " Test 1. atol: " << tol[i] <<  endl;
+    start = std::chrono::steady_clock::now();
+    for(int j=0; j<10000; j++)
+    tst3.eval();
+    end = std::chrono::steady_clock::now();
+    cout << "Integration value: " << tst3.eval() << endl;
+    cout << "Execution time: " << \
+    std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
+    " microsecond" << endl;
   }
   cout << "Test finished!" << endl;
   cout << "==========================================================" << endl;

@@ -2,11 +2,11 @@
  * @file test_action_kepler.cpp
  * @brief test action::eval() routine with kepler action
  * @author pistack (Junho Lee)
- * @date 2021. 10. 30.
+ * @date 2021. 10. 31.
  */
 
-#include <algorithm>
 #include <cmath>
+#include <chrono>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -48,6 +48,9 @@ int main(void)
   cout << " Test 1. single precision systematic approach n_f: 3      " << endl;
   cout << " Test 2. double precision n_f: 4 with atol: 1e-4          " << endl;
 
+  // measure execution time of action::eval() method
+  std::chrono::steady_clock::time_point start;
+  std::chrono::steady_clock::time_point end;
 
   // initial condition
   PRECISION zeta_min = 0.9;
@@ -55,7 +58,7 @@ int main(void)
   PRECISION a = 0.5*(zeta_min+zeta_max);
   PRECISION tmax = pi*pow(a, 1.5);
   PRECISION period = 2*tmax;
-  vector<PRECISION> tol = {1e-4, 1e-6, 1e-8, 0.0};
+  vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6, 1e-8, 1e-10, 1e-12, 1e-14, 1e-16};
   vector<vector<PRECISION>> c1 {
     {-0.791412, -0.62261, -0.859226, -0.856224, 0.143711, -0.542851},
     {-0.216721, 0.548709, -0.198616, -0.0924677, 0.0491277, -0.0405731}
@@ -83,17 +86,32 @@ int main(void)
 
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(DIGITS); // print significant digits
-  for(int i=0; i<4; i++)
+  for(int i=0; i<9; i++)
   {
     tst1.update(tol[i]);
     cout << " Test 1. atol: " << tol[i] <<  endl;
+    start = std::chrono::steady_clock::now();
+    for(int j=0; j<10000; j++)
+    tst1.eval();
+    end = std::chrono::steady_clock::now();
     cout << "Integration value: " << tst1.eval() << endl;
+    cout << "Execution time: " << \
+    std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
+    " microsecond" << endl;
   }
-  for(int i=0; i<4; i++)
+  for(int i=0; i<9; i++)
   {
     tst2.update(tol[i]);
     cout << " Test 2. atol: " << tol[i] <<  endl;
+    start = std::chrono::steady_clock::now();
+    for(int j=0; j<10000; j++)
+    tst2.eval();
+    end = std::chrono::steady_clock::now();
     cout << "Integration value: " << tst2.eval() << endl;
+    end = std::chrono::steady_clock::now();
+    cout << "Execution time: " << \
+    std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
+    " microsecond" << endl;  
   }
   cout << "Test finished!" << endl;
   cout << "==========================================================" << endl;

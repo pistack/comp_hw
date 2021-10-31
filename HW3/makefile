@@ -3,8 +3,8 @@
 CXX = g++
 INC = -I src/include/
 # CXXFLAGS = -O -g -Wall -Werror -pedantic $(INC)
-# CPPFLAGS = -O3 -D PRECISION_LEVEL=0 $(INC) # for single precision
-CPPFLAGS = -O3 -D PRECISION_LEVEL=1 $(INC) # for double precision
+CPPFLAGS = -O3 -D PRECISION_LEVEL=0 $(INC) # for single precision
+# CPPFLAGS = -O3 -D PRECISION_LEVEL=1 $(INC) # for double precision
 
 OBJS = ./src/main.o 
 TEST_OBJS = ./src/test/test_action_kepler.o ./src/test/test_action_simple.o
