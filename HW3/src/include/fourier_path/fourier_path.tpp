@@ -24,7 +24,8 @@ void fourier_path<T>::init_helper()
   T tstp, tstf;
   std::vector<T> t_ends = {p_t0, p_tf};
   std::vector<T> f_ends(2, 0.0);
-  T eps = std::numeric_limits<T>::epsilon();
+  // practical mechine epsilon
+  T eps = 10.0*std::numeric_limits<T>::epsilon();
 
   f_ends = p_func.eval(t_ends);
   tstp = p_f - p_0;
@@ -35,15 +36,15 @@ void fourier_path<T>::init_helper()
   T pmean = 0.5*(std::abs(p_f) + std::abs(p_0));
   T fmean = 0.5*(std::abs(f_ends[1])+std::abs(f_ends[0]));
 
-  if(deltap < 100.0*eps*(1.0+pmean) && 
-  deltaf < 100*eps*(1.0+fmean))
+  if(deltap < eps*(1.0+pmean) && 
+  deltaf < eps*(1.0+fmean))
   {
     p_vaild = true;
     scale = 1.0;
     add = p_0 - f_ends[0];
   }
-  else if(deltap > 100.0*eps*(1.0+pmean) 
-  && deltaf > 100.0*eps*(1.0+fmean))
+  else if(deltap > eps*(1.0+pmean) 
+  && deltaf > eps*(1.0+fmean))
   {
     p_vaild = true;
     scale = tstp/tstf;

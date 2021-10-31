@@ -58,7 +58,7 @@ int main(void)
   PRECISION a = 0.5*(zeta_min+zeta_max);
   PRECISION tmax = pi*pow(a, 1.5);
   PRECISION period = 2*tmax;
-  vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6, 1e-8, 1e-10, 1e-12, 1e-14, 1e-16};
+  vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6, 1e-8, 1e-10, 1e-12, 1e-14, 1e-16, 0.0};
   vector<vector<PRECISION>> c1 {
     {-0.791412, -0.62261, -0.859226, -0.856224, 0.143711, -0.542851},
     {-0.216721, 0.548709, -0.198616, -0.0924677, 0.0491277, -0.0405731}
@@ -86,7 +86,7 @@ int main(void)
 
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(DIGITS); // print significant digits
-  for(int i=0; i<9; i++)
+  for(int i=0; i<10; i++)
   {
     tst1.update(tol[i]);
     cout << " Test 1. atol: " << tol[i] <<  endl;
@@ -99,7 +99,7 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
   }
-  for(int i=0; i<9; i++)
+  for(int i=0; i<10; i++)
   {
     tst2.update(tol[i]);
     cout << " Test 2. atol: " << tol[i] <<  endl;
