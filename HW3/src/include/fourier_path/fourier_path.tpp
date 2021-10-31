@@ -35,15 +35,15 @@ void fourier_path<T>::init_helper()
   T pmean = 0.5*(std::abs(p_f) + std::abs(p_0));
   T fmean = 0.5*(std::abs(f_ends[1])+std::abs(f_ends[0]));
 
-  if(deltap < eps*(100.0+pmean) && 
-  deltaf < eps*(100.0+fmean))
+  if(deltap < 100.0*eps*(1.0+pmean) && 
+  deltaf < 100*eps*(1.0+fmean))
   {
     p_vaild = true;
     scale = 1.0;
     add = p_0 - f_ends[0];
   }
-  else if(deltap > eps*(100.0+pmean) 
-  && deltaf > eps*(100.0+fmean))
+  else if(deltap > 100.0*eps*(1.0+pmean) 
+  && deltaf > 100.0*eps*(1.0+fmean))
   {
     p_vaild = true;
     scale = tstp/tstf;

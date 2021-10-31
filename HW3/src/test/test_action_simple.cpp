@@ -67,7 +67,7 @@ int main(void)
 
   // initial condition
   vector<PRECISION> c = {1.0, 1.0};
-  vector<PRECISION> tol = {1e-4, 1e-6, 1e-8, 1e-16};
+  vector<PRECISION> tol = {1e-4, 1e-6, 1e-8, 0.0};
   fourier<PRECISION> tmp(1, 2.0, c);
   vector<fourier_path<PRECISION>> path(1, fourier_path<PRECISION>(0.0, 2.0, 3.0, 3.0, tmp));
   action<PRECISION, id_lag<PRECISION>> id_action(path);

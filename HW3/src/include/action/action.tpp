@@ -130,8 +130,8 @@ T action<T, Lag>::eval_helper(T left, T right, T D)
 
   /// when difference of Dlr and D is less than 
   /// numerical epsilon stop interation
-  if(std::abs(D_lr-D) <=
-  50.0*std::numeric_limits<T>::epsilon()*(std::abs(D)+std::abs(D_lr)))
+  if(std::abs(D_lr-D) <
+  5.0*std::numeric_limits<T>::epsilon()*(2.0+std::abs(D)+std::abs(D_lr)))
   return scale_factor*int_kron;
 
   // otherwise divide interval by half
