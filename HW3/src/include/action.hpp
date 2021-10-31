@@ -49,18 +49,17 @@ class action
 	/// @return value of the lagranian at given t
 	T eval_lagranian(T t);
 
-    /// @brief helper function for action evaluation
+	/// @brief evaluate lagranian at given t
+	/// @param t time at which evaluate lagrangian
+	/// @return value of the lagranian at given t
+	std::vector<T> eval_lagranian(std::vector<T> t);
+
+	/// @brief helper function for action evaluation
+	/// (G7, K15) Gauss–Kronrod quadrature method
     /// @param left left end point of interval
-	/// @param mid mid point of interval
 	/// @param right right end point of interval
-	/// @param fleft value of lagrangian at left end point
-	/// @param fmid value of lagrangian at mid point
-	/// @param fright value of lagrangian at right end point
-	/// @param integral integrated value
-	/// @param D previous D value 
-	T eval_helper(T left, T mid, T right,
-	T fleft, T fmid, T fright, 
-	T integral, T D);
+	/// @param D previous |G7-K15| value without scaling
+	T eval_helper(T left, T right, T D);
 
 	public:
     /// @brief initialize action class
@@ -116,7 +115,7 @@ class action
 	bool is_vaild();
 
 	/// @brief evaluate the action of given path
-	/// by adpative simpson's method
+	/// by (G7, K15) Gauss–Kronrod quadrature method
 	/// @return action of given path
 
 	T eval();

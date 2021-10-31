@@ -67,38 +67,32 @@ int main(void)
 
   // initial condition
   vector<PRECISION> c = {1.0, 1.0};
+  vector<PRECISION> tol = {1e-4, 1e-6, 1e-8, 1e-16};
   fourier<PRECISION> tmp(1, 2.0, c);
   vector<fourier_path<PRECISION>> path(1, fourier_path<PRECISION>(0.0, 2.0, 3.0, 3.0, tmp));
-  action<PRECISION, id_lag<PRECISION>> id_action1(1e-4, path);
-  action<PRECISION, id_lag<PRECISION>> id_action2(1e-6, path);
-  action<PRECISION, id_lag<PRECISION>> id_action3(1e-8, path);
-  action<PRECISION, inv_lag<PRECISION>> inv_action1(1e-4, path);
-  action<PRECISION, inv_lag<PRECISION>> inv_action2(1e-6, path);
-  action<PRECISION, inv_lag<PRECISION>> inv_action3(1e-8, path);
-  action<PRECISION, id_inv_lag<PRECISION>> id_inv_action1(1e-4, path);
-  action<PRECISION, id_inv_lag<PRECISION>> id_inv_action2(1e-6, path);
-  action<PRECISION, id_inv_lag<PRECISION>> id_inv_action3(1e-8, path);
-
+  action<PRECISION, id_lag<PRECISION>> id_action(path);
+  action<PRECISION, inv_lag<PRECISION>> inv_action(path);
+  action<PRECISION, id_inv_lag<PRECISION>> id_inv_action(path);
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(DIGITS); // print significant digits
-  cout << " Test 1. atol: " << 1e-4 <<  endl;
-  cout << "Integration value: " << id_action1.eval() << endl;
-  cout << " Test 1. atol: " << 1e-6 << endl;
-  cout << "Integration value: " << id_action2.eval() << endl;
-  cout << " Test 1. atol: " << 1e-8 << endl;
-  cout << "Integration value: " << id_action3.eval() << endl;
-  cout << " Test 2. atol: " << 1e-4 <<  endl;
-  cout << "Integration value: " << inv_action1.eval() << endl;
-  cout << " Test 2. atol: " << 1e-6 << endl;
-  cout << "Integration value: " << inv_action2.eval() << endl;
-  cout << " Test 2. atol: " << 1e-8 << endl;
-  cout << "Integration value: " << inv_action3.eval() << endl;
-  cout << " Test 3. atol: " << 1e-4 <<  endl;
-  cout << "Integration value: " << id_inv_action1.eval() << endl;
-  cout << " Test 3. atol: " << 1e-6 << endl;
-  cout << "Integration value: " << id_inv_action2.eval() << endl;
-  cout << " Test 3. atol: " << 1e-8 << endl;
-  cout << "Integration value: " << id_inv_action3.eval() << endl;
+  for(int i=0; i<4; i++)
+  {
+    id_action.update(tol[i]);
+    cout << " Test 1. atol: " << tol[i] << endl;
+    cout << "Integration value: " << id_action.eval() << endl;
+  }
+  for(int i=0; i<4; i++)
+  {
+    inv_action.update(tol[i]);
+    cout << " Test 1. atol: " << tol[i] << endl;
+    cout << "Integration value: " << inv_action.eval() << endl;
+  }
+  for(int i=0; i<4; i++)
+  {
+    id_inv_action.update(tol[i]);
+    cout << " Test 1. atol: " << tol[i] << endl;
+    cout << "Integration value: " << id_inv_action.eval() << endl;
+  }
   cout << "Test finished!" << endl;
   cout << "==========================================================" << endl;
 

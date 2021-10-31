@@ -55,7 +55,7 @@ int main(void)
   PRECISION a = 0.5*(zeta_min+zeta_max);
   PRECISION tmax = pi*pow(a, 1.5);
   PRECISION period = 2*tmax;
-  vector<PRECISION> tol = {1e-4, 1e-6, 1e-8};
+  vector<PRECISION> tol = {1e-4, 1e-6, 1e-8, 1e-16};
   vector<vector<PRECISION>> c1 {
     {-0.791412, -0.62261, -0.859226, -0.856224, 0.143711, -0.542851},
     {-0.216721, 0.548709, -0.198616, -0.0924677, 0.0491277, -0.0405731}
@@ -83,13 +83,13 @@ int main(void)
 
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(DIGITS); // print significant digits
-  for(int i=0; i<3; i++)
+  for(int i=0; i<4; i++)
   {
     tst1.update(tol[i]);
     cout << " Test 1. atol: " << tol[i] <<  endl;
     cout << "Integration value: " << tst1.eval() << endl;
   }
-  for(int i=0; i<3; i++)
+  for(int i=0; i<4; i++)
   {
     tst2.update(tol[i]);
     cout << " Test 2. atol: " << tol[i] <<  endl;
