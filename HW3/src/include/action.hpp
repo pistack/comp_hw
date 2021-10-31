@@ -26,8 +26,7 @@
 /// initial time of it.
 /// @warning If you give invaild path, then
 /// eval method will return always zero.
-/// @see [J. ACM 16, 3 (July 1969), 
-/// 483–495.](https://dl.acm.org/doi/10.1145/321526.321537)
+/// @see 
 /// @ingroup libfourier
 template<typename T, typename Lag>
 class action
