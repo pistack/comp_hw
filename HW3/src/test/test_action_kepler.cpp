@@ -2,14 +2,12 @@
  * @file test_action_kepler.cpp
  * @brief test action::eval() routine with kepler action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 1.
+ * @date 2021. 11. 2.
  */
 
 #include <cmath>
 #include <chrono>
-#include <string>
 #include <iostream>
-#include <fstream>
 #include "action.hpp"
 
 #if PRECISION_LEVEL == 0
@@ -44,7 +42,7 @@ int main(void)
 {
 
   cout << "==========================================================" << endl;
-  cout << "               Test eval action routine                   " << endl;
+  cout << "               Test action::eval() routine                " << endl;
   cout << " Test 1. n_f: 3 with kepler action                        " << endl;
   cout << " Test 2. n_f: 4 with kepler action                        " << endl;
 
@@ -90,12 +88,12 @@ int main(void)
 
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(DIGITS); // print significant digits
-  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); it++)
+  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst1.update(*it);
     cout << " Test 1. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
-    for(int j=0; j<10000; j++)
+    for(int j=0; j<10000; ++j)
     tst1.eval();
     end = std::chrono::steady_clock::now();
     cout << "Integration value: " << tst1.eval() << endl;
@@ -103,12 +101,12 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
   }
-  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); it++)
+  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst2.update(*it);
     cout << " Test 2. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
-    for(int j=0; j<10000; j++)
+    for(int j=0; j<10000; ++j)
     tst2.eval();
     end = std::chrono::steady_clock::now();
     cout << "Integration value: " << tst2.eval() << endl;

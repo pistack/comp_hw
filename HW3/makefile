@@ -7,12 +7,22 @@ INC = -I src/include/
 CPPFLAGS = -O3 -D PRECISION_LEVEL=1 $(INC) # for double precision
 
 OBJS = ./src/main.o 
-TEST_OBJS = ./src/test/test_action_kepler.o ./src/test/test_action_simple.o
+TEST1_OBJS = ./src/test/test_action_vaildity.o
+TEST2_OBJS = ./src/test/test_action_simple.o
+TEST3_OBJS = ./src/test/test_action_kepler.o 
+TEST4_OBJS = ./src/test/test_fourier.o 
+TEST_OBJS = $(TEST1_OBJS) $(TEST2_OBJS) $(TEST3_OBJS) $(TEST4_OBJS)
 SRCS = ./src/main.cpp ./src/test/test_action_kepler.cpp \
-./src/test/test_action_simple.cpp
+./src/test/test_action_simple.cpp ./src/test/test_action_vaildity.cpp \
+./src/test/test_fourier.cpp 
 
 TARGET = ./bin/hw3
-TEST = test_action_kepler test_action_simple
+TEST1 = test_action_vaildity
+TEST2 = test_action_simple
+TEST3 = test_action_kepler
+TEST4 = test_fourier
+TEST = $(TEST1) $(TEST2) $(TEST3) $(TEST4)
+
 
 all : $(TARGET)
 
@@ -26,15 +36,23 @@ clean :
 	rm -rf $(OBJS) $(TARGET) $(TEST) $(TEST_OBJS)
 
 test : $(TEST)
-	./test_action_kepler
-	./test_action_simple
+	./$(TEST1)
+	./$(TEST2)
+	./$(TEST3)
+	./$(TEST4)
 	rm -rf $(TEST) $(TEST_OBJS)
 
-test_action_kepler: ./src/test/test_action_kepler.o
-	$(CXX) -o $@ ./src/test/test_action_kepler.o
+$(TEST1) : $(TEST1_OBJS)
+	$(CXX) -o $@ $(TEST1_OBJS)
 
-test_action_simple: ./src/test/test_action_simple.o
-	$(CXX) -o $@ ./src/test/test_action_simple.o
+$(TEST2) : $(TEST2_OBJS)
+	$(CXX) -o $@ $(TEST2_OBJS)
+
+$(TEST3) : $(TEST3_OBJS)
+	$(CXX) -o $@ $(TEST3_OBJS)
+
+$(TEST4) : $(TEST4_OBJS)
+	$(CXX) -o $@ $(TEST4_OBJS)
 
 new :
 	$(MAKE) clean
@@ -61,3 +79,10 @@ new :
 ./src/test/test_action_simple.o: src/include/fourier_path/fourier_path.tpp
 ./src/test/test_action_simple.o: src/include/gauss_kronrod_table.hpp
 ./src/test/test_action_simple.o: src/include/action/action.tpp
+./src/test/test_action_vaildity.o: src/include/action.hpp
+./src/test/test_action_vaildity.o: src/include/fourier_path.hpp
+./src/test/test_action_vaildity.o: src/include/fourier.hpp
+./src/test/test_action_vaildity.o: src/include/fourier/fourier.tpp
+./src/test/test_action_vaildity.o: src/include/fourier_path/fourier_path.tpp
+./src/test/test_action_vaildity.o: src/include/gauss_kronrod_table.hpp
+./src/test/test_action_vaildity.o: src/include/action/action.tpp

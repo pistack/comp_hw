@@ -2,13 +2,12 @@
  * @file test_action_simple.cpp
  * @brief test action::eval() routine with simple function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 1.
+ * @date 2021. 11. 2.
  */
 
 #include <chrono>
 #include <cmath>
 #include <iostream>
-#include <fstream>
 #include "action.hpp"
 
 #if PRECISION_LEVEL == 0
@@ -89,7 +88,7 @@ int main(void)
 {
 
   cout << "==========================================================" << endl;
-  cout << "               Test eval action routine                   " << endl;
+  cout << "               Test action::eval() routine                " << endl;
   cout << " Test 1. integrate 2.0 + sin(pi*x) from 0 to 2                " << endl;
   cout << " Test 2. integrate 1/(2.0+sin(pi*x)) from 0 to 2    " << endl;
   cout << " Test 3. integrate sin(sin(pi*x)) from 0 to 2 " << endl;
@@ -121,12 +120,12 @@ int main(void)
   action<PRECISION, weird_lag<PRECISION>> tst6(path2);
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(DIGITS); // print significant digits
-  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); it++)
+  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst1.update(*it);
     cout << " Test 1. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
-    for(int j=0; j<10000; j++)
+    for(int j=0; j<10000; ++j)
     tst1.eval();
     end = std::chrono::steady_clock::now();
     cout << "Integration value: " << tst1.eval() << endl;
@@ -134,12 +133,12 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
   }
-  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); it++)
+  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst2.update(*it);
     cout << " Test 2. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
-    for(int j=0; j<10000; j++)
+    for(int j=0; j<10000; ++j)
     tst2.eval();
     end = std::chrono::steady_clock::now();
     cout << "Integration value: " << tst2.eval() << endl;
@@ -147,12 +146,12 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
   }
-  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); it++)
+  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst3.update(*it);
     cout << " Test 3. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
-    for(int j=0; j<10000; j++)
+    for(int j=0; j<10000; ++j)
     tst3.eval();
     end = std::chrono::steady_clock::now();
     cout << "Integration value: " << tst3.eval() << endl;
@@ -160,12 +159,12 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
   }
-  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); it++)
+  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst4.update(*it);
     cout << " Test 4. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
-    for(int j=0; j<10000; j++)
+    for(int j=0; j<10000; ++j)
     tst4.eval();
     end = std::chrono::steady_clock::now();
     cout << "Integration value: " << tst4.eval() << endl;
@@ -173,12 +172,12 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
   }
-  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); it++)
+  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst5.update(*it);
     cout << " Test 5. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
-    for(int j=0; j<10000; j++)
+    for(int j=0; j<10000; ++j)
     tst5.eval();
     end = std::chrono::steady_clock::now();
     cout << "Integration value: " << tst5.eval() << endl;
@@ -186,14 +185,14 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
   }
-  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); it++)
+  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst6.update(*it);
     cout << " Test 6. atol: " << *it <<  endl;
-    for(int i=0; i<6; i++)
+    for(int i=0; i<6; ++i)
     {
       start = std::chrono::steady_clock::now();
-      for(int j=0; j<10000; j++)
+      for(int j=0; j<10000; ++j)
       tst6.eval(order[i]);
       end = std::chrono::steady_clock::now();
       cout << "Order: " << order[i] << endl;

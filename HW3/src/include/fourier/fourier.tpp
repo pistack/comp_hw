@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief evaluate sum and derivative of sine and cosine function
  * @author pistack (Junho Lee)
- * @date 2021. 10. 30.
+ * @date 2021. 11. 2.
  */
 
 template<typename T>

@@ -2,7 +2,7 @@
  * @file mcm_move.tpp
  * @brief sample guess via ramdom walk.
  * @author pistack (Junho Lee)
- * @date 2021. 10. 29.
+ * @date 2021. 11. 2.
  * @ingroup libmcm
  */
 
@@ -15,9 +15,9 @@ mcm<T, Lag>::move(std::vector<std::vector<T>> guess, T step_size)
   std::vector<std::vector<T>> moved_guess(dim_1,
   std::vector<T>(dim_2, 0));
 
-  for(int i=0; i<dim_1; i++)
+  for(int i=0; i<dim_1; ++i)
   {
-    for(int j=0; j<dim_2; j++)
+    for(int j=0; j<dim_2; ++j)
     {
       moved_guess[i][j] = guess[i][j] + step_size*normal_dist(gen);
       // bound guess to [-1, 1]

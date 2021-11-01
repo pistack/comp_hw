@@ -4,7 +4,7 @@
  * Interactively reads inital condition, number of gird points to evaluate and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 10. 28.
+ * @date 2021. 11. 2.
  */
 
 #include <string>
@@ -53,7 +53,7 @@ int main(void) {
   fout << '#' << 't' << '\t' << "zeta" << '\t' << endl;
   fout.unsetf(ios::floatfield); // initialize floatfield
   fout.precision(DIGITS); // print significant digits
-  for(int i=0; i < n+1; i++) // one more point needed for end point
+  for(int i=0; i < n+1; ++i) // one more point needed for end point
       fout << t[i] << '\t' << y[i] << endl;
   fout.close();
   

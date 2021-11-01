@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief evaluates action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 1.
+ * @date 2021. 11. 2.
  */
 
 template<typename T, typename Lag>
@@ -22,7 +22,7 @@ void action<T, Lag>::check_vaild()
   int n = path_action.size();
   vaildity = false;
 
-  for(int i=0; i<n; i++)
+  for(int i=0; i<n; ++i)
   {
     if(! path_action[i].is_vaild())
     return;
@@ -56,7 +56,7 @@ T action<T, Lag>::eval_lagrangian(T t)
   std::vector<T> p(n, 0); // path
   std::vector<T> dp(n, 0); // derivative of path
   Lag lag; // lagrangian
-  for(int i=0; i<n; i++)
+  for(int i=0; i<n; ++i)
   {
     p[i] = path_action[i].eval(t);
     dp[i] = path_action[i].deriv(t);
@@ -73,9 +73,9 @@ std::vector<T> action<T, Lag>::eval_lagrangian(std::vector<T> t)
   std::vector<T> dp(n, 0); // derivative of path
   std::vector<T> lag_val(m, 0); // result
   Lag lag; // lagrangian
-  for(int j=0; j<m; j++)
+  for(int j=0; j<m; ++j)
   {
-    for(int i=0; i<n; i++)
+    for(int i=0; i<n; ++i)
     {
       p[i] = path_action[i].eval(t[j]);
       dp[i] = path_action[i].deriv(t[j]);
@@ -97,7 +97,7 @@ T action<T, Lag>::eval_helper(T left, T right, T D, T D_tol)
   T scale_factor = 0.5*(right - left);
   T mid = 0.5*(left+right);
   tnodes[(table.order-1)/2] = mid;
-  for(int i=0; i<(table.order-1)/2; i++)
+  for(int i=0; i<(table.order-1)/2; ++i)
   {
     T tmp = (1.0+table.nodes[i])*scale_factor;
     tnodes[i] = right-tmp;
@@ -108,7 +108,7 @@ T action<T, Lag>::eval_helper(T left, T right, T D, T D_tol)
   T int_gauss=0;
   if(table.order % 4 == 3)
   int_gauss=table.weight_gauss[(table.order-3)/4]*fnodes[(table.order-1)/2];
-  for(int i=0; i<(table.order-1)/2; i++)
+  for(int i=0; i<(table.order-1)/2; ++i)
   {
     int_kron += table.weight_kronrod[i]*(fnodes[i]+fnodes[table.order-1-i]);
     if(i %2 != 0)

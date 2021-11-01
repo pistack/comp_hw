@@ -3,7 +3,7 @@
  * @brief template for minimization of the action
  * using Monte Carlo Metropolis method
  * @author pistack (Junho Lee)
- * @date 2021. 10. 30.
+ * @date 2021. 11. 2.
  * @ingroup libmcm
  */
 
@@ -23,7 +23,7 @@ mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda)
   std::vector<std::vector<T>> tmp_guess = init_guess;
   std::vector<fourier_path<T>> tmp_path = init_path;
 
-  for(int i=0; i<num_iter; i++)
+  for(int i=0; i<num_iter; ++i)
   {
     T r;
     T tmp_action;
@@ -33,7 +33,7 @@ mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda)
     do
     {
       tmp_guess = move(accept_guess, step_size);
-      for(int i=0; i<dim_1; i++)
+      for(int i=0; i<dim_1; ++i)
       {
         fourier<T> tmp_fourier(num_fourier, fourier_period,
         tmp_guess[i]);
@@ -90,7 +90,7 @@ std::string monitor, int digits)
   fout.precision(digits);
 
 
-  for(int i=0; i<num_iter; i++)
+  for(int i=0; i<num_iter; ++i)
   {
     T r;
     T tmp_action;
@@ -100,7 +100,7 @@ std::string monitor, int digits)
     do
     {
       tmp_guess = move(accept_guess, step_size);
-      for(int i=0; i<dim_1; i++)
+      for(int i=0; i<dim_1; ++i)
       {
         fourier<T> tmp_fourier(num_fourier, fourier_period,
         tmp_guess[i]);
