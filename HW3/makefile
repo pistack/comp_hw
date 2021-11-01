@@ -2,9 +2,9 @@
 
 CXX = g++
 INC = -I src/include/
-# CXXFLAGS = -O -g -Wall -Werror -pedantic $(INC)
+CXXFLAGS = -O -g -Wall -Werror -pedantic -D_GLIBCXX_DEBUG -D PRECISION_LEVEL=0 $(INC)
 # CPPFLAGS = -O3 -D PRECISION_LEVEL=0 $(INC) # for single precision
-CPPFLAGS = -O3 -D PRECISION_LEVEL=1 $(INC) # for double precision
+# CPPFLAGS = -O3 -D PRECISION_LEVEL=1 $(INC) # for double precision
 
 OBJS = ./src/main.o 
 TEST1_OBJS = ./src/test/test_action_vaildity.o
@@ -86,3 +86,5 @@ new :
 ./src/test/test_action_vaildity.o: src/include/fourier_path/fourier_path.tpp
 ./src/test/test_action_vaildity.o: src/include/gauss_kronrod_table.hpp
 ./src/test/test_action_vaildity.o: src/include/action/action.tpp
+./src/test/test_fourier.o: src/include/fourier.hpp
+./src/test/test_fourier.o: src/include/fourier/fourier.tpp

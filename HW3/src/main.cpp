@@ -23,7 +23,7 @@
     #define DIGITS 14
 #endif
 
-const PRECISION pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062; // define pi
+const PRECISION pi = std::acos(-1); // define pi
 
 using namespace std;
 
@@ -99,12 +99,12 @@ int main(void)
 
   // initial condition
   PRECISION zeta_max = zeta_min/(2*zeta_min-1);
-  PRECISION a = 0.5*(zeta_min+zeta_max);
+  PRECISION a = (zeta_min+zeta_max)/2;
   PRECISION tmax = pi*pow(a, 1.5);
   PRECISION period = 2*tmax;
-  vector<PRECISION> p0 = {zeta_min, 0.0};
+  vector<PRECISION> p0 = {zeta_min, 0};
   vector<PRECISION> p1 = {zeta_max, pi};
-  mcm<PRECISION, kepler_lag<PRECISION>> kepler(PRECISION(0.0), 
+  mcm<PRECISION, kepler_lag<PRECISION>> kepler(PRECISION(0), 
   tmax, p0, p1, atol, num_fourier, period);
 
   kepler.set_init_guess();

@@ -22,13 +22,13 @@ template<typename T>
 T fourier<T>::eval(T t)
 {
 	int term = 2*f_num_fourier;
-	T omega = 2.0*pi/f_period;
-	T tmp;
+	T omega = 2*pi/f_period;
+	T tmp=0;
 	T y=0;
 	
-	for(int j=0; j<term; j += 2)
+	for(int j=0; j<term; ++++j)
 	{
-		tmp = (j/2+1)*omega;
+		tmp += omega;
 		y += f_c[j]*std::sin(tmp*t);
 		y += f_c[j+1]*std::cos(tmp*t);
 	}
@@ -41,15 +41,15 @@ std::vector<T> fourier<T>::eval(std::vector<T> t)
 {
 	int term = 2*f_num_fourier;
 	int n = t.size();
-	T omega = 2.0*pi/f_period;
-	T tmp;
+	T omega = 2*pi/f_period;
 	std::vector<T> y(n, 0);
 	
-	for(int i=0; i<n; i++)
+	for(int i=0; i<n; ++i)
 	{
-		for(int j=0; j<term; j += 2)
+		T tmp=0;
+		for(int j=0; j<term; ++++j)
 		{
-			tmp = (j/2+1)*omega;
+			tmp += omega;
 			y[i] += f_c[j]*std::sin(tmp*t[i]);
 			y[i] += f_c[j+1]*std::cos(tmp*t[i]);
 		 }
@@ -62,13 +62,13 @@ template<typename T>
 T fourier<T>::deriv(T t)
 {
 	int term = 2*f_num_fourier;
-	T omega = 2.0*pi/f_period;
-	T tmp;
+	T omega = 2*pi/f_period;
+	T tmp=0;
 	T yp=0;
 	
-	for(int j=0; j<term; j += 2)
+	for(int j=0; j<term; ++++j)
 	{
-		tmp = (j/2+1)*omega;
+		tmp += omega;
 		yp += f_c[j]*tmp*std::cos(tmp*t);
 		yp -= f_c[j+1]*tmp*std::sin(tmp*t);
 	}
@@ -81,20 +81,19 @@ std::vector<T> fourier<T>::deriv(std::vector<T> t)
 {
 	int term = 2*f_num_fourier;
 	int n = t.size();
-	T omega = 2.0*pi/f_period;
-	T tmp;
+	T omega = 2*pi/f_period;
 	std::vector<T> yp(n, 0);
 	
-	for(int i=0; i<n; i++)
+	for(int i=0; i<n; ++i)
 	{
-		for(int j=0; j<term; j += 2)
+		T tmp = 0;
+		for(int j=0; j<term; ++++j)
 		{
-			tmp = (j/2+1)*omega;
+			tmp += omega;
 			yp[i] += f_c[j]*tmp*std::cos(tmp*t[i]);
 			yp[i] -= f_c[j+1]*tmp*std::sin(tmp*t[i]);
 		}
 	}
-
 	return yp;
 }
 
@@ -102,26 +101,30 @@ template<typename T>
 T fourier<T>::nderiv(int n, T t)
 {
 	int term = 2*f_num_fourier;
-	T omega = 2.0*pi/f_period;
-	T tmp;
-	std::vector<T> c = f_c;
+	T omega = 2*pi/f_period;
+	T tmp=0;
 	T yp=0;
+	std::vector<T> c(term, 0);
+	c = f_c;
 
 	if(n % 2 == 0)
 	{}
 	else
 	{
-		for(int j=0; j<term; j+=2)
+		for(typename std::vector<T>::iterator iter = c.begin(); 
+		iter != c.end(); ++++iter)
 		{
-			std::iter_swap(c.begin()+j, c.begin()+j+1);
-			c[j] *= -1.0;
+			std::iter_swap(iter, iter+1);
+			*iter *= -1.0;
 		}
 	}
-	for(int j=0; j<term; j += 2)
+	for(int j=0; j<term; ++++j)
 	{
-		tmp = std::pow((j/2+1)*omega, T(n));
-		yp += c[j]*tmp*std::sin(tmp*t);
-		yp += f_c[j+1]*tmp*std::cos(tmp*t);
+		T tmpower;
+		tmp += omega;
+		tmpower = std::pow(tmp, T(n));
+		yp += c[j]*tmpower*std::sin(tmp*t);
+		yp += c[j+1]*tmpower*std::cos(tmp*t);
 	}
 	if((n%2 == 0 && n/2 % 2 != 0) ||
 	(n%2 != 0 && (n-1)/2 % 2 != 0))
@@ -134,10 +137,11 @@ std::vector<T> fourier<T>::nderiv(int n, std::vector<T> t)
 {
 	int term = 2*f_num_fourier;
 	int n_t = t.size();
-	T omega = 2.0*pi/f_period;
-	T tmp;
-	std::vector<T> c = f_c;
-	std::vector<T> yp(n, 0);
+	T omega = 2*pi/f_period;
+	std::vector<T> c(term, 0);
+	std::vector<T> yp(n_t, 0);
+
+	c = f_c;
 
 	if(n % 2 == 0)
 	{
@@ -150,10 +154,11 @@ std::vector<T> fourier<T>::nderiv(int n, std::vector<T> t)
 	}
 	else
 	{
-		for(int j=0; j<term; j+=2)
+		for(typename std::vector<T>::iterator iter = c.begin(); 
+		iter != c.end(); ++++iter)
 		{
-			std::iter_swap(c.begin()+j, c.begin()+j+1);
-			c[j] *= -1.0;
+			std::iter_swap(iter, iter+1);
+			*iter *= -1.0;
 		}
 		if((n-1)/2 %2 == 0){}
 		else
@@ -163,15 +168,17 @@ std::vector<T> fourier<T>::nderiv(int n, std::vector<T> t)
 		}
 	}
 	
-	for(int i=0; i<n_t; i++)
+	for(int i=0; i<n_t; ++i)
 	{
-		for(int j=0; j<term; j += 2)
+		T tmp = 0;
+		for(int j=0; j<term; ++++j)
 		{
-			tmp = std::pow((j/2+1)*omega, T(n));
-			yp[i] += c[j]*tmp*std::sin(tmp*t[i]);
-			yp[i] += f_c[j+1]*tmp*std::cos(tmp*t[i]);
+			T tmpower;
+			tmp += omega;
+			tmpower = std::pow(tmp, T(n));
+			yp[i] += c[j]*tmpower*std::sin(tmp*t[i]);
+			yp[i] += c[j+1]*tmpower*std::cos(tmp*t[i]);
 		}
 	}
-
 	return yp;
 }

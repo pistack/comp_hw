@@ -25,7 +25,7 @@ void fourier_path<T>::init_helper()
   std::vector<T> t_ends = {p_t0, p_tf};
   std::vector<T> f_ends(2, 0.0);
   // practical mechine epsilon
-  T eps = 10.0*std::numeric_limits<T>::epsilon();
+  T eps = 100.0*std::numeric_limits<T>::epsilon();
 
   f_ends = p_func.eval(t_ends);
   tstp = p_f - p_0;

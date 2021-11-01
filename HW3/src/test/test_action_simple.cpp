@@ -192,13 +192,13 @@ int main(void)
     for(int i=0; i<6; ++i)
     {
       start = std::chrono::steady_clock::now();
-      for(int j=0; j<10000; ++j)
+      for(int j=0; j<1000; ++j)
       tst6.eval(order[i]);
       end = std::chrono::steady_clock::now();
       cout << "Order: " << order[i] << endl;
       cout << "Integration value: " << tst6.eval(order[i]) << endl;
       cout << "Execution time: " << \
-      std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
+      std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/1000.0 << \
       " microsecond" << endl;
     }
   }

@@ -93,7 +93,6 @@ T action<T, Lag>::eval_helper(T left, T right, T D, T D_tol)
   std::vector<T> fnodes(table.order, 0);
   T eps = 10.0*std::numeric_limits<T>::epsilon();
   T D_lr;
-  T Delta;
   T scale_factor = 0.5*(right - left);
   T mid = 0.5*(left+right);
   tnodes[(table.order-1)/2] = mid;

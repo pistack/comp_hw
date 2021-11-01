@@ -23,7 +23,7 @@ template<typename T>
 class fourier
 {
 	private:
-        const T pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062; // pi 
+        const T pi = std::acos(-1); // pi 
 		int f_num_fourier; // number of sine and cosine function to add
 		T f_period; // the period of fourier function 
 		std::vector<T> f_c; // coefficients

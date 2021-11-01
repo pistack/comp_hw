@@ -18,7 +18,7 @@
     #define DIGITS 14
 #endif
 
-const PRECISION pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062; // define pi
+const PRECISION pi = std::acos(-1); // define pi
 
 using namespace std;
 
@@ -73,15 +73,15 @@ int main(void)
     };
   vector<fourier_path<PRECISION>> path1 {
     fourier_path<PRECISION>(0.0, tmax, zeta_min, zeta_max,
-    fourier<PRECISION>(3, 2*tmax, c1[0])),
+    fourier<PRECISION>(3, period, c1[0])),
     fourier_path<PRECISION>(0.0, tmax, 0.0, pi,
-    fourier<PRECISION>(3, 2*tmax, c1[1])),
+    fourier<PRECISION>(3, period, c1[1])),
   };
   vector<fourier_path<PRECISION>> path2 {
     fourier_path<PRECISION>(0.0, tmax, zeta_min, zeta_max,
-    fourier<PRECISION>(4, 2*tmax, c2[0])),
+    fourier<PRECISION>(4, period, c2[0])),
     fourier_path<PRECISION>(0.0, tmax, 0.0, pi,
-    fourier<PRECISION>(4, 2*tmax, c2[1])),
+    fourier<PRECISION>(4, period, c2[1])),
   };
   action<PRECISION, kepler_lag<PRECISION>> tst1(path1);
   action<PRECISION, kepler_lag<PRECISION>> tst2(path2);
