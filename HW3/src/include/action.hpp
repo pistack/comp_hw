@@ -32,40 +32,12 @@ template<typename T, typename Lag>
 class action
 {
 	private:
-	// node and weight for G15-K31 Gauss-Kronrod Quadrature
-	const std::vector<T> nodes{
-		9.980022986933970602851728401522712e-01, 9.879925180204854284895657185866126e-01,
-		9.677390756791391342573479787843372e-01, 9.372733924007059043077589477102095e-01,
-		8.972645323440819008825096564544959e-01, 8.482065834104272162006483207742169e-01,
-		7.904185014424659329676492948179473e-01, 7.244177313601700474161860546139380e-01,
-		6.509967412974169705337358953132747e-01, 5.709721726085388475372267372539106e-01,
-		4.850818636402396806936557402323506e-01, 3.941513470775633698972073709810455e-01,
-		2.991800071531688121667800242663890e-01, 2.011940939974345223006283033945962e-01,
-		1.011420669187174990270742314473923e-01	
-	};
-	const std::vector<T> weight_gauss{
-		3.075324199611726835462839357720442e-02, 7.036604748810812470926741645066734e-02,
-		1.071592204671719350118695466858693e-01, 1.395706779261543144478047945110283e-01,
-		1.662692058169939335532008604812088e-01, 1.861610000155622110268005618664228e-01,
-		1.984314853271115764561183264438393e-01, 2.025782419255612728806201999675193e-01
-	};
-  const std::vector<T> weight_kronrod{
-	  5.377479872923348987792051430127650e-03, 1.500794732931612253837476307580727e-02,
-	  2.546084732671532018687400101965336e-02, 3.534636079137584622203794847836005e-02,
-	  4.458975132476487660822729937327969e-02, 5.348152469092808726534314723943030e-02,
-	  6.200956780067064028513923096080293e-02, 6.985412131872825870952007709914748e-02,
-	  7.684968075772037889443277748265901e-02, 8.308050282313302103828924728610379e-02,
-	  8.856444305621177064727544369377430e-02, 9.312659817082532122548687274734572e-02,
-	  9.664272698362367850517990762758934e-02, 9.917359872179195933239317348460313e-02,
-	  1.007698455238755950449466626175697e-01, 1.013300070147915490173747927674925e-01
-	};
+
 	T atol; // absoulte tolerance
 	
 	std::vector<fourier_path<T>> path_action; // path
 
 	bool vaildity=false; // vaildity of path
-
-	T D_tol; // tolerance of D factor
 
 	/// @brief checks the vaildity of path
 	void check_vaild();
@@ -80,20 +52,30 @@ class action
 	/// @return value of the lagrangian at given t
 	std::vector<T> eval_lagrangian(std::vector<T> t);
 
+	/// @brief get Gauss-Kronrod nodes and weight
+	/// @param n order of Gauss-Kronrod quadrature
+	/// @return nodes and weight of Gauss-Kronrod
+	/// \f$ (G_{(n-1)/2}, Kn) \f$.
+	std::tuple<std::vector<T>,
+	std::vector<T>, std::vector<T>> get_gau_kron(int n);
+
 	/// @brief helper function for action evaluation by
-	/// (G15, K31) Gauss–Kronrod quadrature method
+	/// \f$ (G_{(n-1)/2}, Kn) \f$ Gauss–Kronrod quadrature method
     /// @param left left end point of interval
 	/// @param right right end point of interval
-	/// @param D previous |G15-K31| value without scaling
-	T eval_helper(T left, T right, T D);
+	/// @param n order of gauss-kronrod quadrature
+	/// @param D previous \f$ |G_{(n-1)/2} - Kn| \f$. value without scaling
+	/// @param D_tol tolerance for D
+	T eval_helper(T left, T right, int n, T D, T D_tol);
 
 	/// @brief evaluate the action of given path
-	/// by (G15, K31) Gauss–Kronrod quadrature method
+	/// by \f$ (G_{(n-1)/2}, Kn) \f$ Gauss–Kronrod quadrature method
 	/// @param left left end points of interval
 	/// @param right right end points of interval
+	/// @param n order of gauss-kronrod quadrature
 	/// @return action of given path
 
-	T eval_quadgk(T left, T right);
+	T eval_quadgk(T left, T right, int n);
 
 	public:
     /// @brief initialize action class
@@ -149,7 +131,7 @@ class action
 	bool is_vaild();
 
 	/// @brief evaluate the action of given path
-	/// by default method 
+	/// by default method:
 	/// (G15, K31) Gauss–Kronrod quadrature method
 	/// @return action of given path
 
@@ -157,5 +139,6 @@ class action
 };
 
 #include "action/action.tpp"
+#include "action/gauss_kronrod_table.tpp"
 
 #endif

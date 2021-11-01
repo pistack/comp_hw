@@ -186,12 +186,12 @@ int main(void)
     tst6.update(tol[i]);
     cout << " Test 6. atol: " << tol[i] <<  endl;
     start = std::chrono::steady_clock::now();
-    for(int j=0; j<10000; j++)
+    for(int j=0; j<100; j++)
     tst6.eval();
     end = std::chrono::steady_clock::now();
     cout << "Integration value: " << tst6.eval() << endl;
     cout << "Execution time: " << \
-    std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
+    std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/100.0 << \
     " microsecond" << endl;
   }
   cout << "Test finished!" << endl;

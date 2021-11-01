@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief evaluates action
  * @author pistack (Junho Lee)
- * @date 2021. 10. 31.
+ * @date 2021. 11. 1.
  */
 
 template<typename T, typename Lag>
@@ -86,29 +86,35 @@ std::vector<T> action<T, Lag>::eval_lagrangian(std::vector<T> t)
 }
 
 template<typename T, typename Lag>
-T action<T, Lag>::eval_helper(T left, T right, T D)
+T action<T, Lag>::eval_helper(T left, T right, int n, T D, T D_tol)
 {
-  std::vector<T> tnodes(31, 0);
-  std::vector<T> fnodes(31, 0);
+  std::vector<T> nodes((n-1)/2, 0);
+  std::vector<T> weight_kronrod((n+1)/2, 0);
+  std::vector<T> weight_gauss((n+1)/4, 0);
+  std::vector<T> tnodes(n, 0);
+  std::vector<T> fnodes(n, 0);
+  T eps = 10.0*std::numeric_limits<T>::epsilon();
   T D_lr;
   T Delta;
   T scale_factor = 0.5*(right - left);
   T mid = 0.5*(left+right);
-  tnodes[15] = mid;
-  for(int i=0; i<15; i++)
+  tnodes[(n-1)/2] = mid;
+  std::tie(nodes, weight_gauss, weight_kronrod) = \
+  get_gau_kron(n);
+  for(int i=0; i<(n-1)/2; i++)
   {
     T tmp = (1.0+nodes[i])*scale_factor;
     tnodes[i] = right-tmp;
-    tnodes[30-i] = tmp+left;
+    tnodes[n-1-i] = tmp+left;
   }
   fnodes = eval_lagrangian(tnodes);
-  T int_kron=weight_kronrod[15]*fnodes[15];
-  T int_gauss=weight_gauss[7]*fnodes[15];
-  for(int i=0; i<15; i++)
+  T int_kron=weight_kronrod[(n-1)/2]*fnodes[(n-1)/2];
+  T int_gauss=weight_gauss[(n-3)/4]*fnodes[(n-1)/2];
+  for(int i=0; i<(n-1)/2; i++)
   {
-    int_kron += weight_kronrod[i]*(fnodes[i]+fnodes[30-i]);
+    int_kron += weight_kronrod[i]*(fnodes[i]+fnodes[n-1-i]);
     if(i %2 != 0)
-    int_gauss += weight_gauss[(i-1)/2]*(fnodes[i]+fnodes[30-i]);
+    int_gauss += weight_gauss[(i-1)/2]*(fnodes[i]+fnodes[n-1-i]);
   }
 
   D_lr = int_kron - int_gauss;
@@ -116,25 +122,29 @@ T action<T, Lag>::eval_helper(T left, T right, T D)
   if(tmp*std::sqrt(tmp*(right-left)) < D_tol)
   return scale_factor*int_kron;
 
-  /// when difference of Dlr and D is less than 
-  /// numerical epsilon stop recurrsion
-  if(std::abs(D_lr-D) <
-  1.0*std::numeric_limits<T>::epsilon()*
-  (std::numeric_limits<T>::min()+std::abs(int_kron)))
+  /// stop recurrsion due to tuncation
+  /// 1. length of interval is less than
+  /// numerical epsilon
+  /// 2. difference of Dlr and D is less than 
+  /// numerical epsilon
+
+  if(right-left < eps*(eps+0.5*(std::abs(right)+std::abs(left))) ||
+  std::abs(D_lr-D) <
+  eps*(eps+std::abs(int_kron)))
   return scale_factor*int_kron;
 
   // otherwise divide interval by half
-  return eval_helper(left, mid, D_lr) + \
-  eval_helper(mid, right, D_lr);
+  return eval_helper(left, mid, n, D_lr, D_tol) + \
+  eval_helper(mid, right, n, D_lr, D_tol);
 }
 
 template<typename T, typename Lag>
-T action<T, Lag>::eval_quadgk(T left, T right)
+T action<T, Lag>::eval_quadgk(T left, T right, int n)
 { 
 
-  D_tol = atol/1000.0/(right-left);
+  T D_tol = atol/1000.0/(right-left);
 
-  return eval_helper(left, right, 0.0);
+  return eval_helper(left, right, n, 0.0, D_tol);
 }
 
 template<typename T, typename Lag>
@@ -144,6 +154,6 @@ T action<T, Lag>::eval()
   return 0;
   T t0, t1;
   std::tie(t0, t1) = path_action[0].get_endtimes();
-  return eval_quadgk(t0, t1);
+  return eval_quadgk(t0, t1, 31);
 }
 
