@@ -1,28 +1,20 @@
-systematic approach (double precision)
+exact action 4.74173906770319 
+
+non-systematic approach (double precision)
 step_size 0.01 lambda 100 atol 1e-8 iter 10^6
-1 5.0317269229538 0.869759
-2 4.758028903208 0.720768
-3 4.7441419896692 0.562901
-decrease step_size and increase lambda
+1 5.0317269229779 0.870119
+2 4.7581241655848 0.720207
+3 4.7429193613874 0.571294
 step_size 0.001 lambda 10000
-3 4.7424838659882 0.548153 ---> finished
+3 4.7426871956212 0.554835
+4 4.741868148688 0.418174
 
-systematic approach (single precision)
+non-systematic approach (single precision)
 step_size 0.01 lambda 100 atol 1e-4 iter 10^6
-1  5.03172 0.868199
-2  4.75813 0.726844
-3  4.71016 0.568932
-decrease step_size and increase lambda
+1 5.03173 0.873832
+2 4.75811 0.720742
+3 4.74383 0.567294
 step_size 0.001 lambda 10000
-3  4.74253 0.564468  ---> finished
+3 4.74251 0.581693
+4 4.74201 0.414148
 
-
-exact 4.74173906770319 
-
-Curse of Dimension
-step_size 0.001 lambda 10000
-initial guess num_fourier 2
-num_fourier 4
-1e-4 4.5970923053956 0.003199
-1e-6 4.7408999734742 0.25283
-1e-8 4.7418262282314 0.344433

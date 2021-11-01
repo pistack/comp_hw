@@ -50,7 +50,7 @@ bool action<T, Lag>::is_vaild()
 {return vaildity;}
 
 template<typename T, typename Lag>
-T action<T, Lag>::eval_lagranian(T t)
+T action<T, Lag>::eval_lagrangian(T t)
 {
   int n = path_action.size();
   std::vector<T> p(n, 0); // path
@@ -65,7 +65,7 @@ T action<T, Lag>::eval_lagranian(T t)
 }
 
 template<typename T, typename Lag>
-std::vector<T> action<T, Lag>::eval_lagranian(std::vector<T> t)
+std::vector<T> action<T, Lag>::eval_lagrangian(std::vector<T> t)
 {
   int n = path_action.size();
   int m = t.size();
@@ -101,7 +101,7 @@ T action<T, Lag>::eval_helper(T left, T right, T D)
     tnodes[i] = right-tmp;
     tnodes[30-i] = tmp+left;
   }
-  fnodes = eval_lagranian(tnodes);
+  fnodes = eval_lagrangian(tnodes);
   T int_kron=weight_kronrod[15]*fnodes[15];
   T int_gauss=weight_gauss[7]*fnodes[15];
   for(int i=0; i<15; i++)
@@ -129,15 +129,21 @@ T action<T, Lag>::eval_helper(T left, T right, T D)
 }
 
 template<typename T, typename Lag>
+T action<T, Lag>::eval_quadgk(T left, T right)
+{ 
+
+  D_tol = atol/1000.0/(right-left);
+
+  return eval_helper(left, right, 0.0);
+}
+
+template<typename T, typename Lag>
 T action<T, Lag>::eval()
 {
   if(! vaildity)
   return 0;
-  
   T t0, t1;
   std::tie(t0, t1) = path_action[0].get_endtimes();
-  D_tol = atol/1000.0/(t1-t0);
-
-  return eval_helper(t0, t1, 0.0);
+  return eval_quadgk(t0, t1);
 }
 

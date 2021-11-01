@@ -70,22 +70,30 @@ class action
 	/// @brief checks the vaildity of path
 	void check_vaild();
 
-	/// @brief evaluate lagranian at given t
+	/// @brief evaluate lagrangian at given t
 	/// @param t time at which evaluate lagrangian
-	/// @return value of the lagranian at given t
-	T eval_lagranian(T t);
+	/// @return value of the lagrangian at given t
+	T eval_lagrangian(T t);
 
-	/// @brief evaluate lagranian at given t
+	/// @brief evaluate lagrangian at given t
 	/// @param t time at which evaluate lagrangian
-	/// @return value of the lagranian at given t
-	std::vector<T> eval_lagranian(std::vector<T> t);
+	/// @return value of the lagrangian at given t
+	std::vector<T> eval_lagrangian(std::vector<T> t);
 
-	/// @brief helper function for action evaluation
+	/// @brief helper function for action evaluation by
 	/// (G15, K31) Gauss–Kronrod quadrature method
     /// @param left left end point of interval
 	/// @param right right end point of interval
 	/// @param D previous |G15-K31| value without scaling
 	T eval_helper(T left, T right, T D);
+
+	/// @brief evaluate the action of given path
+	/// by (G15, K31) Gauss–Kronrod quadrature method
+	/// @param left left end points of interval
+	/// @param right right end points of interval
+	/// @return action of given path
+
+	T eval_quadgk(T left, T right);
 
 	public:
     /// @brief initialize action class
@@ -141,7 +149,8 @@ class action
 	bool is_vaild();
 
 	/// @brief evaluate the action of given path
-	/// by (G7, K15) Gauss–Kronrod quadrature method
+	/// by default method 
+	/// (G15, K31) Gauss–Kronrod quadrature method
 	/// @return action of given path
 
 	T eval();

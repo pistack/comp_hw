@@ -5,7 +5,7 @@
  * number of points to evaluate, number of interation, step size and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 10. 30.
+ * @date 2021. 11. 01.
  */
 
 #include <algorithm>
@@ -43,6 +43,8 @@ class kepler_lag{
   T operator()(T t, 
   vector<T> p, vector<T> dp) const
   {
+    if(std::abs(p[0])<1e-3)
+    return 0.0; // to avoid singularity 
     return 0.5*(pow(dp[0], 2.0)+pow(p[0]*dp[1], 2.0))+
     1/abs(p[0]);
   }
@@ -106,31 +108,6 @@ int main(void)
   tmax, p0, p1, atol, num_fourier, period);
 
   kepler.set_init_guess();
-
-  if(num_fourier > 1)
-  {
-    vector<vector<PRECISION>> c(2, vector<PRECISION>(2*num_fourier, 0));
-    c[0][0] = -0.845392;
-    c[0][1] = -0.628871;
-    c[1][0] = -0.0880765;
-    c[1][1] = 0.907381;
-    kepler.set_init_guess(c);
-  }
-
-  if(num_fourier > 2)
-  {
-    vector<vector<PRECISION>> c(2, vector<PRECISION>(2*num_fourier, 0));
-    c[0][0] = -0.638579;
-    c[0][1] = -0.931356;
-    c[0][2] = -0.0523613;
-    c[0][3] = -0.432764;
-    c[1][0] = -0.0989751;
-    c[1][1] = 0.768637;
-    c[1][2] = -0.176795;
-    c[1][3] = 0.0110902;
-    kepler.set_init_guess(c);
-  }
-
   // variable to get optimization state
   int num_move; // number of actual moves
   PRECISION accept_ratio; // acceptance ratio
