@@ -105,7 +105,9 @@ T action<T, Lag>::eval_helper(T left, T right, T D, T D_tol)
   }
   fnodes = eval_lagrangian(tnodes);
   T int_kron=table.weight_kronrod[(table.order-1)/2]*fnodes[(table.order-1)/2];
-  T int_gauss=table.weight_gauss[(table.order-3)/4]*fnodes[(table.order-1)/2];
+  T int_gauss=0;
+  if(table.order % 4 == 3)
+  int_gauss=table.weight_gauss[(table.order-3)/4]*fnodes[(table.order-1)/2];
   for(int i=0; i<(table.order-1)/2; i++)
   {
     int_kron += table.weight_kronrod[i]*(fnodes[i]+fnodes[table.order-1-i]);
@@ -152,7 +154,8 @@ T action<T, Lag>::eval_quadgk(T left, T right, int n)
   return eval_helper<gau_kron_table<T, 51>>(left, right, 0.0, D_tol);
   if(n==61)
   return eval_helper<gau_kron_table<T, 61>>(left, right, 0.0, D_tol);
-  return 0; // un supported order
+  // currently only supports N=15,21,31,41,51,61
+  return 0; // unsupported order
 }
 
 template<typename T, typename Lag>
@@ -163,5 +166,15 @@ T action<T, Lag>::eval()
   T t0, t1;
   std::tie(t0, t1) = path_action[0].get_endtimes();
   return eval_quadgk(t0, t1, 31);
+}
+
+template<typename T, typename Lag>
+T action<T, Lag>::eval(int n)
+{
+  if(! vaildity)
+  return 0;
+  T t0, t1;
+  std::tie(t0, t1) = path_action[0].get_endtimes();
+  return eval_quadgk(t0, t1, n);
 }
 

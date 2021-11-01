@@ -3,14 +3,14 @@
  * @ingroup libfourier
  * @brief table for gauss_kronrod node and weights
  * @author pistack (Junho Lee)
- * @date 2021. 11. 1.
+ * @date 2021. 11. 2.
  */
 
 #ifndef GAU_KRON_TABLE_H
 #define GAU_KRON_TABLE_H
 #include <vector>
 
-/// @brief table for gauss kronrod node and weigts
+/// @brief table for gauss kronrod node and weights
 /// @param T precision should be one of float, double, long double
 /// @param N order of gauss-kronrod quadrature
 /// currently only supports N=15, 21, 31, 41, 51, 61
@@ -327,7 +327,7 @@ class gau_kron_table<T, 61>
         7.997278358218390830136689423226832e-01,
         7.677774321048261949179773409745031e-01,
         7.337900624532268047261711313695276e-01,
-        7.337900624532268047261711313695276e-01,
+        6.978504947933157969322923880266401e-01,
         6.600610641266269613700536681492708e-01,
         6.205261829892428611404775564311893e-01,
         5.793452358263616917560249321725405e-01,

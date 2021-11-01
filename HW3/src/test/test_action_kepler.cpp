@@ -2,7 +2,7 @@
  * @file test_action_kepler.cpp
  * @brief test action::eval() routine with kepler action
  * @author pistack (Junho Lee)
- * @date 2021. 10. 31.
+ * @date 2021. 11. 1.
  */
 
 #include <cmath>
@@ -45,8 +45,8 @@ int main(void)
 
   cout << "==========================================================" << endl;
   cout << "               Test eval action routine                   " << endl;
-  cout << " Test 1. single precision systematic approach n_f: 3      " << endl;
-  cout << " Test 2. double precision n_f: 4 with atol: 1e-4          " << endl;
+  cout << " Test 1. n_f: 3 with kepler action                        " << endl;
+  cout << " Test 2. n_f: 4 with kepler action                        " << endl;
 
   // measure execution time of action::eval() method
   std::chrono::steady_clock::time_point start;
@@ -58,7 +58,11 @@ int main(void)
   PRECISION a = 0.5*(zeta_min+zeta_max);
   PRECISION tmax = pi*pow(a, 1.5);
   PRECISION period = 2*tmax;
-  vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6, 1e-8, 1e-10, 1e-12, 1e-14, 1e-16, 1e-18};
+  #if PRECISION_LEVEL == 0
+  vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6};
+  #elif PRECISION_LEVEL == 1
+  vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6, 1e-8, 1e-10, 1e-12, 1e-14};
+  #endif
   vector<vector<PRECISION>> c1 {
     {-0.791412, -0.62261, -0.859226, -0.856224, 0.143711, -0.542851},
     {-0.216721, 0.548709, -0.198616, -0.0924677, 0.0491277, -0.0405731}
@@ -86,10 +90,10 @@ int main(void)
 
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(DIGITS); // print significant digits
-  for(int i=0; i<10; i++)
+  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); it++)
   {
-    tst1.update(tol[i]);
-    cout << " Test 1. atol: " << tol[i] <<  endl;
+    tst1.update(*it);
+    cout << " Test 1. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; j++)
     tst1.eval();
@@ -99,10 +103,10 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
   }
-  for(int i=0; i<10; i++)
+  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); it++)
   {
-    tst2.update(tol[i]);
-    cout << " Test 2. atol: " << tol[i] <<  endl;
+    tst2.update(*it);
+    cout << " Test 2. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; j++)
     tst2.eval();

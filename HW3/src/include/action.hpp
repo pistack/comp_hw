@@ -3,7 +3,7 @@
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
- * @date 2021. 10. 31.
+ * @date 2021. 11. 2.
  */
 
 #ifndef ACTION_H
@@ -58,13 +58,13 @@ class action
 	/// @param Gau_Kron table for gauss_kronrod node and weights
     /// @param left left end point of interval
 	/// @param right right end point of interval
-	/// @param D previous \f$ |G_{(n-1)/2} - Kn| \f$. value without scaling
+	/// @param D previous \f$ |G_{(n-1)/2} - K_n| \f$. value without scaling
 	/// @param D_tol tolerance for D
 	template<typename Gau_Kron>
 	T eval_helper(T left, T right, T D, T D_tol);
 
 	/// @brief evaluate the action of given path
-	/// by \f$ (G_{(n-1)/2}, Kn) \f$ Gauss–Kronrod quadrature method
+	/// by \f$ (G_{(n-1)/2}, K_n) \f$ Gauss–Kronrod quadrature method
 	/// @param left left end points of interval
 	/// @param right right end points of interval
 	/// @param n order of gauss-kronrod quadrature
@@ -132,6 +132,14 @@ class action
 	/// @return action of given path
 
 	T eval();
+
+	/// @brief evaluate the action of given path
+	/// by \f$ (G_{(n-1)/2}, K_n) \f$ Gauss–Kronrod quadrature method
+	/// @param n order of gauss-kronrod quadrature
+	/// currently only supports N=15, 21, 31, 41, 51, 61
+	/// @return action of given path
+
+	T eval(int n);
 };
 
 #include "action/action.tpp"

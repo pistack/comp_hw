@@ -3,8 +3,8 @@
 CXX = g++
 INC = -I src/include/
 # CXXFLAGS = -O -g -Wall -Werror -pedantic $(INC)
-CPPFLAGS = -O3 -D PRECISION_LEVEL=0 $(INC) # for single precision
-# CPPFLAGS = -O3 -D PRECISION_LEVEL=1 $(INC) # for double precision
+# CPPFLAGS = -O3 -D PRECISION_LEVEL=0 $(INC) # for single precision
+CPPFLAGS = -O3 -D PRECISION_LEVEL=1 $(INC) # for double precision
 
 OBJS = ./src/main.o 
 TEST_OBJS = ./src/test/test_action_kepler.o ./src/test/test_action_simple.o
@@ -44,18 +44,20 @@ new :
 ./src/main.o: src/include/mcm.hpp src/include/fourier_path.hpp
 ./src/main.o: src/include/fourier.hpp src/include/fourier/fourier.tpp
 ./src/main.o: src/include/fourier_path/fourier_path.tpp
-./src/main.o: src/include/action.hpp src/include/action/action.tpp
-./src/main.o: src/include/mcm/mcm_basic.tpp src/include/mcm/mcm_move.tpp
-./src/main.o: src/include/mcm/mcm_opt.tpp
+./src/main.o: src/include/action.hpp src/include/gauss_kronrod_table.hpp
+./src/main.o: src/include/action/action.tpp src/include/mcm/mcm_basic.tpp
+./src/main.o: src/include/mcm/mcm_move.tpp src/include/mcm/mcm_opt.tpp
 ./src/test/test_action_kepler.o: src/include/action.hpp
 ./src/test/test_action_kepler.o: src/include/fourier_path.hpp
 ./src/test/test_action_kepler.o: src/include/fourier.hpp
 ./src/test/test_action_kepler.o: src/include/fourier/fourier.tpp
 ./src/test/test_action_kepler.o: src/include/fourier_path/fourier_path.tpp
+./src/test/test_action_kepler.o: src/include/gauss_kronrod_table.hpp
 ./src/test/test_action_kepler.o: src/include/action/action.tpp
 ./src/test/test_action_simple.o: src/include/action.hpp
 ./src/test/test_action_simple.o: src/include/fourier_path.hpp
 ./src/test/test_action_simple.o: src/include/fourier.hpp
 ./src/test/test_action_simple.o: src/include/fourier/fourier.tpp
 ./src/test/test_action_simple.o: src/include/fourier_path/fourier_path.tpp
+./src/test/test_action_simple.o: src/include/gauss_kronrod_table.hpp
 ./src/test/test_action_simple.o: src/include/action/action.tpp
