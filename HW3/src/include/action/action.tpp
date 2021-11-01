@@ -85,36 +85,32 @@ std::vector<T> action<T, Lag>::eval_lagrangian(std::vector<T> t)
   return lag_val;
 }
 
-template<typename T, typename Lag>
-T action<T, Lag>::eval_helper(T left, T right, int n, T D, T D_tol)
+template<typename T, typename Lag> template<typename Gau_Kron>
+T action<T, Lag>::eval_helper(T left, T right, T D, T D_tol)
 {
-  std::vector<T> nodes((n-1)/2, 0);
-  std::vector<T> weight_kronrod((n+1)/2, 0);
-  std::vector<T> weight_gauss((n+1)/4, 0);
-  std::vector<T> tnodes(n, 0);
-  std::vector<T> fnodes(n, 0);
+  Gau_Kron table;
+  std::vector<T> tnodes(table.order, 0);
+  std::vector<T> fnodes(table.order, 0);
   T eps = 10.0*std::numeric_limits<T>::epsilon();
   T D_lr;
   T Delta;
   T scale_factor = 0.5*(right - left);
   T mid = 0.5*(left+right);
-  tnodes[(n-1)/2] = mid;
-  std::tie(nodes, weight_gauss, weight_kronrod) = \
-  get_gau_kron(n);
-  for(int i=0; i<(n-1)/2; i++)
+  tnodes[(table.order-1)/2] = mid;
+  for(int i=0; i<(table.order-1)/2; i++)
   {
-    T tmp = (1.0+nodes[i])*scale_factor;
+    T tmp = (1.0+table.nodes[i])*scale_factor;
     tnodes[i] = right-tmp;
-    tnodes[n-1-i] = tmp+left;
+    tnodes[table.order-1-i] = tmp+left;
   }
   fnodes = eval_lagrangian(tnodes);
-  T int_kron=weight_kronrod[(n-1)/2]*fnodes[(n-1)/2];
-  T int_gauss=weight_gauss[(n-3)/4]*fnodes[(n-1)/2];
-  for(int i=0; i<(n-1)/2; i++)
+  T int_kron=table.weight_kronrod[(table.order-1)/2]*fnodes[(table.order-1)/2];
+  T int_gauss=table.weight_gauss[(table.order-3)/4]*fnodes[(table.order-1)/2];
+  for(int i=0; i<(table.order-1)/2; i++)
   {
-    int_kron += weight_kronrod[i]*(fnodes[i]+fnodes[n-1-i]);
+    int_kron += table.weight_kronrod[i]*(fnodes[i]+fnodes[table.order-1-i]);
     if(i %2 != 0)
-    int_gauss += weight_gauss[(i-1)/2]*(fnodes[i]+fnodes[n-1-i]);
+    int_gauss += table.weight_gauss[(i-1)/2]*(fnodes[i]+fnodes[table.order-1-i]);
   }
 
   D_lr = int_kron - int_gauss;
@@ -134,8 +130,8 @@ T action<T, Lag>::eval_helper(T left, T right, int n, T D, T D_tol)
   return scale_factor*int_kron;
 
   // otherwise divide interval by half
-  return eval_helper(left, mid, n, D_lr, D_tol) + \
-  eval_helper(mid, right, n, D_lr, D_tol);
+  return eval_helper<Gau_Kron>(left, mid, D_lr, D_tol) + \
+  eval_helper<Gau_Kron>(mid, right, D_lr, D_tol);
 }
 
 template<typename T, typename Lag>
@@ -144,7 +140,19 @@ T action<T, Lag>::eval_quadgk(T left, T right, int n)
 
   T D_tol = atol/1000.0/(right-left);
 
-  return eval_helper(left, right, n, 0.0, D_tol);
+  if(n==15)
+  return eval_helper<gau_kron_table<T, 15>>(left, right, 0.0, D_tol);
+  if(n==21)
+  return eval_helper<gau_kron_table<T, 21>>(left, right, 0.0, D_tol);
+  if(n==31)
+  return eval_helper<gau_kron_table<T, 31>>(left, right, 0.0, D_tol);
+  if(n==41)
+  return eval_helper<gau_kron_table<T, 41>>(left, right, 0.0, D_tol);
+  if(n==51)
+  return eval_helper<gau_kron_table<T, 51>>(left, right, 0.0, D_tol);
+  if(n==61)
+  return eval_helper<gau_kron_table<T, 61>>(left, right, 0.0, D_tol);
+  return 0; // un supported order
 }
 
 template<typename T, typename Lag>

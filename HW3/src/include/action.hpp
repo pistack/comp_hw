@@ -13,6 +13,7 @@
 #include <limits>
 #include <vector>
 #include "fourier_path.hpp"
+#include "gauss_kronrod_table.hpp"
 
 /// @brief class which computes action
 /// @param T precision should be one of
@@ -52,27 +53,22 @@ class action
 	/// @return value of the lagrangian at given t
 	std::vector<T> eval_lagrangian(std::vector<T> t);
 
-	/// @brief get Gauss-Kronrod nodes and weight
-	/// @param n order of Gauss-Kronrod quadrature
-	/// @return nodes and weight of Gauss-Kronrod
-	/// \f$ (G_{(n-1)/2}, Kn) \f$.
-	std::tuple<std::vector<T>,
-	std::vector<T>, std::vector<T>> get_gau_kron(int n);
-
 	/// @brief helper function for action evaluation by
 	/// \f$ (G_{(n-1)/2}, Kn) \f$ Gauss–Kronrod quadrature method
+	/// @param Gau_Kron table for gauss_kronrod node and weights
     /// @param left left end point of interval
 	/// @param right right end point of interval
-	/// @param n order of gauss-kronrod quadrature
 	/// @param D previous \f$ |G_{(n-1)/2} - Kn| \f$. value without scaling
 	/// @param D_tol tolerance for D
-	T eval_helper(T left, T right, int n, T D, T D_tol);
+	template<typename Gau_Kron>
+	T eval_helper(T left, T right, T D, T D_tol);
 
 	/// @brief evaluate the action of given path
 	/// by \f$ (G_{(n-1)/2}, Kn) \f$ Gauss–Kronrod quadrature method
 	/// @param left left end points of interval
 	/// @param right right end points of interval
 	/// @param n order of gauss-kronrod quadrature
+	/// currently only supports N=15, 21, 31, 41, 51, 61
 	/// @return action of given path
 
 	T eval_quadgk(T left, T right, int n);
@@ -139,6 +135,5 @@ class action
 };
 
 #include "action/action.tpp"
-#include "action/gauss_kronrod_table.tpp"
 
 #endif
