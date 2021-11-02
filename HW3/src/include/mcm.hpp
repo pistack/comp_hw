@@ -6,7 +6,7 @@
  * method described in 
  * [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
  * @author pistack (Junho Lee)
- * @date 2021. 10. 30.
+ * @date 2021. 11. 2.
  */
 
 #ifndef MCM_H
@@ -53,16 +53,16 @@ class mcm
    T fourier_period;
 
    // action
-   action<T, Lag> mcm_action;
+   libfourier::action<T, Lag> mcm_action;
 
    // initial guess
    std::vector<std::vector<T>> init_guess;
-   std::vector<fourier_path<T>> init_path;
+   std::vector<libfourier::fourier_path<T>> init_path;
    T init_action;
 
    // result
    std::vector<std::vector<T>> min_guess;
-   std::vector<fourier_path<T>> min_path;
+   std::vector<libfourier::fourier_path<T>> min_path;
    T min_action;
 
    std::random_device rd;
@@ -100,7 +100,7 @@ class mcm
    : t0(t_0), t1(t_1), p0(p_0), p1(p_1), \
    num_fourier(num_f), fourier_period(period)
    {
-      mcm_action = action<T, Lag>(abs_tol);
+      mcm_action = libfourier::action<T, Lag>(abs_tol);
    }
 
    /// @brief copy constructer of HW3 class

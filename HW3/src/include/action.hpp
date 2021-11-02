@@ -15,6 +15,7 @@
 #include "fourier_path.hpp"
 #include "gauss_kronrod_table.hpp"
 
+namespace libfourier{
 /// @brief class which computes action
 /// @param T precision should be one of
 /// float, double and long double
@@ -141,6 +142,7 @@ class action
 
 	T eval(int n);
 };
+}
 
 #include "action/action.tpp"
 

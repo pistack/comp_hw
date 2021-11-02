@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief headerfile for path approximated by fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 10. 28.
+ * @date 2021. 11. 2.
  */
 
 #ifndef FOURIER_PATH_H
@@ -17,6 +17,7 @@
 
 #include "fourier.hpp"
 
+namespace libfourier {
 /// @brief Class for the path approximated by fourier function
 /// @ingroup libfourier
 /// @param T precision should be one of float, double, long double
@@ -130,6 +131,7 @@ class fourier_path
 	/// @return the nth order derivative of path evaluated at t
 	std::vector<T> nderiv(int n, std::vector<T> t);
 };
+}
 
 #include "fourier_path/fourier_path.tpp"
 

@@ -24,11 +24,14 @@ template<typename T, typename Lag>
 void mcm<T, Lag>::set_init_guess(std::vector<std::vector<T>> init_c)
 {
   int dim_1 = init_c.size();
-  std::vector<fourier_path<T>> paths(dim_1, fourier_path<T>());
+  std::vector<libfourier::fourier_path<T>> \
+  paths(dim_1, libfourier::fourier_path<T>());
   for(int i=0; i<dim_1; ++i)
   {
-    fourier<T> tmp_fourier(num_fourier, fourier_period, init_c[i]);
-    paths[i] = fourier_path<T>(t0, t1, p0[i], p1[i], tmp_fourier);
+    libfourier::fourier<T> \
+    tmp_fourier(num_fourier, fourier_period, init_c[i]);
+    paths[i] = \
+    libfourier::fourier_path<T>(t0, t1, p0[i], p1[i], tmp_fourier);
   }
   init_guess = init_c;
   init_path = paths;
@@ -45,14 +48,17 @@ void mcm<T, Lag>::set_init_guess()
   int dim_1 = p0.size();
   int dim_2 = 2*num_fourier;
   std::vector<std::vector<T>> tmp_guess(dim_1, std::vector<T>(dim_2, 0));
-  std::vector<fourier_path<T>> paths(dim_1, fourier_path<T>());
+  std::vector<libfourier::fourier_path<T>> paths(dim_1, 
+  libfourier::fourier_path<T>());
   do
   {
     init_guess = move(tmp_guess, 1.0);
     for(int i=0; i<dim_1; ++i)
     {
-      fourier<T> tmp_fourier(num_fourier, fourier_period, init_guess[i]);
-      paths[i] = fourier_path<T>(t0, t1, p0[i], p1[i], tmp_fourier);
+      libfourier::fourier<T> \
+      tmp_fourier(num_fourier, fourier_period, init_guess[i]);
+      paths[i] = \
+      libfourier::fourier_path<T>(t0, t1, p0[i], p1[i], tmp_fourier);
     }
     mcm_action.update(paths);
   } 

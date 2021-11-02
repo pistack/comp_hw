@@ -3,9 +3,10 @@
  * @ingroup libfourier
  * @brief evaluate path and derivative
  * @author pistack (Junho Lee)
- * @date 2021. 10. 30.
+ * @date 2021. 11. 2.
  */
 
+namespace libfourier {
 template<typename T>
 fourier_path<T> & fourier_path<T>::operator=(const fourier_path<T> & copy)
 {
@@ -157,5 +158,6 @@ std::vector<T> fourier_path<T>::nderiv(int n, std::vector<T> t)
   [scaler](T &x){return x *= scaler;});
 
   return result;
+}
 }
   

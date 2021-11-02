@@ -18,6 +18,7 @@
     #define DIGITS 14
 #endif
 
+using namespace libfourier;
 using namespace std;
 
 /// dummy lagrangian functor class

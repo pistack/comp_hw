@@ -10,12 +10,14 @@
 #define GAU_KRON_TABLE_H
 #include <vector>
 
+namespace libfourier{
 /// @brief table for gauss kronrod node and weights
 /// @param T precision should be one of float, double, long double
 /// @param N order of gauss-kronrod quadrature
 /// currently only supports N=15, 21, 31, 41, 51, 61
 /// @note coefficients are obtained from 
 /// https://www.advanpix.com/2011/11/07/gauss-kronrod-quadrature-nodes-weights/
+/// @ingroup libfourier
 template<typename T, int N>
 class gau_kron_table
 {
@@ -396,5 +398,6 @@ class gau_kron_table<T, 61>
         5.149472942945156755834043364709931e-02
     };
 };
+}
 
 #endif

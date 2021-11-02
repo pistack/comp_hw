@@ -6,6 +6,7 @@
  * @date 2021. 11. 2.
  */
 
+namespace libfourier {
 template<typename T, typename Lag>
 action<T, Lag> & action<T, Lag>::operator=(const action<T, Lag> &copy)
 {
@@ -176,4 +177,4 @@ T action<T, Lag>::eval(int n)
   std::tie(t0, t1) = path_action[0].get_endtimes();
   return eval_quadgk(t0, t1, n);
 }
-
+}

@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief headerfile for fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 10. 28.
+ * @date 2021. 11. 2.
  */
 
 #ifndef FOURIER_H
@@ -12,6 +12,23 @@
 #include <algorithm>
 #include <cmath>
 #include <vector>
+
+namespace libfourier {
+
+/// @brief provide pi value
+/// @param T precision shoulb be one of float, double
+/// and long double
+/// @ingroup libfourier
+template<typename T>
+class PI
+{
+	private:
+	const T pi = std::acos(-1);
+
+	public:
+	T operator()() const 
+	{ return pi;}
+};
 
 /// @brief Class for sum of the sine and cosine function
 /// weighted by coefficients
@@ -23,10 +40,12 @@ template<typename T>
 class fourier
 {
 	private:
-        const T pi = std::acos(-1); // pi 
-		int f_num_fourier; // number of sine and cosine function to add
-		T f_period; // the period of fourier function 
-		std::vector<T> f_c; // coefficients
+
+	int f_num_fourier; // number of sine and cosine function to add
+	T f_period; // the period of fourier function 
+	std::vector<T> f_c; // coefficients
+
+	const PI<T> pi;
 
 	public:
 
@@ -89,6 +108,7 @@ class fourier
 	/// evaluated at t
 	std::vector<T> nderiv(int n, std::vector<T> t);
 };
+}
 
 #include "fourier/fourier.tpp"
 

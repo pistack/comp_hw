@@ -5,7 +5,7 @@
  * number of points to evaluate, number of interation, step size and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 11. 01.
+ * @date 2021. 11. 02.
  */
 
 #include <algorithm>
@@ -22,8 +22,6 @@
     #define PRECISION double
     #define DIGITS 14
 #endif
-
-const PRECISION pi = std::acos(-1); // define pi
 
 using namespace std;
 
@@ -98,12 +96,13 @@ int main(void)
   cout << " Now starts calculation" << endl;
 
   // initial condition
+  libfourier::PI<PRECISION> pi;
   PRECISION zeta_max = zeta_min/(2*zeta_min-1);
   PRECISION a = (zeta_min+zeta_max)/2;
-  PRECISION tmax = pi*pow(a, 1.5);
+  PRECISION tmax = pi()*pow(a, 1.5);
   PRECISION period = 2*tmax;
   vector<PRECISION> p0 = {zeta_min, 0};
-  vector<PRECISION> p1 = {zeta_max, pi};
+  vector<PRECISION> p1 = {zeta_max, pi()};
   mcm<PRECISION, kepler_lag<PRECISION>> kepler(PRECISION(0), 
   tmax, p0, p1, atol, num_fourier, period);
 

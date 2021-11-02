@@ -18,20 +18,20 @@
     #define DIGITS 14
 #endif
 
+using namespace libfourier;
 using namespace std;
-
-const PRECISION pi = std::acos(-1); // define pi
 
 int main()
 {
+    PI<PRECISION> pi;
     vector<PRECISION> c1 = {1.0, 0.0};
     vector<PRECISION> c2 = {0.0, 1.0};
     vector<PRECISION> c3 = {1.0, 0.0, 1.0, 0.0};
-    fourier<PRECISION> fun1(1, pi, c1); // sin(2*x)
-    fourier<PRECISION> fun2(1, pi, c2); // cos(2*x)
-    fourier<PRECISION> fun3(2, pi, c3); // sin(2*x) + sin(4*x)
+    fourier<PRECISION> fun1(1, pi(), c1); // sin(2*x)
+    fourier<PRECISION> fun2(1, pi(), c2); // cos(2*x)
+    fourier<PRECISION> fun3(2, pi(), c3); // sin(2*x) + sin(4*x)
     vector<PRECISION> t{
-        0.0, pi/4, pi/2, 3*pi/4, pi
+        0.0, pi()/4, pi()/2, 3*pi()/4, pi()
     };
     vector<PRECISION> result(5,0);
 

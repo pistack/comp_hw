@@ -21,7 +21,7 @@ mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda)
   T accept_action = init_action;
   std::vector<std::vector<T>> accept_guess = init_guess;
   std::vector<std::vector<T>> tmp_guess = init_guess;
-  std::vector<fourier_path<T>> tmp_path = init_path;
+  std::vector<libfourier::fourier_path<T>> tmp_path = init_path;
 
   for(int i=0; i<num_iter; ++i)
   {
@@ -35,7 +35,7 @@ mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda)
       tmp_guess = move(accept_guess, step_size);
       for(int i=0; i<dim_1; ++i)
       {
-        fourier<T> tmp_fourier(num_fourier, fourier_period,
+        libfourier::fourier<T> tmp_fourier(num_fourier, fourier_period,
         tmp_guess[i]);
         tmp_path[i].update(tmp_fourier);
       }
@@ -81,7 +81,7 @@ std::string monitor, int digits)
   T accept_action = init_action;
   std::vector<std::vector<T>> accept_guess = init_guess;
   std::vector<std::vector<T>> tmp_guess = init_guess;
-  std::vector<fourier_path<T>> tmp_path = init_path;
+  std::vector<libfourier::fourier_path<T>> tmp_path = init_path;
 
   // monitor optimization process
   std::ofstream fout;
@@ -102,7 +102,7 @@ std::string monitor, int digits)
       tmp_guess = move(accept_guess, step_size);
       for(int i=0; i<dim_1; ++i)
       {
-        fourier<T> tmp_fourier(num_fourier, fourier_period,
+        libfourier::fourier<T> tmp_fourier(num_fourier, fourier_period,
         tmp_guess[i]);
         tmp_path[i].update(tmp_fourier);
       }
