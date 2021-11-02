@@ -57,7 +57,7 @@ int main(void)
   PRECISION tmax = pi()*pow(a, 1.5);
   PRECISION period = 2*tmax;
   #if PRECISION_LEVEL == 0
-  vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6, 1e-8, 1e-10};
+  vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6};
   #elif PRECISION_LEVEL == 1
   vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6, 1e-8, 1e-10, 1e-12, 1e-14};
   #endif
@@ -96,7 +96,17 @@ int main(void)
     for(int j=0; j<10000; ++j)
     tst1.eval();
     end = std::chrono::steady_clock::now();
-    cout << "Integration value: " << tst1.eval() << '\t' << tst1.eval(1, 10) << endl;
+    cout << "Integration Method: gauss-kronrod quadrature" << endl;
+    cout << "Integration value: " << tst1.eval() << endl;
+    cout << "Execution time: " << \
+    std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
+    " microsecond" << endl;
+    cout << "Integration Method: Tanh-Sinh quadrature" << endl;
+    start = std::chrono::steady_clock::now();
+    for(int j=0; j<10000; ++j)
+    tst1.eval(1, 7);
+    end = std::chrono::steady_clock::now();
+    cout << "Integration value: " << tst1.eval(1, 7) << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
@@ -109,11 +119,20 @@ int main(void)
     for(int j=0; j<10000; ++j)
     tst2.eval();
     end = std::chrono::steady_clock::now();
-    cout << "Integration value: " << tst2.eval() << '\t' << tst2.eval(1, 10) << endl;
-    end = std::chrono::steady_clock::now();
+    cout << "Integration Method: gauss-kronrod quadrature" << endl;
+    cout << "Integration value: " << tst2.eval() << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
-    " microsecond" << endl;  
+    " microsecond" << endl;
+    cout << "Integration Method: Tanh-Sinh quadrature" << endl;
+    start = std::chrono::steady_clock::now();
+    for(int j=0; j<10000; ++j)
+    tst2.eval(1, 7);
+    end = std::chrono::steady_clock::now();
+    cout << "Integration value: " << tst2.eval(1, 7) << endl;
+    cout << "Execution time: " << \
+    std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
+    " microsecond" << endl;
   }
   cout << "Test finished!" << endl;
   cout << "==========================================================" << endl;

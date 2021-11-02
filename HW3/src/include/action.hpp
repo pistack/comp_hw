@@ -10,11 +10,12 @@
 #define ACTION_H
 
 #include <iostream>
+#include <algorithm>
 #include <cmath>
 #include <limits>
 #include <vector>
 #include "fourier_path.hpp"
-#include "gauss_kronrod_table.hpp"
+#include "node_weight_table.hpp"
 
 namespace libfourier{
 /// @brief class which computes action
@@ -147,19 +148,12 @@ class action
 	T eval();
 
 	/// @brief evaluate the action of given path
-	/// by \f$ (G_{(n-1)/2}, K_n) \f$ Gauss–Kronrod quadrature method
-	/// @param n order of gauss-kronrod quadrature
-	/// currently only supports N=15, 21, 31, 41, 51, 61
-	/// @return action of given path
-
-	T eval(int n);
-
-	/// @brief evaluate the action of given path
 	/// @param method numerical integration method
 	/// - method 0: Gauss-Kronrod quadrature method
 	/// - method 1: Tanh-Sinh quadrature method
-	/// @param n  order if method equals to 0,
-	/// maximum depth if method equals to 1.
+	/// @param n  
+	/// - order of Gauss-Kronrod quadrature if method equals to 0,
+	/// - maximum depth if method equals to 1.
 	/// @return action of given path
 
 	T eval(int method, int n);

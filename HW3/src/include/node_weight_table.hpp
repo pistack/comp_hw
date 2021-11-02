@@ -1,14 +1,17 @@
 /*!
- * @file gauss_kronrod_table.hpp
+ * @file node_weight_table.hpp
  * @ingroup libfourier
- * @brief table for gauss_kronrod node and weights
+ * @brief table for node and weights
  * @author pistack (Junho Lee)
  * @date 2021. 11. 2.
  */
 
-#ifndef GAU_KRON_TABLE_H
-#define GAU_KRON_TABLE_H
+#ifndef NODE_WEIGHT_TABLE_H
+#define NODE_WEIGHT_TABLE_H
+#include <cmath>
+#include <limits>
 #include <vector>
+#include "fourier.hpp"
 
 namespace libfourier{
 /// @brief table for gauss kronrod node and weights

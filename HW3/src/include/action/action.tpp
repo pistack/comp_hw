@@ -161,7 +161,7 @@ template<typename T, typename Lag>
 T action<T, Lag>::eval_qthsh(T left, T right, int max_order)
 {
   PI<T> pi;
-  T h_pi = 1;
+  T h_pi = pi()/2;
   T eps = std::numeric_limits<T>::epsilon(); // machine eps
   T mid = (left+right)/2;
   T scale_coord = (right-left)/2;
@@ -172,41 +172,35 @@ T action<T, Lag>::eval_qthsh(T left, T right, int max_order)
   T integral = eval_lagrangian(mid); // integration value
   for(int depth=0; depth<= max_order; ++depth)
   {
-    std::cout << std::log(dt) << std::endl;
     h /= 2;
-    T t = 1.0;
-    if(depth > 0)
-    t = dt; // if depth > 0 then we only add odd terms
-    std::cout << std::log(t) << std::endl;
+    T t = dt;
     T corr = 0; // correction term
     T absq = 0; // absolute value of q
     T f_l=0;
     T f_r=0;
     do
     {
-      t *= dt_pre;
-      T u = std::exp(1/t-t); // exp(-2sinh(kh))
+      T u = std::exp(h_pi*(1/t-t)); // exp(-2sinh(kh))
       T r = 2*u/(1+u); // (1-x_k)
       T dr = scale_coord*r;
       T w = (t+1/t)*r/(1+u);
       T q = 0;
-      bool cond_l = (left+dr > left);
-      bool cond_r = (right > right-dr);
-      if(cond_l)
+      if(left+dr > left)
       f_l = eval_lagrangian(left+dr);
-      if(cond_r)
+      if(right > right-dr)
       f_r = eval_lagrangian(right-dr);
       q = w*(f_l+f_r);
       absq = std::abs(q);
       corr += q;
+      t *= dt_pre;
     }
     // correction terms may not be changed
     // due to numerical tuncation
     while(absq > eps*std::abs(corr));
     integral += corr;
-    if(std::abs(corr)*h*scale_int<atol/2)
-    break; // double exponential convergence with depth
-    if(std::abs(corr)<=eps*std::abs(integral))
+    if(std::abs(corr)*h*scale_int<atol)
+    break; // double exponential quadratic convergence with depth
+    if(std::abs(corr)<=eps*(eps+std::abs(integral)))
     break; // numerical tuncation reaches
     dt_pre = dt;
     dt = std::sqrt(dt_pre);
@@ -222,16 +216,6 @@ T action<T, Lag>::eval()
   T t0, t1;
   std::tie(t0, t1) = path_action[0].get_endtimes();
   return eval_quadgk(t0, t1, 31);
-}
-
-template<typename T, typename Lag>
-T action<T, Lag>::eval(int n)
-{
-  if(! vaildity)
-  return 0;
-  T t0, t1;
-  std::tie(t0, t1) = path_action[0].get_endtimes();
-  return eval_quadgk(t0, t1, n);
 }
 
 template<typename T, typename Lag>
