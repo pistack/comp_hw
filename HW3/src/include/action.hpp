@@ -9,6 +9,7 @@
 #ifndef ACTION_H
 #define ACTION_H
 
+#include <iostream>
 #include <cmath>
 #include <limits>
 #include <vector>
@@ -73,6 +74,17 @@ class action
 	/// @return action of given path
 
 	T eval_quadgk(T left, T right, int n);
+
+	/// @brief evaluate the action of given path
+	/// tanh-sinh quadrature method
+	/// @param left left end points of interval
+	/// @param right right end points of interval
+	/// @param max_depth maximum depth 
+	/// step size \f$ h \f$ would be 
+	/// \f$ h \geq 2^{-\mathrm{depth}_{max}} \f$. 
+	/// @return action of given path
+
+	T eval_qthsh(T left, T right, int max_depth);
 
 	public:
     /// @brief initialize action class
@@ -141,6 +153,16 @@ class action
 	/// @return action of given path
 
 	T eval(int n);
+
+	/// @brief evaluate the action of given path
+	/// @param method numerical integration method
+	/// - method 0: Gauss-Kronrod quadrature method
+	/// - method 1: Tanh-Sinh quadrature method
+	/// @param n  order if method equals to 0,
+	/// maximum depth if method equals to 1.
+	/// @return action of given path
+
+	T eval(int method, int n);
 };
 }
 

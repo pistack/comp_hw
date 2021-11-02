@@ -106,7 +106,7 @@ int main(void)
   // initial condition
   vector<PRECISION> c = {1.0, 0.0};
   #if PRECISION_LEVEL == 0
-  vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6};
+  vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6, 1e-8, 1e-10};
   #elif PRECISION_LEVEL == 1
   vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6, 1e-8, 1e-10, 1e-12, 1e-14};
   #endif
@@ -165,10 +165,10 @@ int main(void)
     tst4.update(*it);
     cout << " Test 4. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
-    for(int j=0; j<10000; ++j)
+    for(int j=0; j<1; ++j)
     tst4.eval();
     end = std::chrono::steady_clock::now();
-    cout << "Integration value: " << tst4.eval() << endl;
+    cout << "Integration value: " << tst4.eval() << '\t' << tst4.eval(1, 10) << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
@@ -178,10 +178,10 @@ int main(void)
     tst5.update(*it);
     cout << " Test 5. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
-    for(int j=0; j<10000; ++j)
+    for(int j=0; j<1; ++j)
     tst5.eval();
     end = std::chrono::steady_clock::now();
-    cout << "Integration value: " << tst5.eval() << endl;
+    cout << "Integration value: " << tst5.eval() << '\t' << tst5.eval(1, 10) << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
@@ -190,7 +190,8 @@ int main(void)
   {
     tst6.update(*it);
     cout << " Test 6. atol: " << *it <<  endl;
-    for(int i=0; i<6; ++i)
+    cout << "Integration Method: Gauss-Kron quadrature" << endl;
+    for(int i=0; i<4; ++i)
     {
       start = std::chrono::steady_clock::now();
       for(int j=0; j<1000; ++j)

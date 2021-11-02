@@ -92,10 +92,11 @@ T action<T, Lag>::eval_helper(T left, T right, T D, T D_tol)
   Gau_Kron table;
   std::vector<T> tnodes(table.order, 0);
   std::vector<T> fnodes(table.order, 0);
-  T eps = 10.0*std::numeric_limits<T>::epsilon();
+  T eps = 100.0*std::numeric_limits<T>::epsilon();
   T D_lr;
   T scale_factor = 0.5*(right - left);
   T mid = 0.5*(left+right);
+  T mean_abs = 0;
   tnodes[(table.order-1)/2] = mid;
   for(int i=0; i<(table.order-1)/2; ++i)
   {
@@ -121,14 +122,12 @@ T action<T, Lag>::eval_helper(T left, T right, T D, T D_tol)
   return scale_factor*int_kron;
 
   /// stop recurrsion due to tuncation
-  /// 1. length of interval is less than
-  /// numerical epsilon
-  /// 2. difference of Dlr and D is less than 
-  /// numerical epsilon
-
-  if(right-left < eps*(eps+0.5*(std::abs(right)+std::abs(left))) ||
-  std::abs(D_lr-D) <
-  eps*(eps+std::abs(int_kron)))
+  /// difference of Dlr and D is less than 
+  /// numerical epsilon 
+  /// (estimated by 100*machine_eps*mean of abs value of function)
+  mean_abs = (std::abs(fnodes[0])+
+  std::abs(fnodes[(table.order-1)/2])+std::abs(fnodes[table.order-1]))/3;
+  if(std::abs(D_lr-D) < eps*mean_abs)
   return scale_factor*int_kron;
 
   // otherwise divide interval by half
@@ -159,6 +158,63 @@ T action<T, Lag>::eval_quadgk(T left, T right, int n)
 }
 
 template<typename T, typename Lag>
+T action<T, Lag>::eval_qthsh(T left, T right, int max_order)
+{
+  PI<T> pi;
+  T h_pi = 1;
+  T eps = std::numeric_limits<T>::epsilon(); // machine eps
+  T mid = (left+right)/2;
+  T scale_coord = (right-left)/2;
+  T scale_int = h_pi*scale_coord;
+  T h = 2; // step_size
+  T dt_pre = std::exp(1.0); // previous step size
+  T dt = std::exp(1.0); // current step size
+  T integral = eval_lagrangian(mid); // integration value
+  for(int depth=0; depth<= max_order; ++depth)
+  {
+    std::cout << std::log(dt) << std::endl;
+    h /= 2;
+    T t = 1.0;
+    if(depth > 0)
+    t = dt; // if depth > 0 then we only add odd terms
+    std::cout << std::log(t) << std::endl;
+    T corr = 0; // correction term
+    T absq = 0; // absolute value of q
+    T f_l=0;
+    T f_r=0;
+    do
+    {
+      t *= dt_pre;
+      T u = std::exp(1/t-t); // exp(-2sinh(kh))
+      T r = 2*u/(1+u); // (1-x_k)
+      T dr = scale_coord*r;
+      T w = (t+1/t)*r/(1+u);
+      T q = 0;
+      bool cond_l = (left+dr > left);
+      bool cond_r = (right > right-dr);
+      if(cond_l)
+      f_l = eval_lagrangian(left+dr);
+      if(cond_r)
+      f_r = eval_lagrangian(right-dr);
+      q = w*(f_l+f_r);
+      absq = std::abs(q);
+      corr += q;
+    }
+    // correction terms may not be changed
+    // due to numerical tuncation
+    while(absq > eps*std::abs(corr));
+    integral += corr;
+    if(std::abs(corr)*h*scale_int<atol/2)
+    break; // double exponential convergence with depth
+    if(std::abs(corr)<=eps*std::abs(integral))
+    break; // numerical tuncation reaches
+    dt_pre = dt;
+    dt = std::sqrt(dt_pre);
+  }
+  return h*scale_int*integral;
+}
+
+template<typename T, typename Lag>
 T action<T, Lag>::eval()
 {
   if(! vaildity)
@@ -176,5 +232,19 @@ T action<T, Lag>::eval(int n)
   T t0, t1;
   std::tie(t0, t1) = path_action[0].get_endtimes();
   return eval_quadgk(t0, t1, n);
+}
+
+template<typename T, typename Lag>
+T action<T, Lag>::eval(int method, int n)
+{
+  if(! vaildity)
+  return 0;
+  T t0, t1;
+  std::tie(t0, t1) = path_action[0].get_endtimes();
+  if(method == 0)
+  return eval_quadgk(t0, t1, n);
+  if(method == 1)
+  return eval_qthsh(t0, t1, n);
+  return 0; // if method is not equal to the one of 0 or 1.
 }
 }

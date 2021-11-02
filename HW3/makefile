@@ -2,7 +2,7 @@
 
 CXX = g++
 INC = -I src/include/
-CXXFLAGS = -O -g -Wall -Werror -pedantic -D_GLIBCXX_DEBUG -D PRECISION_LEVEL=0 $(INC)
+CXXFLAGS = -O -g -Wall -Werror -pedantic -D_GLIBCXX_DEBUG -D PRECISION_LEVEL=1 $(INC)
 # CPPFLAGS = -O3 -D PRECISION_LEVEL=0 $(INC) # for single precision
 # CPPFLAGS = -O3 -D PRECISION_LEVEL=1 $(INC) # for double precision
 
