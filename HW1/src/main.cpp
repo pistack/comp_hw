@@ -4,9 +4,10 @@
  * Interactively reads inital condition, number of gird points to evaluate and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 11. 2.
+ * @date 2021. 11. 3.
  */
 
+#include <chrono>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -25,6 +26,8 @@ using namespace std;
 int main(void) {
 
   // init variables
+  std::chrono::steady_clock::time_point start;
+  std::chrono::steady_clock::time_point end; // check elapsed
   PRECISION t0; // initial time
   PRECISION t1; // finial time
   int n; // number of points to evaluate
@@ -35,8 +38,6 @@ int main(void) {
   string filename; // file name to store results
   ofstream fout; // file output stream
   
-
-
   cout << "===============================================" << endl;
   cout << "         hw1: main program for homework1       " << endl;
   cout << " initial time: ";
@@ -54,8 +55,13 @@ int main(void) {
   cout << " file name to store result: ";
   cin >> filename;
   cout << " Now starts calculation" << endl;
+  start = chrono::steady_clock::now();
   tie(t, y, theta) = HW1<PRECISION>(t0, t1, n, y0, y0p, theta0);
+  end = chrono::steady_clock::now();
   cout << " Calcuation is finished" << endl;
+  cout << " Elapsed time: "  << \
+  std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << \
+  " microsecond" << endl;
 
   // store result to file
   fout.open(filename);

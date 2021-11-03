@@ -89,10 +89,10 @@ std::vector<T> action<T, Lag>::eval_lagrangian(std::vector<T> t)
 template<typename T, typename Lag> template<typename Gau_Kron>
 T action<T, Lag>::eval_helper(T left, T right, T D, T D_tol)
 {
-  Gau_Kron table;
+  const T eps = 100.0*std::numeric_limits<T>::epsilon();
+  const Gau_Kron table;
   std::vector<T> tnodes(table.order, 0);
   std::vector<T> fnodes(table.order, 0);
-  T eps = 100.0*std::numeric_limits<T>::epsilon();
   T D_lr;
   T scale_factor = 0.5*(right - left);
   T mid = 0.5*(left+right);
@@ -160,9 +160,10 @@ T action<T, Lag>::eval_quadgk(T left, T right, int n)
 template<typename T, typename Lag>
 T action<T, Lag>::eval_qthsh(T left, T right, int max_order)
 {
-  PI<T> pi;
-  T h_pi = pi()/2;
-  T eps = std::numeric_limits<T>::epsilon(); // machine eps
+  const T eps = 10*std::numeric_limits<T>::epsilon(); // machine eps
+  const PI<T> pi;
+  const T h_pi = pi()/2;
+  T tol = std::sqrt(atol);
   T mid = (left+right)/2;
   T scale_coord = (right-left)/2;
   T scale_int = h_pi*scale_coord;
@@ -180,7 +181,7 @@ T action<T, Lag>::eval_qthsh(T left, T right, int max_order)
     T f_r=0;
     do
     {
-      T u = std::exp(h_pi*(1/t-t)); // exp(-2sinh(kh))
+      T u = std::exp(h_pi*(1/t-t)); // exp(-pi*sinh(kh))
       T r = 2*u/(1+u); // (1-x_k)
       T dr = scale_coord*r;
       T w = (t+1/t)*r/(1+u);
@@ -196,9 +197,9 @@ T action<T, Lag>::eval_qthsh(T left, T right, int max_order)
     }
     // correction terms may not be changed
     // due to numerical tuncation
-    while(absq > eps*std::abs(corr));
+    while(absq > eps*(eps+std::abs(corr)));
     integral += corr;
-    if(std::abs(corr)*h*scale_int<atol)
+    if(std::abs(corr)*h*scale_int<tol)
     break; // double exponential quadratic convergence with depth
     if(std::abs(corr)<=eps*(eps+std::abs(integral)))
     break; // numerical tuncation reaches

@@ -3,7 +3,7 @@
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 2.
+ * @date 2021. 11. 3.
  */
 
 #ifndef ACTION_H
@@ -30,7 +30,8 @@ namespace libfourier{
 /// initial time of it.
 /// @warning If you give invaild path, then
 /// eval method will return always zero.
-/// @see 
+/// @see for gauss-kronrod quadrature method  
+/// @see for tanh-sinh method
 /// @ingroup libfourier
 template<typename T, typename Lag>
 class action

@@ -4,7 +4,7 @@ CXX = g++
 INC = -I src/include/
 # CPPFLAGS = -O -g -Wall -Werror -pedantic -D PRECISION_LEVEL=1 $(INC)
 # CPPFLAGS = -O3 -D PRECISION_LEVEL=0 $(INC) # for single precision
-CPPFLAGS = -O3 -D PRECISION_LEVEL=1 $(INC) # for double precision
+CPPFLAGS = -O3 -D MONITOR -D PRECISION_LEVEL=1 $(INC) # for double precision
 
 OBJS = ./src/main.o 
 TEST1_OBJS = ./src/test/test_action_vaildity.o

@@ -1,6 +1,6 @@
 exact action 4.74173906770319 
 
-non-systematic approach (double precision)
+(double precision)
 step_size 0.01 lambda 100 atol 1e-8 iter 10^6
 1 5.0317269229779 0.870119
 2 4.7581241655848 0.720207
@@ -9,7 +9,7 @@ step_size 0.001 lambda 10000
 3 4.7426871956212 0.554835
 4 4.741868148688 0.418174
 
-non-systematic approach (single precision)
+(single precision)
 step_size 0.01 lambda 100 atol 1e-4 iter 10^6
 1 5.03173 0.873832
 2 4.75811 0.720742

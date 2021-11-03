@@ -23,6 +23,7 @@ using namespace std;
 
 int main()
 {
+    bool fail = false;
     PI<PRECISION> pi;
     vector<PRECISION> c1 = {1.0, 0.0};
     vector<PRECISION> c2 = {0.0, 1.0};

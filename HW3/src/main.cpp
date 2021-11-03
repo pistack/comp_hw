@@ -42,7 +42,7 @@ class kepler_lag{
   vector<T> p, vector<T> dp) const
   {
     if(std::abs(p[0])<1e-3)
-    return 0.0; // to avoid singularity 
+    return 1000; // to avoid singularity  and penalize bad guess
     return 0.5*(pow(dp[0], 2.0)+pow(p[0]*dp[1], 2.0))+
     1/abs(p[0]);
   }

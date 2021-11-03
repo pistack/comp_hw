@@ -8,6 +8,7 @@
 #include <chrono>
 #include <cmath>
 #include <iostream>
+#include <limits>
 #include "action.hpp"
 
 #if PRECISION_LEVEL == 0
@@ -136,6 +137,9 @@ int main(void)
   action<PRECISION, zero_lag<PRECISION>> tst5(path2);
   action<PRECISION, weird_lag<PRECISION>> tst6(path2);
   action<PRECISION, sqrt_lag<PRECISION>> tst7(path3);
+  vector<PRECISION> exact {
+    4, 1.1547005383772, 0, 1, 
+  }; /// exact value of each integral
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(DIGITS); // print significant digits
   for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
@@ -267,10 +271,10 @@ int main(void)
     }
     start = std::chrono::steady_clock::now();
     for(int j=0; j<1000; ++j)
-    tst6.eval(1, 7);
+    tst6.eval(1, 10);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh quadrature" << endl;
-    cout << "Integration value: " << tst6.eval(1, 7) << endl;
+    cout << "Integration value: " << tst6.eval(1, 10) << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/1000.0 << \
     " microsecond" << endl;
@@ -281,10 +285,10 @@ int main(void)
     cout << " Test 7. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<1000; ++j)
-    tst7.eval(1, 7);
+    tst7.eval(1, 10);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh quadrature" << endl;
-    cout << "Integration value: " << tst7.eval(1, 7) << endl;
+    cout << "Integration value: " << tst7.eval(1, 10) << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/1000.0 << \
     " microsecond" << endl;
