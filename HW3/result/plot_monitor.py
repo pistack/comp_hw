@@ -16,7 +16,7 @@ plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
 plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 burn = 10000
-monitor = np.genfromtxt('monitor4_2.txt')
+monitor = np.genfromtxt('monitor4f_sys2.txt')
 converged_dist = monitor[burn:, 1]
 plt.figure(1)
 plt.plot(monitor[:, 0], monitor[:, 1], marker='o', 

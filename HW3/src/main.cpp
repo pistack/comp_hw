@@ -5,7 +5,7 @@
  * number of points to evaluate, number of interation, step size and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 11. 02.
+ * @date 2021. 11. 04.
  */
 
 #include <algorithm>
@@ -41,10 +41,10 @@ class kepler_lag{
   T operator()(T t, 
   vector<T> p, vector<T> dp) const
   {
-    if(std::abs(p[0])<1e-3)
-    return 1000; // to avoid singularity  and penalize bad guess
+    if(p[0]<1e-2)
+    return 0.5*(pow(dp[0], 2.0)+pow(p[0]*dp[1], 2.0))+100; // to avoid singularity  and penalize bad guess
     return 0.5*(pow(dp[0], 2.0)+pow(p[0]*dp[1], 2.0))+
-    1/abs(p[0]);
+    1/p[0];
   }
 
 };
@@ -121,14 +121,14 @@ int main(void)
   #endif
 
   // Now fill time
-  vector<PRECISION> t(num_eval, 0);
-  PRECISION grid_space = tmax/PRECISION(num_eval-1);
+  vector<PRECISION> t(num_eval+1, 0); // one more point need for end point
+  PRECISION grid_space = tmax/PRECISION(num_eval);
   for(int i=1; i<num_eval; i++)
   t[i] = t[i-1]+grid_space;
   t[num_eval-1] = tmax;
 
   // store result
-  vector<vector<PRECISION>> result(2, vector<PRECISION>(num_eval, 0));
+  vector<vector<PRECISION>> result(2, vector<PRECISION>(num_eval+1, 0));
   result = kepler.min_eval(t);
   min_action = kepler.get_min_action();
 
@@ -159,7 +159,7 @@ int main(void)
   fout << '#' << 't' << '\t' << "zeta" << '\t' << "theta" << endl;
   fout.unsetf(ios::floatfield); // initialize floatfield
   fout.precision(DIGITS); // print significant digits
-  for(int i=0; i < num_eval; i++)
+  for(int i=0; i < num_eval+1; i++)
     fout << t[i] << '\t' << result[0][i] << '\t' << result[1][i] << endl;
   fout.close();
   fout.open(filename_coeff);

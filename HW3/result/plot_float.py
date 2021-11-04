@@ -17,10 +17,10 @@ plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 task_lst = [10, 20, 100, 1000, 10000]
 
-r = np.genfromtxt('zeta1f_non_sys.txt')
-r2 = np.genfromtxt('zeta2f_non_sys.txt')
-r3 = np.genfromtxt('zeta3f_non_sys.txt')
-r4 = np.genfromtxt('zeta3f_non_sys2.txt')
+r = np.genfromtxt('zeta1f_sys.txt')
+r2 = np.genfromtxt('zeta2f_sys.txt')
+r3 = np.genfromtxt('zeta3f_sys.txt')
+r4 = np.genfromtxt('zeta3f_sys2.txt')
 ref = np.genfromtxt('zeta_ref.txt')
 
 
