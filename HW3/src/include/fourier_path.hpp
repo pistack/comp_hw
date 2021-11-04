@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief headerfile for path approximated by fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 2.
+ * @date 2021. 11. 4.
  */
 
 #ifndef FOURIER_PATH_H
@@ -56,6 +56,17 @@ class fourier_path
 	/// @brief initalize fourier path class
 
 	fourier_path() {}
+
+	/// @brief initalize fourier path class
+	/// @param t_init initial time
+	/// @param t_fin finial time
+	/// @param init initial value of path
+	/// @param fin finial value of path
+
+	fourier_path(T t_init, T t_fin,
+	T init, T fin)
+	: p_t0(t_init), p_tf(t_fin), p_0(init), p_f(fin)
+	{}
 
 	/// @brief initalize fourier path class
 	/// @param t_init initial time
