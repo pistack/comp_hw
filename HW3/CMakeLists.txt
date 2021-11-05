@@ -1,9 +1,15 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(Compter_HW3 VERSION 0.1.0)
+add_compile_definitions(PRECISION_LEVEL=1)
+add_compile_definitions(MONITOR=0)
 if(DEFINED PRECISION_LEVEL)
 add_compile_definitions(PRECISION_LEVEL=${PRECISION_LEVEL})
-else()
-add_compile_definitions(PRECISION=1)
+endif()
+
+if(DEFINED MONITOR)
+if(MONITOR EQUAL "yes" OR MONITOR EQUAL 1)
+add_compile_definitions(MONITOR=1)
+endif()
 endif()
 
 include(CTest)
@@ -16,6 +22,7 @@ src/main.cpp src/include/action.hpp
 src/include/fourier.hpp
 src/include/fourier_path.hpp
 src/include/mcm.hpp
+src/include/node_weight_table.hpp
 src/include/action/action.tpp
 src/include/fourier/fourier.tpp
 src/include/fourier_path/fourier_path.tpp
@@ -28,6 +35,7 @@ src/main.cpp src/include/action.hpp
 src/include/fourier.hpp
 src/include/fourier_path.hpp
 src/include/mcm.hpp
+src/include/node_weight_table.hpp
 src/include/action/action.tpp
 src/include/fourier/fourier.tpp
 src/include/fourier_path/fourier_path.tpp

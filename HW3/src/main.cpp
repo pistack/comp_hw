@@ -5,11 +5,12 @@
  * number of points to evaluate, number of interation, step size and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 11. 04.
+ * @date 2021. 11. 05.
  */
 
 #include <algorithm>
 #include <cmath>
+#include <chrono>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -51,6 +52,9 @@ class kepler_lag{
 
 int main(void)
 {
+  // execution time
+  std::chrono::steady_clock::time_point start;
+  std::chrono::steady_clock::time_point end;
   PRECISION atol; // abs tol of action integral
   int num_eval; // number of points to eval
   int num_fourier; // number of sine and cosine function used for guess
@@ -94,7 +98,7 @@ int main(void)
   cin >> filename_monitor;
   #endif
   cout << " Now starts calculation" << endl;
-
+  start = std::chrono::steady_clock::now();
   // initial condition
   libfourier::PI<PRECISION> pi;
   PRECISION zeta_max = zeta_min/(2*zeta_min-1);
@@ -146,8 +150,14 @@ int main(void)
   // move t by t0
   transform(t.begin(), t.end(), t.begin(),
   [t0](PRECISION &x){return x += t0;});
-
+  end = std::chrono::steady_clock::now();
   cout << " Calcuation is finished" << endl;
+  cout.unsetf(ios::floatfield); // initialize floatfield
+  cout << fixed;
+  cout.precision(2); // print significant digits
+  cout << " Elapsed time: " << \
+  std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/1000000.0
+  << " second" << endl;
   cout << "======================result==============================" << endl;
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(DIGITS); // print significant digits

@@ -137,9 +137,6 @@ int main(void)
   action<PRECISION, zero_lag<PRECISION>> tst5(path2);
   action<PRECISION, weird_lag<PRECISION>> tst6(path2);
   action<PRECISION, sqrt_lag<PRECISION>> tst7(path3);
-  vector<PRECISION> exact {
-    4, 1.1547005383772, 0, 1, 
-  }; /// exact value of each integral
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(DIGITS); // print significant digits
   for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)

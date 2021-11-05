@@ -12,7 +12,7 @@ def kepler_lag(p, dp):
     return 0.5*(dp[:, 0]**2.0+(1/p[:, 0])**2.0)+1/p[:, 0]
 
 
-ref = np.genfromtxt('zeta_ref_100.txt')
+ref = np.genfromtxt('zeta_ref.txt')
 
 t_ref = ref[:, 0]
 p_ref = ref[:, 1:3]
