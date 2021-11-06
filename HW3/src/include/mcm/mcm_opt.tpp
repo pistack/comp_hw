@@ -7,6 +7,7 @@
  * @ingroup libmcm
  */
 
+namespace libmcm {
 template<typename T, typename Lag>
 std::tuple<int, T>
 mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda)
@@ -77,7 +78,7 @@ mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda)
 template<typename T, typename Lag>
 std::tuple<int, T>
 mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda,
-std::string monitor, int digits)
+std::string monitor)
 {
   // number_of_accepted move
   int n_accept = 0;
@@ -100,11 +101,7 @@ std::string monitor, int digits)
   min_action = init_action;
 
   // monitor optimization process
-  std::ofstream fout;
-  fout.open(monitor);
-  fout.unsetf(std::ios::floatfield);
-  fout.precision(digits);
-
+  std::ofstream fout(monitor, std::ios::out | std::ios::binary);
 
   for(int i=0; i<num_iter; ++i)
   {
@@ -138,7 +135,13 @@ std::string monitor, int digits)
       accept_action = tmp_action;
       accept_guess = tmp_guess;
       // write accept_action to monitor
-      fout << n_accept << '\t' << accept_action << '\t' << e << std::endl;
+      struct W {
+        T action, error;
+      } w;
+      w.action = accept_action;
+      w.error = e;
+      fout.write(reinterpret_cast<char *> (&w), sizeof(w));
+
       if(accept_action < min_action)
       {
         min_action = accept_action;
@@ -151,4 +154,5 @@ std::string monitor, int digits)
   // file should be closed
   fout.close();
   return std::make_tuple(n_accept, prob);
+}
 }

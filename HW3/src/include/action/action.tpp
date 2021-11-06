@@ -154,7 +154,7 @@ template<typename T, typename Lag>
 T action<T, Lag>::eval_quadgk(T left, T right, int n, T &e)
 { 
 
-  T D_tol = atol/1000.0/std::abs(right-left);
+  T D_tol = atol/2830.0/std::abs(right-left);
   T integral=0;
 
   // currently only supports n=15,21,31,41,51,61

@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.integrate import simpson;
+from scipy.integrate import simps as simpson;
 
 def deriv_mid(t, p):
     dp = np.zeros_like(p)

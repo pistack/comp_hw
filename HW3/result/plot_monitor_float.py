@@ -16,18 +16,23 @@ plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
 plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 burn = 10000
-monitor1 = np.genfromtxt('monitor1f.txt')
-monitor2 = np.genfromtxt('monitor2f.txt')
-monitor3 = np.genfromtxt('monitor3f.txt')
-monitor4 = np.genfromtxt('monitor3f_2.txt')
-monitor5 = np.genfromtxt('monitor4f_2.txt')
-converged_dist = monitor1[burn:, 1]
-converged_dist2 = monitor2[burn:, 1]
-converged_dist3 = monitor3[burn:, 1]
-converged_dist4 = monitor4[burn:, 1]
-converged_dist5 = monitor5[burn:, 1]
+monitor1 = np.fromfile('monitor1f.bin', np.float32)
+monitor2 = np.fromfile('monitor2f.bin', np.float32)
+monitor3 = np.fromfile('monitor3f.bin', np.float32)
+monitor4 = np.fromfile('monitor3f_2.bin', np.float32)
+monitor5 = np.fromfile('monitor4f_2.bin', np.float32)
+monitor1_reshape = monitor1.reshape(int(monitor1.size/2), 2)
+monitor2_reshape = monitor2.reshape(int(monitor2.size/2), 2)
+monitor3_reshape = monitor3.reshape(int(monitor3.size/2), 2)
+monitor4_reshape = monitor4.reshape(int(monitor4.size/2), 2)
+monitor5_reshape = monitor5.reshape(int(monitor5.size/2), 2)
+converged_dist = monitor1_reshape[burn:, 0]
+converged_dist2 = monitor2_reshape[burn:, 0]
+converged_dist3 = monitor3_reshape[burn:, 0]
+converged_dist4 = monitor4_reshape[burn:, 0]
+converged_dist5 = monitor5_reshape[burn:, 0]
 plt.figure(1)
-plt.plot(monitor1[:, 0], monitor1[:, 1], marker='o', 
+plt.plot(np.arange(1, monitor1_reshape.shape[0]+1, 1), monitor1_reshape[:, 0], marker='o', 
 mfc='none', linestyle='none', color='red')
 plt.xlabel('Number of Accepted moves')
 plt.xscale('log')
@@ -35,7 +40,7 @@ plt.ylabel('Action')
 plt.grid(True)
 plt.savefig('plot_monitor1f.png', dpi=100)
 plt.figure(2)
-plt.plot(monitor2[:, 0], monitor2[:, 1], marker='o', 
+plt.plot(np.arange(1, monitor2_reshape.shape[0]+1, 1), monitor2_reshape[:, 0], marker='o', 
 mfc='none', linestyle='none', color='red')
 plt.xlabel('Number of Accepted moves')
 plt.xscale('log')
@@ -43,7 +48,7 @@ plt.ylabel('Action')
 plt.grid(True)
 plt.savefig('plot_monitor2f.png', dpi=100)
 plt.figure(3)
-plt.plot(monitor3[:, 0], monitor3[:, 1], marker='o', 
+plt.plot(np.arange(1, monitor3_reshape.shape[0]+1, 1), monitor3_reshape[:, 0], marker='o', 
 mfc='none', linestyle='none', color='red')
 plt.xlabel('Number of Accepted moves')
 plt.xscale('log')
@@ -51,7 +56,7 @@ plt.ylabel('Action')
 plt.grid(True)
 plt.savefig('plot_monitor3f.png', dpi=100)
 plt.figure(4)
-plt.plot(monitor4[:, 0], monitor4[:, 1], marker='o', 
+plt.plot(np.arange(1, monitor4_reshape.shape[0]+1, 1), monitor4_reshape[:, 0], marker='o', 
 mfc='none', linestyle='none', color='red')
 plt.xlabel('Number of Accepted moves')
 plt.xscale('log')
@@ -59,13 +64,13 @@ plt.ylabel('Action')
 plt.grid(True)
 plt.savefig('plot_monitor3f_2.png', dpi=100)
 plt.figure(5)
-plt.plot(monitor5[:, 0], monitor5[:, 1], marker='o', 
+plt.plot(np.arange(1, monitor5_reshape.shape[0]+1, 1), monitor5_reshape[:, 0], marker='o', 
 mfc='none', linestyle='none', color='red')
 plt.xlabel('Number of Accepted moves')
 plt.xscale('log')
 plt.ylabel('Action')
 plt.grid(True)
-plt.savefig('plot_monitor4f.png', dpi=100)
+plt.savefig('plot_monitor4f_2.png', dpi=100)
 plt.figure(6)
 plt.hist(converged_dist, bins = 1000, label=r'$n_f=1$, setup: 1')
 plt.hist(converged_dist2, bins = 1000, label=r'$n_f=2$, setup: 1')

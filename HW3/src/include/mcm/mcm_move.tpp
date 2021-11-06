@@ -2,10 +2,11 @@
  * @file mcm_move.tpp
  * @brief sample guess via ramdom walk.
  * @author pistack (Junho Lee)
- * @date 2021. 11. 2.
+ * @date 2021. 11. 6.
  * @ingroup libmcm
  */
 
+namespace libmcm {
 template<typename T, typename Lag>
 std::vector<std::vector<T>>
 mcm<T, Lag>::move(std::vector<std::vector<T>> guess, T step_size)
@@ -28,4 +29,5 @@ mcm<T, Lag>::move(std::vector<std::vector<T>> guess, T step_size)
     }
   }
   return moved_guess;
+}
 }

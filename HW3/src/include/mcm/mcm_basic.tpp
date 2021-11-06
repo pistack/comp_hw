@@ -7,6 +7,7 @@
  * @ingroup libmcm
  */
 
+namespace libmcm {
 template<typename T, typename Lag>
 mcm<T, Lag> & mcm<T, Lag>::operator=(const mcm<T, Lag> &copy)
 {
@@ -148,4 +149,5 @@ std::vector<std::vector<T>> mcm<T, Lag>::min_eval(std::vector<T> t)
   for(int i=0; i<dim_1; ++i)
   result[i] = min_path[i].eval(t);
   return result;
+}
 }

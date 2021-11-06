@@ -28,9 +28,17 @@
  * - parameter which controls acceptance of move
  * - number of iteration
  * - output file names
- *
  * Then it computes and saves solution to file.
  * You can plot the result using usual plotting software like gnuplot
+ * @section hwoto_monitor How To plot saved monitor file
+ * If you set -DMONITOR=1 in cmake build process, after execuation of hw3 program,
+ * you will get c++ binary file for the monitoring of the optimization process.
+ * If you also set -DPRECISION_LEVEL=0, datatype of such binary file would be float.
+ * Otherwise, datatype would be double.
+ * See libmcm::mcm::optimize for the detailed information of the format of such file.
+ * Anyway, If you have python3 and numpy and matplotlib module installed in it, then
+ * you can plot saved monitor file using plot_monitor_float.py (if -DPRECISION_LEVEL=0) or
+ * plot_monitor_double.py (if -DPRECISION_LEVEL=1) script located in monitor folder. 
  * @section copyright Copyright
  * Copyright 2021 pistack (Junho Lee). All rights reserved.
  * @section license License

@@ -21,6 +21,7 @@
 #include "fourier_path.hpp"
 #include "action.hpp"
 
+namespace libmcm {
 /// @brief class to
 /// Minimize the action via Monte Carlo
 /// Metropolis Method.
@@ -182,13 +183,17 @@ class mcm
    /// @param step_size step size of random walk
    /// @param lambda parameter which controls acceptance of move
    /// @param monitor filename to monitor optimization process
-   /// @param digits number of digits to be printed during monitoring
-   /// optimization process
+   /// saved file has c++ binary format.
+   /// It stores twice of number of accepted move T type data
+   /// as  \f$ a, e, a, e, a, e, \dotsc \f$ ,
+   /// where a is the action of \f$ i \f$ th accepted move and
+   /// e is the estimated error of \f$ i \f$ th action integration.
    /// @return tuple of number of accepted move and acceptance ratio.
    std::tuple<int, T>
    optimize(int num_iter, T step_size, T lambda, 
-   std::string monitor, int digits);
+   std::string monitor);
 };
+}
 
 #include "mcm/mcm_basic.tpp"
 #include "mcm/mcm_move.tpp"

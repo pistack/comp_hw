@@ -43,7 +43,7 @@ class kepler_lag{
   vector<T> p, vector<T> dp) const
   {
     if(p[0]<1e-2)
-    return 0.5*(pow(dp[0], 2.0)+pow(p[0]*dp[1], 2.0))+100; // to avoid singularity  and penalize bad guess
+    return 0.5*(pow(dp[0], 2.0)+pow(p[0]*dp[1], 2.0))+100; // to avoid singularity and penalize bad guess
     return 0.5*(pow(dp[0], 2.0)+pow(p[0]*dp[1], 2.0))+
     1/p[0];
   }
@@ -107,7 +107,7 @@ int main(void)
   PRECISION period = 2*tmax;
   vector<PRECISION> p0 = {zeta_min, 0};
   vector<PRECISION> p1 = {zeta_max, libfourier::pi<PRECISION>};
-  mcm<PRECISION, kepler_lag<PRECISION>> kepler(PRECISION(0), 
+  libmcm::mcm<PRECISION, kepler_lag<PRECISION>> kepler(PRECISION(0), 
   tmax, p0, p1, atol, num_fourier, period);
 
   kepler.set_init_guess();
@@ -118,7 +118,7 @@ int main(void)
   #if MONITOR == 1
   tie(num_move, accept_ratio) = \
   kepler.optimize(max_iter, max_step, lambda, 
-  filename_monitor, DIGITS);
+  filename_monitor);
   #else
   tie(num_move, accept_ratio) = \
   kepler.optimize(max_iter, max_step, lambda);
@@ -127,9 +127,9 @@ int main(void)
   // Now fill time
   vector<PRECISION> t(num_eval+1, 0); // one more point need for end point
   PRECISION grid_space = tmax/PRECISION(num_eval);
-  for(int i=1; i<num_eval; i++)
+  for(int i=1; i<=num_eval; i++)
   t[i] = t[i-1]+grid_space;
-  t[num_eval-1] = tmax;
+  t[num_eval] = tmax;
 
   // store result
   vector<vector<PRECISION>> result(2, vector<PRECISION>(num_eval+1, 0));
