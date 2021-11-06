@@ -9,8 +9,6 @@
 #ifndef ACTION_H
 #define ACTION_H
 
-#include <iostream>
-#include <iostream>
 #include <algorithm>
 #include <cmath>
 #include <limits>
