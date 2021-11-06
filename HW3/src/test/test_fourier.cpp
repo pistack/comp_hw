@@ -2,7 +2,7 @@
  * @file test_fourier.cpp
  * @brief test fourier class routine 
  * @author pistack (Junho Lee)
- * @date 2021. 11. 5.
+ * @date 2021. 11. 6.
  */
 
 #include <cmath>
@@ -26,15 +26,14 @@ int main()
 {
     bool sucess = true;
     PRECISION eps = 100*std::numeric_limits<PRECISION>::epsilon();
-    PI<PRECISION> pi;
     vector<PRECISION> c1 = {1.0, 0.0};
     vector<PRECISION> c2 = {0.0, 1.0};
     vector<PRECISION> c3 = {1.0, 0.0, 1.0, 0.0};
-    fourier<PRECISION> fun1(1, pi(), c1); // sin(2*x)
-    fourier<PRECISION> fun2(1, pi(), c2); // cos(2*x)
-    fourier<PRECISION> fun3(2, pi(), c3); // sin(2*x) + sin(4*x)
+    fourier<PRECISION> fun1(1, pi<PRECISION>, c1); // sin(2*x)
+    fourier<PRECISION> fun2(1, pi<PRECISION>, c2); // cos(2*x)
+    fourier<PRECISION> fun3(2, pi<PRECISION>, c3); // sin(2*x) + sin(4*x)
     vector<PRECISION> t{
-        0.0, pi()/4, pi()/2, 3*pi()/4, pi()
+        0.0, pi<PRECISION>/4, pi<PRECISION>/2, 3*pi<PRECISION>/4, pi<PRECISION>
     };
     vector<PRECISION> result;
     vector<vector<PRECISION>> result_eval

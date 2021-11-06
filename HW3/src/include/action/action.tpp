@@ -177,11 +177,9 @@ template<typename T, typename Lag>
 T action<T, Lag>::eval_qthsh(T left, T right, int max_order, T &e)
 {
   const T eps = 10*std::numeric_limits<T>::epsilon(); // machine eps
-  const PI<T> pi;
-  const T h_pi = pi()/2;
   T mid = (left+right)/2;
   T scale_coord = (right-left)/2;
-  T scale_int = h_pi*scale_coord;
+  T scale_int = h_pi<T>*scale_coord;
   T h = 2; // step_size
   T dt_pre = std::exp(1.0); // previous step size
   T dt = std::exp(1.0); // current step size
@@ -199,7 +197,7 @@ T action<T, Lag>::eval_qthsh(T left, T right, int max_order, T &e)
     h /= 2; // decrease step size by half
     do
     {
-      T u = std::exp(h_pi*(1/t-t)); // exp(-pi*sinh(kh))
+      T u = std::exp(h_pi<T>*(1/t-t)); // exp(-pi*sinh(kh))
       T r = 2*u/(1+u); // (1-x_k)
       T dr = scale_coord*r;
       T w = (t+1/t)*r/(1+u);

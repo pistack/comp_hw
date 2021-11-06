@@ -52,11 +52,10 @@ int main(void)
   PRECISION e;
 
   // initial condition
-  PI<PRECISION> pi;
   PRECISION zeta_min = 0.9;
   PRECISION zeta_max = zeta_min/(2*zeta_min-1);
   PRECISION a = 0.5*(zeta_min+zeta_max);
-  PRECISION tmax = pi()*pow(a, 1.5);
+  PRECISION tmax = pi<PRECISION>*pow(a, 1.5);
   PRECISION period = 2*tmax;
   #if PRECISION_LEVEL == 0
   vector<PRECISION> tol = {1.0, 1e-2, 1e-4};
@@ -76,13 +75,13 @@ int main(void)
   vector<fourier_path<PRECISION>> path1 {
     fourier_path<PRECISION>(0.0, tmax, zeta_min, zeta_max,
     fourier<PRECISION>(3, period, c1[0])),
-    fourier_path<PRECISION>(0.0, tmax, 0.0, pi(),
+    fourier_path<PRECISION>(0.0, tmax, 0.0, pi<PRECISION>,
     fourier<PRECISION>(3, period, c1[1])),
   };
   vector<fourier_path<PRECISION>> path2 {
     fourier_path<PRECISION>(0.0, tmax, zeta_min, zeta_max,
     fourier<PRECISION>(4, period, c2[0])),
-    fourier_path<PRECISION>(0.0, tmax, 0.0, pi(),
+    fourier_path<PRECISION>(0.0, tmax, 0.0, pi<PRECISION>,
     fourier<PRECISION>(4, period, c2[1])),
   };
   action<PRECISION, kepler_lag<PRECISION>> tst1(path1);

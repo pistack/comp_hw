@@ -101,13 +101,12 @@ int main(void)
   cout << " Now starts calculation" << endl;
   start = std::chrono::steady_clock::now();
   // initial condition
-  libfourier::PI<PRECISION> pi;
   PRECISION zeta_max = zeta_min/(2*zeta_min-1);
   PRECISION a = (zeta_min+zeta_max)/2;
-  PRECISION tmax = pi()*pow(a, 1.5);
+  PRECISION tmax = libfourier::pi<PRECISION>*pow(a, 1.5);
   PRECISION period = 2*tmax;
   vector<PRECISION> p0 = {zeta_min, 0};
-  vector<PRECISION> p1 = {zeta_max, pi()};
+  vector<PRECISION> p1 = {zeta_max, libfourier::pi<PRECISION>};
   mcm<PRECISION, kepler_lag<PRECISION>> kepler(PRECISION(0), 
   tmax, p0, p1, atol, num_fourier, period);
 

@@ -116,7 +116,7 @@ class mcm
    /// @brief set initial guess
    /// @param init_c initial coefficients to weight sum of
    /// sine and cosine function
-   /// @see fourier class
+   /// @see libfourier::fourier
    void set_init_guess(std::vector<std::vector<T>> init_c);
 
    /// @brief set initial guess randomly
@@ -125,7 +125,7 @@ class mcm
    /// @brief get action of initial guess
    /// @param[out] e estimated error of action integral
    /// @return action of initial guess
-   /// @see action class
+   /// @see libfourier::action 
    T get_init_action(T &e);
 
    /// @brief get coefficients of initial guess
@@ -148,7 +148,7 @@ class mcm
    /// @brief get action of minimum guess
    /// @param[out] e estimated error of action integral
    /// @return action of minimum guess
-   /// @see action class
+   /// @see libfourier::action
    T get_min_action(T &e);
 
    /// @brief get coefficients of minimum guess

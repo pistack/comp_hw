@@ -23,7 +23,7 @@ template<typename T>
 T fourier<T>::eval(T t)
 {
 	int term = 2*f_num_fourier;
-	T omega = 2*pi()/f_period;
+	T omega = 2*pi<T>/f_period;
 	T tmp=0;
 	T y=0;
 	
@@ -42,7 +42,7 @@ std::vector<T> fourier<T>::eval(std::vector<T> t)
 {
 	int term = 2*f_num_fourier;
 	int n = t.size();
-	T omega = 2*pi()/f_period;
+	T omega = 2*pi<T>/f_period;
 	std::vector<T> y(n, 0);
 	
 	for(int i=0; i<n; ++i)
@@ -63,7 +63,7 @@ template<typename T>
 T fourier<T>::deriv(T t)
 {
 	int term = 2*f_num_fourier;
-	T omega = 2*pi()/f_period;
+	T omega = 2*pi<T>/f_period;
 	T tmp=0;
 	T yp=0;
 	
@@ -82,7 +82,7 @@ std::vector<T> fourier<T>::deriv(std::vector<T> t)
 {
 	int term = 2*f_num_fourier;
 	int n = t.size();
-	T omega = 2*pi()/f_period;
+	T omega = 2*pi<T>/f_period;
 	std::vector<T> yp(n, 0);
 	
 	for(int i=0; i<n; ++i)
@@ -102,7 +102,7 @@ template<typename T>
 T fourier<T>::nderiv(int n, T t)
 {
 	int term = 2*f_num_fourier;
-	T omega = 2*pi()/f_period;
+	T omega = 2*pi<T>/f_period;
 	T tmp=0;
 	T yp=0;
 	std::vector<T> c(term, 0);
@@ -138,7 +138,7 @@ std::vector<T> fourier<T>::nderiv(int n, std::vector<T> t)
 {
 	int term = 2*f_num_fourier;
 	int n_t = t.size();
-	T omega = 2*pi()/f_period;
+	T omega = 2*pi<T>/f_period;
 	std::vector<T> c(term, 0);
 	std::vector<T> yp(n_t, 0);
 

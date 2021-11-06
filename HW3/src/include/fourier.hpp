@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief headerfile for fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 2.
+ * @date 2021. 11. 6.
  */
 
 #ifndef FOURIER_H
@@ -15,20 +15,13 @@
 
 namespace libfourier {
 
-/// @brief provide pi value
-/// @param T precision shoulb be one of float, double
-/// and long double
-/// @ingroup libfourier
+/// mathematical constant
 template<typename T>
-class PI
-{
-	private:
-	const T pi = std::acos(-1);
-
-	public:
-	T operator()() const 
-	{ return pi;}
-};
+constexpr T pi = T(std::acos(-1)); ///< pi
+template<typename T>
+constexpr T h_pi = T(std::acos(0)); ///< half pi
+template<typename T>
+constexpr T q_pi = T(std::atan(1)); ///< quarter of pi
 
 /// @brief Class for sum of the sine and cosine function
 /// weighted by coefficients
@@ -44,8 +37,6 @@ class fourier
 	int f_num_fourier; // number of sine and cosine function to add
 	T f_period; // the period of fourier function 
 	std::vector<T> f_c; // coefficients
-
-	const PI<T> pi;
 
 	public:
 
