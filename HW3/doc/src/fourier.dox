@@ -1,8 +1,8 @@
 /////////////////////////////////////////////////////////////////////////
 ///
 /// @page approx_path Approximation of Path
-/// To approximate path, I use sine and cosine function as basis.
-/// \f{equation}{\label{eq:fourier}
+/// To approximate path, I define following fourier function.
+/// \f{equation}{\label{eq:fourier_doc}
 /// \phi(t) = \sum_{i=0}^{N_f-1} c_{2i} 
 /// \sin\left(\frac{2(i+1)\pi}{T}t\right) 
 /// + c_{2i+1} 
@@ -13,17 +13,34 @@
 /// \f$ c_i \f$ are coefficients.
 /// To match the boundary condition, I introduce adder \f$ a \f$ and 
 /// scaler \f$ s \f$.
-/// Then the path \f$ p(t) \f$ is approximated as following
-/// \f{equation}{\label{eq:fourier_path}
-/// p(t) \approx a + s\phi(t)
+/// Then the fourier path \f$ \Psi(t) \f$ is defined as following
+/// \f{equation}{\label{eq:fourier_path_doc}
+/// \Psi(t) = a + s\phi(t)
 /// \f}
 /// , where \f$ a, s \f$ are adder and scaler to match boundary condition
 /// and \f$ \phi(t) \f$ is the fourier function 
 /// \latexonly \eqref{eq:fourier} \endlatexonly.
 /// Using adder and scaler, we can confine coefficients of fourier function
-/// \f$ c_i \f$ to \f$ [-1, 1] \f$.
-/// Note that by the time translation symmetry of the Newtonian Mechanics,
-/// we can approximate the path \f$ p(t) \f$ to a periodic function with
-/// the period \f$ 2(t_f-t_0) \f$. 
+/// \f$ c_i \f$ to \f$ [-1, 1] \f$. 
+/// Define 
+/// \f{equation}{\label{eq:perodic_ext}
+/// \hat{p}(t) = \begin{cases}
+/// \min\{A(t_0, t_f) \}, \text{with}\ p(t_0) = p_0, p(t_f) = p_f & 
+/// \text{if}\ t_0 \leq t \leq t_f \\
+/// \min\{A(t_f, 2t_f-t_0)\}, \text{with}\ p(t_f) = p_f, p(2t_f-t_0) = p_0 & 
+/// \text{if}\ t_f \leq t \leq 2t_f - t_0
+/// \end{cases}
+/// \f}
+/// then by the time translation symmetry of the Newtonian Mechanics,
+/// \f$ \hat{p}(t) \f$ is 
+/// - The periodic function with period \f$ 2(t_f-t_0) \f$.
+/// - For \f$ t_0 \leq t \leq t_f \f$, \f$ \hat{p}(t) = p(t) \f$. 
 ///
+/// If we set the period of fourier function used by fourier path to
+/// \f$ 2(t_f-t_0) \f$ then fourier path \f$ \Psi(t) \f$ would approximate
+/// \f$ \hat{p}(t) \f$. Since \f$ \hat{p}(t) = p(t) \f$ when \f$ t \in [t_0, t_f] \f$,
+/// \f$ \Psi(t) \f$ also approximates \f$ p(t) \f$ when \f$ t \in [t_0, t_f] \f$.
+/// However if \f$ t \not \in [t_0, t_f] \f$, \f$ \Psi(t) \f$ could not approximate
+/// \f$ p(t) \f$, in general. This is due to the inconsistency of \f$ \hat{p}(t) \f$ and
+/// \f$ p(t) \f$ at \f$ t \not \in [t_0, t_f] \f$. 
 ////////////////////////////////////////////////////////////////////////////

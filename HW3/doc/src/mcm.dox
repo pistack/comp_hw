@@ -3,6 +3,40 @@
 /// Details for the Monte Carlo Metropolis are described in
 /// [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
 /// @tableofcontents
+/// @section brief Brief description
+/// Briefly, the Monte Carlo Metropolis moves intial guess \f$ c \f$ by
+/// step_size via random walk. Denote moved guess \f$ c' \f$.
+/// Then calculates acceptance ratio
+/// \f$ \exp(-\lambda \Delta A) \f$, where \f$ \Delta A = A_{c'} - A_c \f$.
+/// Next sample real number \f$ r \in [0, 1] \f$ from the uniform distribution.
+/// If \f$ r \f$ is less than acceptance ratio then accepts move; set \f$ c = c' \f$ 
+/// If \f$ r \f$ is greater than acceptance ratio then rejects move; set \f$ c = c \f$ 
+/// It repeats above step by n_iter times.
+/// @section target Target distribution
+/// In Monte Carlo Metropolis method described in 
+/// [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916),
+/// for large iteration number \f$ n_iter \f$, the distribution \f$ f_{\lambda}(A) \f$
+/// converges to \f$ g_{\lambda}(A) \f$, where
+/// \f{equation}{\label{eq:target_dist}
+/// g_{\lambda}(A) = \begin{cases}
+/// p(A)\exp\left(-\lambda(A-A_{min})\right) & \text{,if}\ A \geq A_{min} \\
+/// 0 & \text{,otherwise}
+/// \end{cases}
+/// \f}
+/// Due to degeneracy factor \f$ p(A) \f$, in general, the most likely path 
+/// differs from minimum action path.
+/// However, if we increase \f$ \lambda \f$ to penalize such discrepency 
+/// between most likely action and minimum action, the most likely path
+/// would more close to minimum action path.
+/// Although increase \f$ \lambda \f$ greater the chance to find
+/// minimum action path, too large \f$ \lambda \f$ would make markov chain
+/// stuck. (i.e. low acceptance ratio)
+/// To deal with such problem we could decrease step_size to lower the
+/// difference of action \f$ \Delta A \f$ between each moves.
+/// The life is not as easy as you think it is. If you lower the step_size
+/// then you need more number of iteration to converge distribution.
+/// Therefore you should vary pair of step_size and \f$ \lambda \f$ to
+/// find the minimum action path with the fewer number of iteration.
 /// @section mcm_pseudo Pseudo Code
 /// 1. intialize mcm class
 ///   1. set initial condition
@@ -51,7 +85,7 @@
 /// via min_eval method of mcm class and get coefficients of
 /// minimum path using get_min_coeff method.
 /// @section random_walk Random Walk
-/// To generate random walk, I use normal distribution whoose
+/// To generate random walk, I use normal distribution whose
 /// mean and standard deriviation is 0 and step_size respectively.
 /// To move guess, \f$ \Delta c_i \f$ is sampled via normal distribution
 /// then add \f$ \Delta c_i \f$ to guess \f$ c_i \f$.

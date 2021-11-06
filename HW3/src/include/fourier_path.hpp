@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief headerfile for path approximated by fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 4.
+ * @date 2021. 11. 7.
  */
 
 #ifndef FOURIER_PATH_H
@@ -19,6 +19,13 @@
 
 namespace libfourier {
 /// @brief Class for the path approximated by fourier function
+/// \f{equation}{\label{eq:fourier_path}
+/// \Psi\{\phi\{c, T\}(t)\}(t) = a + s\phi\{c, T\}(t)
+/// \f}
+/// ,where \f$ \phi\{c, T\}(t) \f$ is a fourier function defined in 
+/// libfourier::fourier ,
+/// \f$ a \f$ and \f$ s \f$ are adder and scaler to match boundary
+/// condition \f$ \Psi(t_0)=p_0, \Psi(t_1)=p_1 \f$, respectively.
 /// @ingroup libfourier
 /// @param T precision should be one of float, double, long double
 /// @warning If your fourier function is not vaild for 
@@ -86,6 +93,8 @@ class fourier_path
 	p_func(copy.p_func), p_vaild(copy.p_vaild), scale(copy.scale), \
 	add(copy.add) {}
 
+    /// @brief overloading of assignment operator for 
+	/// fourier_path class
 	fourier_path<T> & operator=(const fourier_path<T> &copy);
 
 	/// @brief update fourier function

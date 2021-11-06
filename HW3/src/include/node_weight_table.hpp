@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief table for node and weights
  * @author pistack (Junho Lee)
- * @date 2021. 11. 6.
+ * @date 2021. 11. 7.
  */
 
 #ifndef NODE_WEIGHT_TABLE_H
@@ -16,7 +16,8 @@ namespace libfourier{
 /// @param N order of gauss-kronrod quadrature
 /// currently only supports N=15, 21, 31, 41, 51, 61
 /// @note coefficients are obtained from 
-/// https://www.advanpix.com/2011/11/07/gauss-kronrod-quadrature-nodes-weights/
+/// [gau-kronrod-nodes-weights]
+/// (https://www.advanpix.com/2011/11/07/gauss-kronrod-quadrature-nodes-weights/)
 /// @ingroup libfourier
 template<typename T, int N>
 class gau_kron_table
@@ -28,6 +29,7 @@ class gau_kron_table
     std::vector<T> weight_kronrod; ///< weight of kronrod quadrature;
 };
 
+#ifndef DOXYGEN_SKIP
 template<typename T>
 class gau_kron_table<T, 15>
 {
@@ -398,6 +400,7 @@ class gau_kron_table<T, 61>
         5.149472942945156755834043364709931e-02
     };
 };
+#endif /* DOXYGEN_SKIP */
 }
 
 #endif

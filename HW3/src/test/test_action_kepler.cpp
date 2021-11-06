@@ -2,7 +2,7 @@
  * @file test_action_kepler.cpp
  * @brief test action::eval() routine with kepler action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 6.
+ * @date 2021. 11. 7.
  */
 
 #include <cmath>
@@ -21,6 +21,7 @@
 using namespace libfourier;
 using namespace std;
 
+#ifndef DOXYGEN_SKIP
 template<typename T>
 class kepler_lag{
 
@@ -36,6 +37,7 @@ class kepler_lag{
   }
 
 };
+#endif /* DOXYGEN_SKIP */
 
 int main(void)
 {

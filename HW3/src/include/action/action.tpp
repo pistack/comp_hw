@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief evaluates action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 6.
+ * @date 2021. 11. 7.
  */
 
 namespace libfourier {
@@ -132,7 +132,7 @@ void action<T, Lag>::eval_helper(T left, T right, T D, T D_tol, T &integral, T &
   /// stop recurrsion due to tuncation
   /// difference of Dlr and D is less than 
   /// numerical epsilon 
-  /// (estimated by 100*machine_eps*mean of abs value of function)
+  /// (estimated by 10*machine_eps*mean of abs value of function)
   mean_abs = (std::abs(fnodes[0])+
   std::abs(fnodes[(table.order-1)/2])+std::abs(fnodes[table.order-1]))/3;
   if(std::abs(D_lr-D) < eps*mean_abs)
@@ -154,7 +154,7 @@ template<typename T, typename Lag>
 T action<T, Lag>::eval_quadgk(T left, T right, int n, T &e)
 { 
 
-  T D_tol = atol/2830.0/std::abs(right-left);
+  T D_tol = atol/1000/std::abs(right-left);
   T integral=0;
 
   // currently only supports n=15,21,31,41,51,61

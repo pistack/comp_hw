@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief headerfile for fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 6.
+ * @date 2021. 11. 7.
  */
 
 #ifndef FOURIER_H
@@ -22,8 +22,14 @@ constexpr T h_pi = T(std::acos(0)); ///< half pi
 template<typename T>
 constexpr T q_pi = T(std::atan(1)); ///< quarter of pi
 
-/// @brief Class for sum of the sine and cosine function
-/// weighted by coefficients
+/// @brief Class which defines fourier function
+/// \f{equation}{\label{eq:fourier_func} 
+/// \phi\{c, T\}(t) = \sum_{i=0}^{n_f-1} c_{2i} \sin\left(\frac{2i\pi}{T} t \right) +
+/// c_{2i+1} \cos\left(\frac{2i\pi}{T} t \right)
+/// \f}
+/// , where \f$ n_f \f$ is the number of sine and cosine function used in
+/// fourier function, \f$ c \f$ is the weight and \f$ T \f$ is the period of
+/// fourier function.
 /// @param T precision should be one of float, double,
 /// and long double
 /// @ingroup libfourier
@@ -56,6 +62,8 @@ class fourier
 	: f_num_fourier(copy.f_num_fourier), \
 	f_period(copy.f_period), f_c(copy.f_c) {}
 
+    /// @brief overloading of assignment operator for 
+	/// fourier class
 	fourier<T> & operator=(const fourier<T> &copy);
 
     /// @brief update coefficients

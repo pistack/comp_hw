@@ -1,5 +1,6 @@
 ///////////////////////////////////////////////////////////
 /// @page action Evaluation of Action
+/// @tableofcontents
 /// The action \f$ S \f$ is defined as following
 /// \f{equation}{\label{eq:action}
 /// S = \int_{t_0}^{t_f} L(t, x(t), x'(t)) \mathrm{d} t
@@ -8,6 +9,6 @@
 /// To evaluate the action integral accurately, I use
 /// adpative gauss-kronrod quadrature method (method: 0) or
 /// tanh-sinh quadrature method (method: 1).
-/// 
-/// @section action_complex Complexity 
+/// @section gau-kronrod Gauss-Kronrod quadrature
+/// @section tanh-sinh Tanh-Sinh quadrature
 ///////////////////////////////////////////////////////////

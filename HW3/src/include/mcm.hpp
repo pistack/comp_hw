@@ -1,12 +1,12 @@
 /*!
  * @file mcm.hpp
  * @ingroup libmcm
- * @brief headerfile to
- * minimize the action by Monte Carlo Metropolis
+ * @brief headerfile for the
+ * minimization of the action by Monte Carlo Metropolis
  * method described in 
  * [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
  * @author pistack (Junho Lee)
- * @date 2021. 11. 6.
+ * @date 2021. 11. 7.
  */
 
 #ifndef MCM_H
@@ -112,6 +112,8 @@ class mcm
    min_guess(copy.min_guess), min_path(copy.min_path)
    {}
 
+   /// @brief overloading of assignment operator for 
+	/// mcm class
    mcm<T, Lag> & operator=(const mcm<T, Lag> &copy);
 
    /// @brief set initial guess

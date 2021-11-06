@@ -2,7 +2,7 @@
  * @file test_action_vaildity.cpp
  * @brief test action::is_vaild() routine 
  * @author pistack (Junho Lee)
- * @date 2021. 11. 5.
+ * @date 2021. 11. 7.
  */
 
 #include <cmath>
@@ -23,6 +23,7 @@ using namespace std;
 
 /// dummy lagrangian functor class
 /// used to define action
+#ifndef DOXYGEN_SKIP
 template<typename T>
 class zero_lag{
   public :
@@ -32,7 +33,7 @@ class zero_lag{
     return 0;
   }
 };
-
+#endif /* DOXYGEN_SKIP */
 int main()
 {
   bool sucess = true;

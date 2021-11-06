@@ -3,7 +3,7 @@
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 6.
+ * @date 2021. 11. 7.
  */
 
 #ifndef ACTION_H
@@ -25,8 +25,6 @@ namespace libfourier{
 /// time, path and derivative of path
 /// as variable and it returns
 /// value of lagranian at given time
-/// @warning finial time of path should be greater than
-/// initial time of it.
 /// @warning If you give invaild path, then
 /// eval method will return always zero.
 /// @see for gauss-kronrod quadrature method  
@@ -124,6 +122,8 @@ class action
 	vaildity(copy.vaildity)
 	{}
 
+    /// @brief overloading of assignment operator for 
+	/// action class
 	action<T, Lag> & operator=(const action<T, Lag> &copy);
 
 	/// @brief update path

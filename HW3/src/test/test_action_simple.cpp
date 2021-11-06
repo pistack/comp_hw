@@ -2,7 +2,7 @@
  * @file test_action_simple.cpp
  * @brief test action::eval() routine with simple function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 2.
+ * @date 2021. 11. 7.
  */
 
 #include <chrono>
@@ -22,6 +22,7 @@
 using namespace libfourier;
 using namespace std;
 
+#ifndef DOXYGEN_SKIP
 template<typename T>
 class inv_lag{
 
@@ -99,6 +100,7 @@ class sqrt_lag{
     return 1/std::sqrt(p[0]);
   }
 };
+#endif /* DOXYGEN_SKIP */
 
 int main(void)
 {
