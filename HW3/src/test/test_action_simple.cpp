@@ -118,13 +118,15 @@ int main(void)
   // execution time
   std::chrono::steady_clock::time_point start;
   std::chrono::steady_clock::time_point end;
+  // estimated error
+  PRECISION e;
 
   // initial condition
   vector<PRECISION> c = {1.0, 0.0};
   #if PRECISION_LEVEL == 0
-  vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6};
+  vector<PRECISION> tol = {1.0, 1e-2, 1e-4};
   #elif PRECISION_LEVEL == 1
-  vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6, 1e-8, 1e-10, 1e-12, 1e-14};
+  vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6, 1e-8};
   #endif
   fourier<PRECISION> tmp(1, 2.0, c);
   vector<fourier_path<PRECISION>> path(1, fourier_path<PRECISION>(0.0, 2.0, 2.0, 2.0, tmp));
@@ -145,18 +147,20 @@ int main(void)
     cout << " Test 1. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
-    tst1.eval();
+    tst1.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    cout << "Integration value: " << tst1.eval() << endl;
+    cout << "Integration value: " << tst1.eval(e) << endl;
+    cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst1.eval(1, 7);
+    tst1.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    cout << "Integration value: " << tst1.eval(1, 7) << endl;
+    cout << "Integration value: " << tst1.eval(1, 7, e) << endl;
+    cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
@@ -167,18 +171,20 @@ int main(void)
     cout << " Test 2. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
-    tst2.eval();
+    tst2.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    cout << "Integration value: " << tst2.eval() << endl;
+    cout << "Integration value: " << tst2.eval(e) << endl;
+    cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst2.eval(1, 7);
+    tst2.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    cout << "Integration value: " << tst2.eval(1, 7) << endl;
+    cout << "Integration value: " << tst2.eval(1, 7, e) << endl;
+    cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
@@ -189,18 +195,20 @@ int main(void)
     cout << " Test 3. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
-    tst3.eval();
+    tst3.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    cout << "Integration value: " << tst3.eval() << endl;
+    cout << "Integration value: " << tst3.eval(e) << endl;
+    cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst3.eval(1, 7);
+    tst3.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    cout << "Integration value: " << tst3.eval(1, 7) << endl;
+    cout << "Integration value: " << tst3.eval(1, 7, e) << endl;
+    cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
@@ -211,18 +219,20 @@ int main(void)
     cout << " Test 4. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
-    tst4.eval();
+    tst4.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    cout << "Integration value: " << tst4.eval() << endl;
+    cout << "Integration value: " << tst4.eval(e) << endl;
+    cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst4.eval(1, 7);
+    tst4.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    cout << "Integration value: " << tst4.eval(1, 7) << endl;
+    cout << "Integration value: " << tst4.eval(1, 7, e) << endl;
+    cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
@@ -233,18 +243,20 @@ int main(void)
     cout << " Test 5. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
-    tst5.eval();
+    tst5.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    cout << "Integration value: " << tst5.eval() << endl;
+    cout << "Integration value: " << tst5.eval(e) << endl;
+    cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst5.eval(1, 7);
+    tst5.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    cout << "Integration value: " << tst5.eval(1, 7) << endl;
+    cout << "Integration value: " << tst5.eval(1, 7, e) << endl;
+    cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
@@ -258,20 +270,22 @@ int main(void)
     {
       start = std::chrono::steady_clock::now();
       for(int j=0; j<1000; ++j)
-      tst6.eval(0, order[i]);
+      tst6.eval(0, order[i], e);
       end = std::chrono::steady_clock::now();
       cout << "Order: " << order[i] << endl;
-      cout << "Integration value: " << tst6.eval(0, order[i]) << endl;
+      cout << "Integration value: " << tst6.eval(0, order[i], e) << endl;
+      cout << "Estimated error: " << e << endl;
       cout << "Execution time: " << \
       std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/1000.0 << \
       " microsecond" << endl;
     }
     start = std::chrono::steady_clock::now();
     for(int j=0; j<1000; ++j)
-    tst6.eval(1, 10);
+    tst6.eval(1, 10, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh quadrature" << endl;
-    cout << "Integration value: " << tst6.eval(1, 10) << endl;
+    cout << "Integration value: " << tst6.eval(1, 10, e) << endl;
+    cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/1000.0 << \
     " microsecond" << endl;
@@ -282,10 +296,11 @@ int main(void)
     cout << " Test 7. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<1000; ++j)
-    tst7.eval(1, 10);
+    tst7.eval(1, 10, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh quadrature" << endl;
-    cout << "Integration value: " << tst7.eval(1, 10) << endl;
+    cout << "Integration value: " << tst7.eval(1, 10, e) << endl;
+    cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/1000.0 << \
     " microsecond" << endl;

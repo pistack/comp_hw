@@ -6,5 +6,8 @@
 /// \f}
 ///, where \f$ L(t, x(t), x'(t)) \f$ is Lagrangian.
 /// To evaluate the action integral accurately, I use
+/// adpative gauss-kronrod quadrature method (method: 0) or
+/// tanh-sinh quadrature method (method: 1).
+/// 
 /// @section action_complex Complexity 
 ///////////////////////////////////////////////////////////

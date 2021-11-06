@@ -6,7 +6,7 @@
  * method described in 
  * [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
  * @author pistack (Junho Lee)
- * @date 2021. 11. 2.
+ * @date 2021. 11. 6.
  */
 
 #ifndef MCM_H
@@ -58,12 +58,10 @@ class mcm
    // initial guess
    std::vector<std::vector<T>> init_guess;
    std::vector<libfourier::fourier_path<T>> init_path;
-   T init_action;
 
    // result
    std::vector<std::vector<T>> min_guess;
    std::vector<libfourier::fourier_path<T>> min_path;
-   T min_action;
 
    std::random_device rd;
    std::mt19937 gen = std::mt19937(rd()); // set random number generator
@@ -108,10 +106,9 @@ class mcm
    : t0(copy.t0), t1(copy.t1), p0(copy.p0), p1(copy.p1), \
    num_fourier(copy.num_fourier), \
    fourier_period(copy.fourier_period), \
-   mcm_action(copy.mcm_action), init_guess(copy.init_guess), \
-   init_path(copy.init_path), init_action(copy.init_action), \
-   min_guess(copy.min_guess), min_path(copy.min_path), \
-   min_action(copy.min_action)
+   mcm_action(copy.mcm_action), \
+   init_guess(copy.init_guess), init_path(copy.init_path), \
+   min_guess(copy.min_guess), min_path(copy.min_path)
    {}
 
    mcm<T, Lag> & operator=(const mcm<T, Lag> &copy);
@@ -126,8 +123,10 @@ class mcm
    void set_init_guess();
 
    /// @brief get action of initial guess
+   /// @param[out] e estimated error of action integral
    /// @return action of initial guess
-   T get_init_action();
+   /// @see action class
+   T get_init_action(T &e);
 
    /// @brief get coefficients of initial guess
    /// @return tuple of adder, scaler and fourier coefficient
@@ -147,8 +146,10 @@ class mcm
    init_eval(std::vector<T> t);
 
    /// @brief get action of minimum guess
+   /// @param[out] e estimated error of action integral
    /// @return action of minimum guess
-   T get_min_action();
+   /// @see action class
+   T get_min_action(T &e);
 
    /// @brief get coefficients of minimum guess
    /// @return tuple of adder, scaler and fourier coefficient  

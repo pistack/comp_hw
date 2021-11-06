@@ -5,7 +5,7 @@
  * number of points to evaluate, number of interation, step size and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 11. 05.
+ * @date 2021. 11. 6.
  */
 
 #include <algorithm>
@@ -56,6 +56,7 @@ int main(void)
   std::chrono::steady_clock::time_point start;
   std::chrono::steady_clock::time_point end;
   PRECISION atol; // abs tol of action integral
+  PRECISION e; // estimated error
   int num_eval; // number of points to eval
   int num_fourier; // number of sine and cosine function used for guess
   int max_iter; // number of iteration
@@ -93,7 +94,7 @@ int main(void)
   cin >> filename;
   cout << " file name to store coefficient: ";
   cin >> filename_coeff;
-  #ifdef MONITOR
+  #if MONITOR == 1
   cout << " file name to monitor optimization process: ";
   cin >> filename_monitor;
   #endif
@@ -115,7 +116,7 @@ int main(void)
   int num_move; // number of actual moves
   PRECISION accept_ratio; // acceptance ratio
 
-  #ifdef MONITOR
+  #if MONITOR == 1
   tie(num_move, accept_ratio) = \
   kepler.optimize(max_iter, max_step, lambda, 
   filename_monitor, DIGITS);
@@ -134,7 +135,7 @@ int main(void)
   // store result
   vector<vector<PRECISION>> result(2, vector<PRECISION>(num_eval+1, 0));
   result = kepler.min_eval(t);
-  min_action = kepler.get_min_action();
+  min_action = kepler.get_min_action(e);
 
   // store coefficients
   vector<PRECISION> adder;
@@ -162,6 +163,7 @@ int main(void)
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(DIGITS); // print significant digits
   cout << " Minimum action is " << min_action << endl;
+  cout << " Estimated error of action integration is " << e <<endl;
   cout << " Number of Actual move is " << num_move << endl;
   cout << " Acceptance ratio: " << accept_ratio << endl;
   // store results to file

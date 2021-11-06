@@ -3,7 +3,7 @@
  * @ingroup libfourier
  * @brief evaluates action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 2.
+ * @date 2021. 11. 6.
  */
 
 namespace libfourier {
@@ -87,9 +87,9 @@ std::vector<T> action<T, Lag>::eval_lagrangian(std::vector<T> t)
 }
 
 template<typename T, typename Lag> template<typename Gau_Kron>
-T action<T, Lag>::eval_helper(T left, T right, T D, T D_tol)
+void action<T, Lag>::eval_helper(T left, T right, T D, T D_tol, T &integral, T &e)
 {
-  const T eps = 100.0*std::numeric_limits<T>::epsilon();
+  const T eps = 10.0*std::numeric_limits<T>::epsilon();
   const Gau_Kron table;
   std::vector<T> tnodes(table.order, 0);
   std::vector<T> fnodes(table.order, 0);
@@ -97,6 +97,8 @@ T action<T, Lag>::eval_helper(T left, T right, T D, T D_tol)
   T scale_factor = 0.5*(right - left);
   T mid = 0.5*(left+right);
   T mean_abs = 0;
+  T integral_l=0, integral_r=0; // left and right integral
+  T e_l=0, e_r=0; // left and right error
   tnodes[(table.order-1)/2] = mid;
   for(int i=0; i<(table.order-1)/2; ++i)
   {
@@ -117,9 +119,15 @@ T action<T, Lag>::eval_helper(T left, T right, T D, T D_tol)
   }
 
   D_lr = int_kron - int_gauss;
+  T length = std::abs(right-left);
   T tmp = std::abs(D_lr);
-  if(tmp*std::sqrt(tmp*(right-left)) < D_tol)
-  return scale_factor*int_kron;
+  T tmp_e = 200*tmp*length;
+  if(tmp*std::sqrt(tmp*length) < D_tol)
+  {
+    integral = scale_factor*int_kron;
+    e = tmp_e*std::sqrt(tmp_e); // update estimated error
+    return;
+  }
 
   /// stop recurrsion due to tuncation
   /// difference of Dlr and D is less than 
@@ -128,108 +136,121 @@ T action<T, Lag>::eval_helper(T left, T right, T D, T D_tol)
   mean_abs = (std::abs(fnodes[0])+
   std::abs(fnodes[(table.order-1)/2])+std::abs(fnodes[table.order-1]))/3;
   if(std::abs(D_lr-D) < eps*mean_abs)
-  return scale_factor*int_kron;
+  {
+    integral = scale_factor*int_kron;
+    e = tmp_e*std::sqrt(tmp_e);
+    return;
+  }
 
   // otherwise divide interval by half
-  return eval_helper<Gau_Kron>(left, mid, D_lr, D_tol) + \
-  eval_helper<Gau_Kron>(mid, right, D_lr, D_tol);
+  eval_helper<Gau_Kron>(left, mid, D_lr, D_tol, integral_l, e_l);
+  eval_helper<Gau_Kron>(mid, right, D_lr, D_tol, integral_r, e_r);
+  integral = integral_l + integral_r;
+  e = e_l + e_r;
+  return;
 }
 
 template<typename T, typename Lag>
-T action<T, Lag>::eval_quadgk(T left, T right, int n)
+T action<T, Lag>::eval_quadgk(T left, T right, int n, T &e)
 { 
 
-  T D_tol = atol/1000.0/(right-left);
+  T D_tol = atol/1000.0/std::abs(right-left);
+  T integral=0;
 
+  // currently only supports n=15,21,31,41,51,61
   if(n==15)
-  return eval_helper<gau_kron_table<T, 15>>(left, right, 0.0, D_tol);
+  eval_helper<gau_kron_table<T, 15>>(left, right, 0.0, D_tol, integral, e);
   if(n==21)
-  return eval_helper<gau_kron_table<T, 21>>(left, right, 0.0, D_tol);
+  eval_helper<gau_kron_table<T, 21>>(left, right, 0.0, D_tol, integral, e);
   if(n==31)
-  return eval_helper<gau_kron_table<T, 31>>(left, right, 0.0, D_tol);
+  eval_helper<gau_kron_table<T, 31>>(left, right, 0.0, D_tol, integral, e);
   if(n==41)
-  return eval_helper<gau_kron_table<T, 41>>(left, right, 0.0, D_tol);
+  eval_helper<gau_kron_table<T, 41>>(left, right, 0.0, D_tol, integral, e);
   if(n==51)
-  return eval_helper<gau_kron_table<T, 51>>(left, right, 0.0, D_tol);
+  eval_helper<gau_kron_table<T, 51>>(left, right, 0.0, D_tol, integral, e);
   if(n==61)
-  return eval_helper<gau_kron_table<T, 61>>(left, right, 0.0, D_tol);
-  // currently only supports N=15,21,31,41,51,61
-  return 0; // unsupported order
+  eval_helper<gau_kron_table<T, 61>>(left, right, 0.0, D_tol, integral, e);
+  return integral;
 }
 
 template<typename T, typename Lag>
-T action<T, Lag>::eval_qthsh(T left, T right, int max_order)
+T action<T, Lag>::eval_qthsh(T left, T right, int max_order, T &e)
 {
   const T eps = 10*std::numeric_limits<T>::epsilon(); // machine eps
   const PI<T> pi;
   const T h_pi = pi()/2;
-  T tol = std::sqrt(atol);
   T mid = (left+right)/2;
   T scale_coord = (right-left)/2;
   T scale_int = h_pi*scale_coord;
   T h = 2; // step_size
   T dt_pre = std::exp(1.0); // previous step size
   T dt = std::exp(1.0); // current step size
+  T integral_pre = 0; // previous integration value
   T integral = eval_lagrangian(mid); // integration value
+  T tmp_e = 0; // error estimation
+
   for(int depth=0; depth<= max_order; ++depth)
   {
-    h /= 2;
     T t = dt;
-    T corr = 0; // correction term
-    T absq = 0; // absolute value of q
+    T q = 0; 
     T f_l=0;
     T f_r=0;
+    T corr = 0; // initialize correction term
+    h /= 2; // decrease step size by half
     do
     {
       T u = std::exp(h_pi*(1/t-t)); // exp(-pi*sinh(kh))
       T r = 2*u/(1+u); // (1-x_k)
       T dr = scale_coord*r;
       T w = (t+1/t)*r/(1+u);
-      T q = 0;
       if(left+dr > left)
       f_l = eval_lagrangian(left+dr);
       if(right > right-dr)
       f_r = eval_lagrangian(right-dr);
       q = w*(f_l+f_r);
-      absq = std::abs(q);
       corr += q;
       t *= dt_pre;
     }
     // correction terms may not be changed
     // due to numerical tuncation
-    while(absq > eps*(eps+std::abs(corr)));
+    while(std::abs(q) > eps*(eps+std::abs(corr)));
+    integral_pre = integral; // previous term 
     integral += corr;
-    if(std::abs(corr)*h*scale_int<tol)
-    break; // double exponential quadratic convergence with depth
-    if(std::abs(corr)<=eps*(eps+std::abs(integral)))
+    tmp_e = std::abs(h*scale_int*(corr-integral_pre)); //
+    if(tmp_e<atol/2)
+    break; // integral meets tolerance
+    if(std::abs(corr-integral_pre)<=eps*(eps+std::abs(integral)))
     break; // numerical tuncation reaches
     dt_pre = dt;
     dt = std::sqrt(dt_pre);
   }
+  e = 2*tmp_e;
   return h*scale_int*integral;
 }
 
 template<typename T, typename Lag>
-T action<T, Lag>::eval()
+T action<T, Lag>::eval(T &e)
 {
   if(! vaildity)
   return 0;
   T t0, t1;
   std::tie(t0, t1) = path_action[0].get_endtimes();
-  return eval_quadgk(t0, t1, 31);
+  e = 0;
+  return eval_quadgk(t0, t1, 31, e);
 }
 
 template<typename T, typename Lag>
-T action<T, Lag>::eval(int method, int n)
+T action<T, Lag>::eval(int method, int n, T &e)
 {
   if(! vaildity)
   return 0;
   T t0, t1;
   std::tie(t0, t1) = path_action[0].get_endtimes();
+  e = 0;
   if(method == 0)
-  return eval_quadgk(t0, t1, n);
+  return eval_quadgk(t0, t1, n, e);
   if(method == 1)
-  return eval_qthsh(t0, t1, n);
+  return eval_qthsh(t0, t1, n, e);
   return 0; // if method is not equal to the one of 0 or 1.
 }
 }

@@ -3,12 +3,13 @@
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 3.
+ * @date 2021. 11. 6.
  */
 
 #ifndef ACTION_H
 #define ACTION_H
 
+#include <iostream>
 #include <iostream>
 #include <algorithm>
 #include <cmath>
@@ -64,8 +65,10 @@ class action
 	/// @param right right end point of interval
 	/// @param D previous \f$ |G_{(n-1)/2} - K_n| \f$. value without scaling
 	/// @param D_tol tolerance for D
+	/// @param[out] integral integration value
+	/// @param[out] e estimated error
 	template<typename Gau_Kron>
-	T eval_helper(T left, T right, T D, T D_tol);
+	void eval_helper(T left, T right, T D, T D_tol, T &integral, T &e);
 
 	/// @brief evaluate the action of given path
 	/// by \f$ (G_{(n-1)/2}, K_n) \f$ Gauss–Kronrod quadrature method
@@ -73,9 +76,10 @@ class action
 	/// @param right right end points of interval
 	/// @param n order of gauss-kronrod quadrature
 	/// currently only supports N=15, 21, 31, 41, 51, 61
+	/// @param[out] e estimated error
 	/// @return action of given path
 
-	T eval_quadgk(T left, T right, int n);
+	T eval_quadgk(T left, T right, int n, T &e);
 
 	/// @brief evaluate the action of given path
 	/// tanh-sinh quadrature method
@@ -83,10 +87,11 @@ class action
 	/// @param right right end points of interval
 	/// @param max_depth maximum depth 
 	/// step size \f$ h \f$ would be 
-	/// \f$ h \geq 2^{-\mathrm{depth}_{max}} \f$. 
+	/// \f$ h \geq 2^{-\mathrm{depth}_{max}} \f$.
+	/// @param[out] e estimated error 
 	/// @return action of given path
 
-	T eval_qthsh(T left, T right, int max_depth);
+	T eval_qthsh(T left, T right, int max_depth, T &e);
 
 	public:
     /// @brief initialize action class
@@ -144,9 +149,10 @@ class action
 	/// @brief evaluate the action of given path
 	/// by default method:
 	/// (G15, K31) Gauss–Kronrod quadrature method
+	/// @param[out] e estimated error 
 	/// @return action of given path
 
-	T eval();
+	T eval(T &e);
 
 	/// @brief evaluate the action of given path
 	/// @param method numerical integration method
@@ -154,10 +160,12 @@ class action
 	/// - method 1: Tanh-Sinh quadrature method
 	/// @param n  
 	/// - order of Gauss-Kronrod quadrature if method equals to 0,
+	///   currently, only support n=15, 21, 31, 41, 51, 61.
 	/// - maximum depth if method equals to 1.
+	/// @param[out] e estimated error
 	/// @return action of given path
 
-	T eval(int method, int n);
+	T eval(int method, int n, T &e);
 };
 }
 

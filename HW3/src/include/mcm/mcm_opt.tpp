@@ -3,7 +3,7 @@
  * @brief template for minimization of the action
  * using Monte Carlo Metropolis method
  * @author pistack (Junho Lee)
- * @date 2021. 11. 2.
+ * @date 2021. 11. 6.
  * @ingroup libmcm
  */
 
@@ -18,10 +18,18 @@ mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda)
 
   // variable store temporal variable
   int dim_1 = init_path.size();
-  T accept_action = init_action;
+  T e; // estimated error
+  T init_action; // initial action
+  T accept_action; // accept_action
+  T min_action; // minimum action
   std::vector<std::vector<T>> accept_guess = init_guess;
   std::vector<std::vector<T>> tmp_guess = init_guess;
   std::vector<libfourier::fourier_path<T>> tmp_path = init_path;
+
+  mcm_action.update(init_path);
+  init_action = mcm_action.eval(e);
+  accept_action = init_action;
+  min_action = init_action;
 
   for(int i=0; i<num_iter; ++i)
   {
@@ -44,7 +52,7 @@ mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda)
     while(!mcm_action.is_vaild());
 
     // evaluate action
-    tmp_action = mcm_action.eval();
+    tmp_action = mcm_action.eval(e);
 
     // accept move or not
     r = uniform_dist(gen);
@@ -78,10 +86,18 @@ std::string monitor, int digits)
 
   // variable store temporal variable
   int dim_1 = init_path.size();
-  T accept_action = init_action;
+  T e; // estimated error
+  T init_action; // initial action
+  T accept_action; // accept_action
+  T min_action; // minimum action
   std::vector<std::vector<T>> accept_guess = init_guess;
   std::vector<std::vector<T>> tmp_guess = init_guess;
   std::vector<libfourier::fourier_path<T>> tmp_path = init_path;
+
+  mcm_action.update(init_path);
+  init_action = mcm_action.eval(e);
+  accept_action = init_action;
+  min_action = init_action;
 
   // monitor optimization process
   std::ofstream fout;
@@ -111,7 +127,7 @@ std::string monitor, int digits)
     while(!mcm_action.is_vaild());
 
     // evaluate action
-    tmp_action = mcm_action.eval();
+    tmp_action = mcm_action.eval(e);
 
     // accept move or not
     r = uniform_dist(gen);
@@ -122,7 +138,7 @@ std::string monitor, int digits)
       accept_action = tmp_action;
       accept_guess = tmp_guess;
       // write accept_action to monitor
-      fout << n_accept << '\t' << accept_action << std::endl;
+      fout << n_accept << '\t' << accept_action << '\t' << e << std::endl;
       if(accept_action < min_action)
       {
         min_action = accept_action;

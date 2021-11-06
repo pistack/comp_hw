@@ -3,7 +3,7 @@
  * @brief template which init, define initial guess
  * store minimum guess and evaluate guesses.
  * @author pistack (Junho Lee)
- * @date 2021. 11. 2.
+ * @date 2021. 11. 6.
  * @ingroup libmcm
  */
 
@@ -14,9 +14,8 @@ mcm<T, Lag> & mcm<T, Lag>::operator=(const mcm<T, Lag> &copy)
   num_fourier = copy.num_fourier; 
   fourier_period = copy.fourier_period;
   mcm_action = copy.mcm_action; init_guess = copy.init_guess;
-  init_path = copy.init_path; init_action = copy.init_action;
+  init_path = copy.init_path;
   min_guess = copy.min_guess; min_path = copy.min_path;
-  min_action = copy.min_action;
   return *this;
 }
 
@@ -35,11 +34,6 @@ void mcm<T, Lag>::set_init_guess(std::vector<std::vector<T>> init_c)
   }
   init_guess = init_c;
   init_path = paths;
-  mcm_action.update(init_path);
-  init_action = mcm_action.eval();
-  min_guess = init_guess;
-  min_path = init_path;
-  min_action = init_action;
 }
 
 template<typename T, typename Lag>
@@ -64,15 +58,14 @@ void mcm<T, Lag>::set_init_guess()
   } 
   while (! mcm_action.is_vaild());
   init_path = paths;
-  init_action = mcm_action.eval();
-  min_guess = init_guess;
-  min_path = init_path;
-  min_action = init_action;
 }
 
 template<typename T, typename Lag>
-T mcm<T, Lag>::get_init_action()
+T mcm<T, Lag>::get_init_action(T &e)
 {
+  T init_action;
+  mcm_action.update(init_path);
+  init_action = mcm_action.eval(e);
   return init_action;
 }
 
@@ -113,8 +106,11 @@ std::vector<std::vector<T>> mcm<T, Lag>::init_eval(std::vector<T> t)
 }
 
 template<typename T, typename Lag>
-T mcm<T, Lag>::get_min_action()
+T mcm<T, Lag>::get_min_action(T &e)
 {
+  T min_action;
+  mcm_action.update(min_path);
+  min_action = mcm_action.eval(e);
   return min_action;
 }
 
