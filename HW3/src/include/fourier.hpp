@@ -15,7 +15,6 @@
 
 namespace libfourier {
 
-/// mathematical constant
 template<typename T>
 constexpr T pi = T(std::acos(-1)); ///< pi
 template<typename T>
