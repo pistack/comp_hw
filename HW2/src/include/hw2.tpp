@@ -3,7 +3,7 @@
  * @brief template for homework2 of Computer1 class in Yonsei University
  * Use numerical integration to solve Kepler problem
  * @author pistack (Junho Lee)
- * @date 2021. 11. 2.
+ * @date 2021. 11. 7.
  */
 
 template<typename T>
@@ -14,19 +14,19 @@ HW2(T zeta_min, T t0, int n)
   T grid_space; // grid spacing
   T a; 
   T zeta_max; // maximum value of zeta
-  T tmp, tmp2;
+  T tmp;
   T c1, c2;
   std::vector<T> t(n+1, 0);
   std::vector<T> zeta(n+1, 0);
   std::vector<T> u(n+1, 0);
 
-  // Note a = zeta_min**(-2)-2*zeta_min**(-1)
-  //        = zeta_max**(-2)-2*zeta_max**(-1)
+  // Note.
+  // zeta_max = zeta_min/(2*zeta_min-1)
+  // a = - 1/(zeta_max*zeta_min)
+  // by Vieta's Formula
 
-  tmp = 1/zeta_min;
-  a = tmp*(tmp-2);
-  tmp = 1.0+std::sqrt(1.0+a);
-  zeta_max = -tmp/a;
+  zeta_max = zeta_min/(2*zeta_min-1);
+  a = -1/(zeta_min*zeta_max);
 
   // calculates c1 and c2
   tmp = zeta_max - zeta_min;

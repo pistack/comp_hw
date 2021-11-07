@@ -16,6 +16,11 @@
 /// \alpha &= \frac{1}{\zeta_{min}^2} - \frac{2}{\zeta_{min}} \\
 ///   &= \frac{1}{\zeta_{max}^2} - \frac{2}{\zeta_{max}}
 /// \f}
+/// Using Vieta's Formula, we could simplify above relation.
+/// \f{align}{
+/// \zeta_{max} &= \frac{\zeta_{min}}{2\zeta_{min}-1} \label{eq:zeta_max_simple} \\
+/// \alpha &= - \frac{1}{\zeta_{min}\zeta_{max}} \label{eq:alpha_simple}
+/// \f}
 /// To solve above integral equation 
 /// \latexonly \eqref{eq:int_eq} \endlatexonly
 /// we need to view time \f$ t \f$ as a function of \f$ \zeta \f$ with
