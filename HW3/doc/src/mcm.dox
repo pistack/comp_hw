@@ -7,7 +7,7 @@
 /// Briefly, the Monte Carlo Metropolis moves intial guess \f$ c \f$ by
 /// step_size via random walk. Denote moved guess \f$ c' \f$.
 /// Then calculates acceptance ratio
-/// \f$ \exp(-\lambda \Delta A) \f$, where \f$ \Delta A = A_{c'} - A_c \f$.
+/// \f$ \exp(-\lambda \Delta S) \f$, where \f$ \Delta S = S_{c'} - S_c \f$.
 /// Next sample real number \f$ r \in [0, 1] \f$ from the uniform distribution.
 /// If \f$ r \f$ is less than acceptance ratio then accepts move; set \f$ c = c' \f$ 
 /// If \f$ r \f$ is greater than acceptance ratio then rejects move; set \f$ c = c \f$ 
@@ -15,15 +15,15 @@
 /// @section target Target distribution
 /// In Monte Carlo Metropolis method described in 
 /// [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916),
-/// for large iteration number \f$ n_iter \f$, the distribution \f$ f_{\lambda}(A) \f$
-/// converges to \f$ g_{\lambda}(A) \f$, where
+/// for large iteration number \f$ n_iter \f$, the distribution \f$ f_{\lambda}(S) \f$
+/// converges to \f$ g_{\lambda}(S) \f$, where
 /// \f{equation}{\label{eq:target_dist}
-/// g_{\lambda}(A) = \begin{cases}
-/// p(A)\exp\left(-\lambda(A-A_{min})\right) & \text{,if}\ A \geq A_{min} \\
+/// g_{\lambda}(S) = \begin{cases}
+/// p(S)\exp\left(-\lambda(S-S_{min})\right) & \text{,if}\ S \geq S_{min} \\
 /// 0 & \text{,otherwise}
 /// \end{cases}
 /// \f}
-/// Due to degeneracy factor \f$ p(A) \f$, in general, the most likely path 
+/// Due to degeneracy factor \f$ p(S) \f$, in general, the most likely path 
 /// differs from minimum action path.
 /// However, if we increase \f$ \lambda \f$ to penalize such discrepency 
 /// between most likely action and minimum action, the most likely path
@@ -63,10 +63,10 @@
 ///    2. If path is not vaild, go to 7.
 /// 9. evaluate action at that path
 /// 10. compute difference of action
-///    \f$ \Delta A = \f$ tmp_action \f$ - \f$ min_action
+///    \f$ \Delta S = \f$ tmp_action \f$ - \f$ min_action
 /// 11. Sample real number \f$ R \f$ from the uniform distribution
 ///     which ranges 0 to 1.
-/// 12. Check \f$ R < \exp(-\lambda\Delta A) \f$.
+/// 12. Check \f$ R < \exp(-\lambda\Delta S) \f$.
 ///     1. If yes, accept move.
 ///        Update accept_action and accept_guess
 ///        increase n_accept and i by 1.
@@ -106,6 +106,4 @@
 /// 5. If \f$ c'_i < -1 \f$, then set \f$ c'_i = -1 \f$.
 /// 6. Return \f$ c'_i \f$.
 ///
-/// @section kepler Applicate to Kepler Action
-/// 
 /////////////////////////////////////////////////////////////////

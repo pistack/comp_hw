@@ -1,0 +1,85 @@
+///////////////////////////////////////////////////////////////////////
+/// @page mcm_kepler Monte Carlo Metropolis Method with Kepler action
+/// @tableofcontents
+/// @section kepler_action Kepler Action
+/// Define path \f$ p(t) = (\zeta(t), \theta(t)) \f$ then the
+/// Kepler Lagrangian \f$ L(t, p(t), p'(t)) \f$ is given by
+/// \f{equation}{\label{eq:kepler_lag}
+/// L(t, p(t), p'(t)) = \frac{1}{2}\left(\zeta'^2(t)+ \zeta^2(t)\theta'^2(t)\right)
+/// + \frac{1}{\zeta(t)}
+/// \f}
+/// With boundary condition \f$ p(t_0) = p_0 \f$ and \f$ p(t_f) = p_f \f$,
+/// Kepler path (the solution of Kepler problem) minimizes following action
+/// \f{equation}{\label{eq:kepler_action}
+/// S = \int_{t_0}^{t_f} L(t, p(t), p'(t))
+/// \f}
+/// If we set \f$ p(t_0) = (\zeta_{min}, 0) \f$ and 
+/// \f$ p(t_f) = (\zeta_{max}, pi) \f$, where \f$ \zeta_{min} \f$ is 
+/// periapsis and \f$ \zeta_{max} \f$ is apoapsis.
+/// Then automately \f$ \zeta_{max} \f$ and \f$ t_f \f$ are determined as
+/// following equations.
+/// \f{align}{
+/// \zeta_{max} &= \frac{\zeta_{min}}{2\zeta_{min}-1} \label{eq:zeta_max} \\
+/// t_f &= t_0 + \pi \left(\frac{\zeta_{min}+\zeta_{max}}{2}\right)^{3/2}
+/// \label{eq:t_f}
+/// \f}
+/// However the Kepler lagrangian \latexonly \eqref{eq:kepler_lag} \endlatexonly
+/// has singularities when \f$ \zeta(t) = 0 \f$ for some \f$ t \in (t_0, t_f) \f$.
+/// Such singularities make Kepler action integral 
+/// \latexonly \eqref{eq:kepler_action} \endlatexonly may diverge.
+/// We know that for Kepler path \f$ \zeta_{min} \leq \zeta(t) \leq \zeta_{max} \f$
+/// and by the relation of \f$ \zeta_{min} \f$ and \f$ \zeta_{max} \f$
+/// \latexonly \eqref{eq:zeta_max} \endlatexonly, \f$ \zeta_{min} \f$ should be
+/// \f$ 0.5 < \zeta_{min} < 1 \f$.
+/// Thus, I define modified Kepler Lagrangian \f$ \hat{L}(t, p(t), p'(t)) \f$
+/// as following.
+/// \f{equation}{\label{eq:modified_kepler_lag}
+/// \hat{L}(t, p(t), p'(t)) = \begin{cases}
+/// 100 + \frac{1}{2}\left(\zeta'^2(t)+ \zeta^2(t)\theta'^2(t)\right) & 
+/// \text{,if}\ \zeta(t)< 0.01 \\
+/// L(t, p(t), p'(t)) & \text{otherwise}
+/// \end{cases}
+/// \f}
+/// Then modified Kepler action \f$ \hat{S} \f$ is also defined by
+/// \f{equation}{\label{eq:modified_kepler_action}
+/// \hat{S} = \int_{t_0}^{t_f} \hat{L}(t, p(t), p'(t))
+/// \f}
+/// For good path (i.e. \f$ \zeta_{min} \leq \zeta(t) \leq \zeta_{max}\f$),
+/// \f$ \hat{S}_{good} = S_{good} \f$ and for bad path
+/// (i.e. for some \f$ t \f$, \f$ \zeta(t) < 0.01 \f$ )
+/// \f$ \hat{S}_{bad} \gg \hat{S}_{good} \f$. 
+/// Hence, Kepler path also minimizes modified Kepler action \f$ \hat{S} \f$.
+/// Therefore, during Monte Carlo Metropolis optimization process,
+/// I use modified Kepler action instead of Kepler action to avoid singularity
+/// of action integral at sampled path.
+/// @section init_cond Initial condition
+/// I set initial time \f$ t_0 = 0 \f$ and periapsis \f$ \zeta_{min} = 0.9 \f$.
+/// @section opt_setup Optimization Setup
+/// I use following setup during optimization.
+/// Period of fourier function \f$ T \f$: \f$ 2t_f \f$.
+/// - Single precision
+///   - setup: 1
+///     1. Absolute tolerance of action integration: \f$ 10^{-6} \f$
+///     2. step_size: 0.01
+///     3. \f$ \lambda \f$: 100
+///     4. Number of iteration: \f$ 10^6 \f$
+///   - setup: 2
+///     1. Absolute tolerance of action integration: \f$ 10^{-6} \f$
+///     2. step_size: 0.001
+///     3. \f$ \lambda \f$: 10000
+///     4. Number of iteration: \f$ 10^6 \f$
+/// - Double precision
+///   - setup: 1
+///     1. Absolute tolerance of action integration: \f$ 10^{-8} \f$
+///     2. step_size: 0.01
+///     3. \f$ \lambda \f$: 100
+///     4. Number of iteration: \f$ 10^6 \f$
+///   - setup: 2
+///     1. Absolute tolerance of action integration: \f$ 10^{-8} \f$
+///     2. step_size: 0.001
+///     3. \f$ \lambda \f$: 10000
+///     4. Number of iteration: \f$ 10^6 \f$
+/// @section result_kepler Result
+/// @section monitor_kepler Monitoring Optimization process
+/// @section error_kepler Error Analysis
+/////////////////////////////////////////////////////////////////////////////
