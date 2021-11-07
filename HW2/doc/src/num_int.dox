@@ -128,11 +128,11 @@
 /// \mathrm{error} = \left | t_n - \pi a^{3/2} \right |  
 /// \f}
 /// @image html plot_error_float.png "Error Analysis Plot: single precision"
-/// @image latex plot_error_float.eps "Error Analysis Plot: single precision"
+/// @image latex plot_error_float.eps "Error Analysis Plot: single precision" width=10cm
 /// Due to the floating point turncation error, accuracy got worse at
 /// \f$ n > 10^{3} \f$.
 /// @image html plot_error.png "Error Analysis Plot: double precision"
-/// @image latex plot_error.eps "Error Analysis Plot: double precision"
+/// @image latex plot_error.eps "Error Analysis Plot: double precision" width=10cm
 /// The practical error bound can be estimated to
 /// \f{equation}{\label{eq:prac_error} O(n^{-3/2})\f}
 /// It is same as theorical error estimation \f$ O(n^{-3/2}) \f$.

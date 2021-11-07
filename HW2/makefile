@@ -2,8 +2,8 @@
 
 CXX = g++
 INC = -I src/include/
-#CPPFLAGS = -O3 -D PRECISION_LEVEL=0 $(INC) # for float precision
-CPPFLAGS = -O3 -D PRECISION_LEVEL=1 $(INC) # for double precision
+CPPFLAGS = -O3 -D PRECISION_LEVEL=0 $(INC) # for float precision
+#CPPFLAGS = -O3 -D PRECISION_LEVEL=1 $(INC) # for double precision
 
 OBJS = ./src/main.o
 SRCS = ./src/main.cpp
