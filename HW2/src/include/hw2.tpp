@@ -26,13 +26,13 @@ HW2(T zeta_min, T t0, int n)
   // by Vieta's Formula
 
   zeta_max = zeta_min/(2*zeta_min-1);
-  a = -1/(zeta_min*zeta_max);
+  a = 1/(zeta_min*zeta_max); // use -a instead
 
   // calculates c1 and c2
   tmp = zeta_max - zeta_min;
   c1 = 2*zeta_min/tmp;
   c2 = 2*zeta_max/tmp;
-  tmp = std::sqrt(-a);
+  tmp = std::sqrt(a);
   c1 /= tmp;
   c2 /= tmp;
 
