@@ -56,7 +56,7 @@ T action<T, Lag>::eval_lagrangian(T t)
   int n = path_action.size();
   std::vector<T> p(n, 0); // path
   std::vector<T> dp(n, 0); // derivative of path
-  Lag lag; // lagrangian
+
   for(int i=0; i<n; ++i)
   {
     p[i] = path_action[i].eval(t);
@@ -73,7 +73,7 @@ std::vector<T> action<T, Lag>::eval_lagrangian(std::vector<T> t)
   std::vector<T> p(n, 0); // path
   std::vector<T> dp(n, 0); // derivative of path
   std::vector<T> lag_val(m, 0); // result
-  Lag lag; // lagrangian
+
   for(int j=0; j<m; ++j)
   {
     for(int i=0; i<n; ++i)

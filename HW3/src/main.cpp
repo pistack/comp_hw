@@ -5,7 +5,7 @@
  * number of points to evaluate, number of interation, step size and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 11. 6.
+ * @date 2021. 11. 7.
  */
 
 #include <algorithm>
@@ -27,10 +27,8 @@
 using namespace std;
 
 /// @brief functor class for the kepler lagranian
-/// @param t time
-/// @param p path
-/// @param dp derivative of path
-/// @return lagranian evaluated at given time
+/// @param T precision should be the one of
+/// float, double, long double.
 
 template<typename T>
 class kepler_lag{
@@ -39,6 +37,11 @@ class kepler_lag{
 
   kepler_lag() {}
 
+  /// @brief evaluates kepler lagrangian at given time
+  /// @param t time
+  /// @param p path
+  /// @param dp derivative of path
+  /// @return lagrangian evaluated at given time
   T operator()(T t, 
   vector<T> p, vector<T> dp) const
   {

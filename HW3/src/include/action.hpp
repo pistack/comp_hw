@@ -27,8 +27,22 @@ namespace libfourier{
 /// value of lagranian at given time
 /// @warning If you give invaild path, then
 /// eval method will return always zero.
-/// @see for gauss-kronrod quadrature method  
-/// @see for tanh-sinh method
+///
+/// For gauss-kronrod quadrature method,
+/// @see [Math. Comp. 22 (1968), 847-856.]
+/// (https://doi.org/10.1090/S0025-5718-68-99866-9) 
+/// @see [Commun. ACM 16, 11 (Nov. 1973), 694–699.]
+/// (https://doi-org-ssl.access.yonsei.ac.kr/10.1145/355611.362543)
+/// @see [ACM Comput. Surv. 44, 4, Article 22 (August 2012)]
+/// (https://doi.org/10.1145/2333112.2333117)
+///
+/// For tanh-sinh quadrature method, 
+/// @see [Publ. RIMS, Kyoto Univ. 9 (1974), 721-741]
+/// (https://doi.org/10.2977%2Fprims%2F1195192451)
+/// @see [Publ. RIMS, Kyoto Univ. 41 (2005), 897-935]
+/// (https://doi.org/10.2977%2Fprims%2F1145474600)
+/// @see [David H. Bailey, Tanh-Sinh High-Precision Quadrature]
+/// (https://www.davidhbailey.com/dhbpapers/dhb-tanh-sinh.pdf)
 /// @ingroup libfourier
 template<typename T, typename Lag>
 class action
@@ -40,6 +54,8 @@ class action
 	std::vector<fourier_path<T>> path_action; // path
 
 	bool vaildity=false; // vaildity of path
+
+	const Lag lag; // lagrangian
 
 	/// @brief checks the vaildity of path
 	void check_vaild();

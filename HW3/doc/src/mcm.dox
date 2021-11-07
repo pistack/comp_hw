@@ -40,7 +40,7 @@
 /// @section mcm_pseudo Pseudo Code
 /// 1. intialize mcm class
 ///   1. set initial condition
-///   2. set absoulte and relative tolerance for the
+///   2. set absoulte tolerance of the
 ///   action integration see @ref action
 ///   3. set number of sine and cosine function used to approximate
 ///      path
