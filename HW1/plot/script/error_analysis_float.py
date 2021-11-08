@@ -1,4 +1,4 @@
-#Error Analysis peak 10 pts
+#Error Analysis pick 10 pts
 #t=1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 # Assume n=10^5 is exact!
 import numpy as np
@@ -34,6 +34,12 @@ for i in range(5):
                 ref[j*offset_ref, 1]*np.sin(ref[j*offset_ref, 2]))**2
 
 EA = np.sqrt(EA)
+for j in range(5):
+    print(f'n={task_list[j]}')
+    str = ''
+    for i in range(1, 11, 1):
+        print(f't={i}: {EA[i-1, j]}')
+
 for i in range(1, 11, 1):
     plt.plot(task_list, EA[i-1, :], label=f't={i}', marker='o')
 plt.yscale('log')

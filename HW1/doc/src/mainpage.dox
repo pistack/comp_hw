@@ -18,7 +18,7 @@
  *   3. Type make then you can see hw1 executable in build directory
  * @section hwoto How To Use
  * Execute hw1 then, it will interactively read
- * - inital condition
+ * - initial condition
  * - number of gird points to evaluate
  * - output file name
  *

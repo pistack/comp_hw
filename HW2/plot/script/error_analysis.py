@@ -34,6 +34,8 @@ error[2] = np.abs(exact-r3[-1, 0])
 error[3] = np.abs(exact-r4[-1, 0])
 error[4] = np.abs(exact-r5[-1, 0])
 
+for i in range(5):
+    print(f'n={task_lst[i]} \t {error[i]}')
 
 plt.plot(task_lst, error, marker='o')
 plt.grid(True)

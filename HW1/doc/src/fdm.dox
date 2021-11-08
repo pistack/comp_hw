@@ -86,8 +86,12 @@
 /// - Final time: 10
 /// @image html plot_converge_zeta_float.png "Convergence plot: single precision"
 /// @image latex plot_converge_zeta_float.eps "Convergence plot: single precision" width=10cm
-/// Due to tuncation error it diverges at \f$ n = 10^5 \f$.
+/// Since at \f$ n = 10^5 \f$, difference of two successive \f$ \zeta \f$ value reaches
+/// machine epsilon of single precision, roughly \f$ 10^{-7} \f$, evaluated \f$ \zeta \f$ 
+/// diverges at \f$ n = 10^5 \f$. 
 /// @image html plot_converge_zeta_double.png "Convergence plot: double precision"
 /// @image latex plot_converge_zeta_double.eps "Convergence plot: double precision" width=10cm
-/// However in double precision, it converges to exact solution.
+/// However in double precision, machine epsilon, roughly \f$ 10^{-16} \f$, is
+/// far lower than difference of two successive \f$ \zeta \f$, so 
+/// calculated \f$ \zeta \f$ converges to exact solution.
 ///////////////////////////////////////////////////////////////////////
