@@ -113,4 +113,7 @@
 /// In single precision, numerical error is less than \f$ 10^{-5} \f$ when \f$ n < 10^3 \f$.
 /// However, at \f$ n=10^3 \f$, numerical error is comparable to truncation error and
 /// at \f$ n=10^4 \f$, numerical error is dominant and increases as \f$ n \f$ greater.
+/// Therefore, in single precision, we need to concern about numerical error and
+/// to find optimal step number \f$ n \f$.
+///
 //////////////////////////////////////////////////////////////////////////////////////////////////////
