@@ -2,7 +2,7 @@
 Solve Kepler problem via finite difference Method
 
 # Author
-pistatex (Junho Lee)
+pistack (Junho Lee)
 
 # Licence
 LGPLv3

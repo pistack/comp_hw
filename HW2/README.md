@@ -2,7 +2,7 @@
 Solve Kepler problem via numerical integration
 
 # Author
-pistatex (Junho Lee)
+pistack (Junho Lee)
 
 # Licence
 LGPLv3
