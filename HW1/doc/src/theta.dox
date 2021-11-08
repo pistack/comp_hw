@@ -21,7 +21,9 @@
  * \frac{t_i-t_{i-1}}{2}\left(\frac{1}{\zeta_{i-1}^2}+\frac{1}{\zeta_i^2}\right)
  * \f}
  * \f$\theta_i \f$ has \f$ O(n^{-3}) \f$ local turncation error for 
- * trapezoidal rule and additional \f$ O(n^{-3}) \f$ for the global turncation error of
+ * trapezoidal rule and additional \f$ O(n^{-3}) \f$ for the multiplication of 
+ * \f$ t_i - t_{i-1} = (t_f - t_0)/n = O(n^{-1}) \f$ and
+ * global turncation error of
  * \f$ \zeta \f$ (see \ref fdm \ref accuracy).
  * So the global turncation error of \f$ \theta \f$ can be estimated to
  * \f$ O(n^{-2}) \f$

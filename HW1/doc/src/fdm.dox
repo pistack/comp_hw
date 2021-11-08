@@ -51,12 +51,25 @@
 /// \f{equation}{\label{eq:recurr}
 /// \zeta_{i-1} -2\zeta_i + \zeta_{i+1} = 
 /// h^2\left(\frac{1}{\zeta_i^3} - \frac{1}{\zeta_i^2}\right) \f}
-/// In above equation \latexonly \eqref{eq:recurr} \endlatexonly,
-/// we turncate \f$ O(h^4) \f$ terms, so local turncation error is 
+/// To estimate global turncation error, consider 
+/// \f$ \phi_i = \zeta_{i+1} - \zeta_{i} \f$, for \f$ i \geq 1 \f$.
+/// Then we can rewrite above recurrece relation \latexonly \eqref{eq:recurr} \endlatexonly,
+/// as 
+/// \f{equation}{\label{eq:recurr2}
+/// \phi_i - \phi_{i-1} = h^2\left(\frac{1}{\zeta_i^3} - \frac{1}{\zeta_i^2}\right)
+/// \f}
+/// In above equation \latexonly \eqref{eq:recurr2} \endlatexonly,
+/// we turncate \f$ O(h^4) \f$ terms, so local turncation error of \f$ \phi_i \f$ is 
 /// \f$ O(h^4)=O(n^{-4})\f$.
-/// Therefore global turncation error can be roughly estimated to
+/// Therefore global turncation error of \f$ \phi_i \f$ can be roughly estimated to
 /// \f$ O(n^{-3})\f$.
-/// To solve recurrance relation, we need to know both 
+/// Note that \f$ \zeta_i = \zeta_0 + \sum_{j=0}^{i-1} \phi_i \f$.
+/// Hence, the global turncation error of \f$ \zeta_i \f$ could be estimated to
+/// \f{equation}{\label{eq:error_zeta}
+/// O(n^{-2})
+/// \f}
+/// To solve recurrance relation of \f$ \zeta \f$ \latexonly \eqref{eq:recurr} \endlatexonly
+///, we need to know both 
 /// \f$\zeta_0\f$ and \f$\zeta_1\f$. 
 /// However only \f$\zeta_0\f$ is explictly given by the
 /// initial condition.
@@ -75,7 +88,7 @@
 /// \f{equation*}{ O(n). \f}
 /// @section accuracy Accuracy
 /// Global turncation error is roughly estimated by 
-/// \f{equation*}{O(n^{-3}). \f}
+/// \f{equation*}{O(n^{-2}). \f}
 /// @section conv Convergence
 /// - Initial Condition
 /// \f{align*}{
