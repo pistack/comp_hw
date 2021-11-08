@@ -21,32 +21,28 @@ task_lst = [5, 10, 100, 1000, 10000]
 exact = np.pi*((0.9+1.125)/2.0)**(1.5) # t_f
 error = np.zeros(5)
 
-r1 = np.genfromtxt('zeta5f.txt')
-r2 = np.genfromtxt('zeta10f.txt')
-r3 = np.genfromtxt('zeta100f.txt')
-r4 = np.genfromtxt('zeta1000f.txt')
-r5 = np.genfromtxt('zeta10000f.txt')
+r1f = np.genfromtxt('zeta5f.txt')
+r2f = np.genfromtxt('zeta10f.txt')
+r3f = np.genfromtxt('zeta100f.txt')
+r4f = np.genfromtxt('zeta1000f.txt')
+r5f = np.genfromtxt('zeta10000f.txt')
+
+r1 = np.genfromtxt('zeta5.txt')
+r2 = np.genfromtxt('zeta10.txt')
+r3 = np.genfromtxt('zeta100.txt')
+r4 = np.genfromtxt('zeta1000.txt')
+r5 = np.genfromtxt('zeta10000.txt')
 
 
-error[0] = np.abs(exact-r1[-1, 0])
-error[1] = np.abs(exact-r2[-1, 0])
-error[2] = np.abs(exact-r3[-1, 0])
-error[3] = np.abs(exact-r4[-1, 0])
-error[4] = np.abs(exact-r5[-1, 0])
+error[0] = np.abs(r1f[-1,0]-r1[-1, 0])
+error[1] = np.abs(r2f[-1,0]-r2[-1, 0])
+error[2] = np.abs(r3f[-1,0]-r3[-1, 0])
+error[3] = np.abs(r4f[-1,0]-r4[-1, 0])
+error[4] = np.abs(r5f[-1,0]-r5[-1, 0])
 
 for i in range(5):
     print(f'n={task_lst[i]} \t {error[i]}')
 
-
-
-plt.plot(task_lst, error, marker='o')
-plt.grid(True)
-plt.xlabel(r'$n$')
-plt.ylabel('error')
-plt.xscale('log')
-plt.yscale('log')
-plt.savefig('plot_error_float.png', dpi=100)
-plt.savefig('plot_error_float.eps', dpi=300)
 
 log_n = np.log(np.array(task_lst))
 log_error = np.log(error)
@@ -57,3 +53,16 @@ def f(x, a, b):
 popt, pconv = curve_fit(f, log_n, log_error)
 print('a \t b')
 print(f'{popt[0]} \t {popt[1]}')
+
+plt.figure(1)
+plt.plot(task_lst, error, marker='o', label="Numerical Error")
+plt.plot(task_lst, np.exp(popt[1])*task_lst**(popt[0]), '--', label="Trend line")
+plt.legend(loc='upper right')
+plt.grid(True)
+plt.xlabel(r'$n$')
+plt.ylabel('error')
+plt.xscale('log')
+plt.yscale('log')
+plt.savefig('plot_num_error_float.png', dpi=100)
+plt.savefig('plot_num_error_float.eps', dpi=300)
+

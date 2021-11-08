@@ -118,22 +118,64 @@
 /// \f}
 /// @image html plot_converge_float.png "Convergence plot: single precision"
 /// @image latex plot_converge_float.eps "Convergence plot: single precision" width=10cm
-/// @image html plot_converge.png "Convergence plot:double precision"
-/// @image latex plot_converge.eps "Convergence plot:double precision" width=10cm
+/// @image html plot_converge.png "Convergence plot: double precision"
+/// @image latex plot_converge.eps "Convergence plot: double precision" width=10cm
+///
 /// @section prac_error Practical Error Bound
 /// We know that the exact value of \f$ t_f \f$ is \f$ \pi a^{3/2} \f$.
 /// Where \f$ a = (\zeta_{min}+\zeta_{max})/2.0 \f$.
-/// So, error can be evaluated by
+/// So, error can be estimated by
 /// \f{equation}{\label{eq:error}
 /// \mathrm{error} = \left | t_n - \pi a^{3/2} \right |  
 /// \f}
+///
+/// ### Error Analysis Table: single precision
+/// | \f$ n \f$ | Error     |
+/// | :-------: |:----------|
+/// | 5         | 7.7061e-2 |
+/// | 10        | 2.6981e-2 |
+/// | 10^2      | 8.5121e-4 |
+/// | 10^3      | 5.1212e-5 |
+/// | 10^4      | 9.8788e-5 |
+///
 /// @image html plot_error_float.png "Error Analysis Plot: single precision"
 /// @image latex plot_error_float.eps "Error Analysis Plot: single precision" width=10cm
-/// Due to the floating point turncation error, accuracy got worse at
-/// \f$ n > 10^{3} \f$.
+/// In single precision, difference of sucessive \f$ \zeta \f$ reaches to ten times of
+/// machine epsilon, roughly \f$ 10^{-6} \f$ at \f$ n > 10^3 \f$. So, numerical error 
+/// is dominant or comparable to turncation error.
+/// Thus, at \f$ n > 10^3 \f$, due to the turncation error, accuracy is worsen as
+/// \f$ n \f$ increases.
+/// In double precision, the machine epsilon, roughly \f$ 10^{-16} \f$, is far
+/// less than difference of sucessive \f$ \zeta \f$, so we can neglect 
+/// numerical error. Moreover we could estimate numerical error of single precision
+/// result as
+/// \f{equation}{\label{eq:num_error_float}
+/// \mathrm{num_error} = \left | t_{n,\mathrm{float}} - t_{n,\mathrm{double}} \right |
+/// \f}
+///
+/// ### Numerical Error: single precision
+/// | \f$ n \f$ | Error     |
+/// | :-------: | :-------- |
+/// | 5         | 1.3735e-6 |
+/// | 10        | 3.6656e-6 |
+/// | 100       | 3.4982e-6 |
+/// | 1000      | 2.4420e-5 |
+/// | 10000     | 9.9635e-5 |
+///
+/// @image html plot_num_error_float.png "Numerical Error: single precision"
+/// @image laex plot_num_error_float.eps "Numerical Error: single precision" width=10cm
+/// The slope of trend line is \f$ 0.5 \f$. So the order of numerical error is
+/// \f $ O(\sqrt{n}) \f$.
+/// Combine this results with single precision numerical error table,
+/// error bound for the numerical error is
+/// \f{equation}{\label{eq:num_err_single}
+/// \mathrm{error}_{num} leq 10^{-6}\sqrt{n}
+/// \f}
+///
+/// Now estimates the error of double precision results.
+/// In double precision, we can neglect numerical error, so 
+/// error is equal to the turncation error.
+/// 
 /// @image html plot_error.png "Error Analysis Plot: double precision"
 /// @image latex plot_error.eps "Error Analysis Plot: double precision" width=10cm
-/// The practical error bound can be estimated to
-/// \f{equation}{\label{eq:prac_error} O(n^{-3/2})\f}
-/// It is same as theorical error estimation \f$ O(n^{-3/2}) \f$.
 //////////////////////////////////////////////////////////////////////////

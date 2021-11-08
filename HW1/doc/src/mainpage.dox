@@ -9,16 +9,16 @@
  * - gnu make or cmake
  * @section install Installation
  * - gnu make
- *   - Type make, then we can see hw1 executable file in bin directory
+ *   - Type make, then you can see hw1 executable file in bin directory
  * - cmake
  *   1. make build directory
  *   2. go to build directory and type cmake .. -DPRECISION_LEVEL precision_level
  *      - precision_level 0: float
  *      - precision_level 1: double
- *   3. Type make then we can see hw1 executable in build directory
+ *   3. Type make then you can see hw1 executable in build directory
  * @section hwoto How To Use
  * Execute hw1 then, it will interactively read
- * - inital condition
+ * - initial condition
  * - number of gird points to evaluate
  * - output file name
  *
