@@ -23,7 +23,7 @@
 /// \f$ n=10^5 \f$ (i.e. \f$ \Delta t = 10^{-4} \f$).
 /// @image html plot_converge_traj_double.png "Convergence plot: double precision"
 /// @image latex plot_converge_traj_double.eps "Convergence plot: double precision" width=10cm
-/// However, in double precision, it converges to exact epllise trajectory.
+/// However, in double precision, it converges to exact epllipse trajectory.
 /// @section traj_error Trajectory Error analysis
 /// Since trajectory approximated by finite difference method is converges to exact epllise trajectory,
 /// when double precision, I assume \f$ n=10^5 \f$ with double precision result as exact path.

@@ -25,7 +25,7 @@
 /// for some \f$\eta(x, h) \in (t_0, t_f)\f$.
 /// Using 4th order taylor approximation 
 /// \latexonly \eqref{eq:4thtaylor} \endlatexonly,
-/// we can get following equation
+/// we can derive following equation
 /// \f{equation}{\label{eq:finite_diff}
 /// \zeta(x-h)-2\zeta(x)+\zeta(x+h) = h^2\zeta''(x) + O(h^4)
 /// \f}
@@ -52,7 +52,7 @@
 /// \zeta_{i-1} -2\zeta_i + \zeta_{i+1} = 
 /// h^2\left(\frac{1}{\zeta_i^3} - \frac{1}{\zeta_i^2}\right) \f}
 /// In above equation \latexonly \eqref{eq:recurr} \endlatexonly,
-/// we turncate, so local turncation error is 
+/// we turncate \f$ O(h^4) \f$ terms, so local turncation error is 
 /// \f$ O(h^4)=O(n^{-4})\f$.
 /// Therefore global turncation error can be roughly estimated to
 /// \f$ O(n^{-3})\f$.
