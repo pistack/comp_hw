@@ -1,13 +1,13 @@
-## Computer_Homework2
+# Computer_Homework2
 Solve Kepler problem via numerical integration
 
-# Author
+## Author
 pistack (Junho Lee)
 
-# Licence
+## Licence
 LGPLv3
 
-# Documents
+## Documents
 Documents are located in doc directory
 
 

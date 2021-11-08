@@ -1,6 +1,9 @@
 # comp_hw
 Homework for Computer1 class in Yonsei University
 
+## Author
+pistack (Junho Lee)
+
 ## HW1
 Solve Kepler problem via finite difference Method
 

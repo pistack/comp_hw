@@ -1,11 +1,11 @@
-## Computer_Homework1
+# Computer_Homework1
 Solve Kepler problem via finite difference Method
 
-# Author
+## Author
 pistack (Junho Lee)
 
-# Licence
+## Licence
 LGPLv3
 
-# Documents
+## Documents
 Documents are located in doc directory
