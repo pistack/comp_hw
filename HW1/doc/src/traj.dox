@@ -19,28 +19,98 @@
 /// - Final time: 10
 /// @image html plot_converge_traj_float.png "Convergence plot: single precision"
 /// @image latex plot_converge_traj_float.eps "Convergence plot: single precision" width=10cm
-/// Due to floating point tuncation error, it diverges at 
-/// \f$ n=10^5 \f$ (i.e. \f$ \Delta t = 10^{-4} \f$).
+/// In single precision, due to the numerical error, both calculated \f$ \zeta \f$ and 
+/// \f$ \theta \f$ diverge at \f$ n = 10^5 \f$. So, trajectory also diverges at \f$ n = 10^5 \f$.
 /// @image html plot_converge_traj_double.png "Convergence plot: double precision"
 /// @image latex plot_converge_traj_double.eps "Convergence plot: double precision" width=10cm
-/// However, in double precision, it converges to exact epllise trajectory.
+/// However, in double precision, both calculated \f$ \zeta \f$ and \f$ \theta \f$ converges to
+/// exact solution. Thus, in double precision, trajectory also converges to
+/// exact epllipse trajectory.
 /// @section traj_error Trajectory Error analysis
-/// Since trajectory approximated by finite difference method is converges to exact epllise trajectory,
-/// when double precision, I assume \f$ n=10^5 \f$ with double precision result as exact path.
+/// Trajectory approximated by finite difference method is converges to exact epllipse trajectory
+/// in double precision. 
+/// Thus, I assume that double precision trajectory calculated with \f$ 10^5 \f$ steps 
+/// is the exact path.
 /// Then we can estimate error at the selected points \f$(t=1,2,...,10)\f$.
 /// \f{equation}{\label{eq:traj_error}
 /// \mathrm{error} = \sqrt{(x(t)-x_{ref}(t))^2+(y(t)-y_{ref}(t))^2}
 ///\f}
+/// Error can be seperated to numerical and truncation part.
+/// Usually numerical part of error increases and 
+/// turncation part of error decreases as \f$ n \f$ increases.
+///
+/// 
+/// ### Error Analysis: Single precision
+/// |\f$ t \f$ | \f$ n = 10 \f$ | \f$ n = 20 \f$ | \f$ n= 10^2 \f$ | \f$ n=10^3 \f$ | \f$ n=10^4 \f$ |
+/// | :------: | :------------- | :------------- | :-------------- | :------------- | :------------- |
+/// | 1        | 3.0436e-2      | 6.6311e-3      | 2.5783e-4       | 2.2096e-7      | 9.6580e-6      | 
+/// | 2        | 4.1441e-2      | 9.4500e-3      | 3.7512e-4       | 8.5674e-6      | 7.9277e-5      |
+/// | 3        | 3.2106e-2      | 7.7771e-3      | 3.0825e-4       | 6.3610e-6      | 2.4799e-4      |
+/// | 4        | 2.0137e-2      | 4.0393e-3      | 1.5794e-4       | 2.4904e-6      | 2.4253e-3      |
+/// | 5        | 6.0738e-2      | 1.2223e-2      | 4.5770e-4       | 2.8016e-5      | 6.4120e-3      |
+/// | 6        | 8.1767e-2      | 1.8988e-2      | 7.4039e-4       | 5.4708e-5      | 1.0189e-2      |
+/// | 7        | 4.6725e-2      | 1.1119e-2      | 4.4611e-4       | 6.2943e-5      | 9.5221e-3      |
+/// | 8        | 6.6307e-2      | 1.4042e-2      | 5.3708e-4       | 6.7596e-5      | 5.2319e-3      |
+/// | 9        | 8.8691e-2      | 2.1295e-2      | 8.4331e-4       | 9.3236e-5      | 1.7729e-3      |
+/// | 10       | 6.2815e-2      | 1.7533e-2      | 7.1144e-4       | 1.2318e-4      | 3.0507e-3      |
+///
 /// @image html plot_error_analysis_float.png "Error Analysis: single precision"
 /// @image latex plot_error_analysis_float.eps "Error Analysis: single precision" width=10cm
-/// As you can see due to tuncation error, accuracy is worsen when \f$ n > 10^3 \f$.
+/// In single precision, turncation error is dominant when \f$ n > 10^3 \f$. So, 
+/// above \f$ n = 10^3 \f$, accuracy is worsen as \f$ n \f$ increases.
+///
+/// ### Error Analysis: Double precision
+/// |\f$ t \f$ | \f$ n = 10 \f$ | \f$ n = 20 \f$ | \f$ n= 10^2 \f$ | \f$ n=10^3 \f$ | \f$ n=10^4 \f$ |
+/// | :------: | :------------- | :------------- | :-------------- | :------------- | :------------- |
+/// | 1        | 3.0435e-2      | 6.6281e-3      | 2.5612e-4       | 2.5585e-6      | 2.5331e-8      | 
+/// | 2        | 4.1443e-2      | 9.4516e-3      | 3.7178e-4       | 3.7147e-6      | 3.6782e-8      |
+/// | 3        | 3.2105e-2      | 7.7820e-3      | 3.1125e-4       | 3.1122e-6      | 3.0826e-8      |
+/// | 4        | 2.0132e-2      | 4.0413e-3      | 1.5700e-4       | 1.5682e-6      | 1.5529e-8      |
+/// | 5        | 6.0736e-2      | 1.2223e-2      | 4.6248e-4       | 4.6140e-6      | 4.5660e-8      |
+/// | 6        | 8.1766e-2      | 1.8989e-2      | 7.4523e-4       | 7.4457e-6      | 7.3689e-8      |
+/// | 7        | 4.6723e-2      | 1.1193e-2      | 4.5363e-4       | 4.5387e-6      | 4.4904e-8      |
+/// | 8        | 6.6301e-2      | 1.4040e-2      | 5.3646e-4       | 5.2527e-6      | 5.3030e-8      |
+/// | 9        | 8.8670e-2      | 2.1230e-2      | 8.4269e-4       | 8.4218e-6      | 8.3409e-8      |
+/// | 10       | 6.2816e-2      | 1.7533e-2      | 7.1995e-4       | 7.2055e-6      | 7.1345e-8      |
+///
 /// @image html plot_error_analysis_double.png "Error Analysis: double precision"
 /// @image latex plot_error_analysis_double.eps "Error Analysis: double precision" width=10cm
 /// However, when double precision, accuracy is better and better as \f$ n \f$ increases.
-/// Therefore we can estimate the order of error using above plot.
+/// Thus, we can conclude that in double precision, truncation error is much more
+/// dominant than numerical error.
+/// Therefore we can estimate the order of numerical error using above plot.
 /// Order of error is estimated to
 /// \f{equation}{\label{eq:order_of_error}
 /// O(n^{-2})
 /// \f}
 /// Practical error bound is same as estimated error bound \f$ O(n^{-2}) \f$.
+/// Combine double precision error analysis table and order of error \f$ O(n^{-2}) \f$.
+/// We can estimate prefactor \f$ C \leq 10 \f$.
+/// Thus, for \f$ t \in [0, 10] \f$, 
+/// \f{equation}{\label{eq:error_bound_detail}
+/// \mathrm{error} \leq \frac{10}{n^2}
+/// \f}
+/// Also, we can estimate the numerical error of single precision results as
+/// following equation.
+/// \f{equation}{\label{eq:num_err_single}
+/// \mathrm{error}_{num} = \sqrt{(x_{float}(t)-x_{double}(t))^2+(y_{float}(t)-y_{double}(t))^2}
+/// \f}
+/// 
+/// ### Numerical Error: Single precision
+/// |\f$ t \f$ | \f$ n = 10 \f$ | \f$ n = 20 \f$ | \f$ n= 10^2 \f$ | \f$ n=10^3 \f$ | \f$ n=10^4 \f$ |
+/// | :------: | :------------- | :------------- | :-------------- | :------------- | :------------- | 
+/// | 1        | 1.4799e-6      | 2.9999e-6      | 1.6165e-6       | 2.5254e-6      | 9.6329e-6      |
+/// | 2        | 3.9058e-6      | 4.5055e-6      | 6.2816e-6       | 5.2916e-6      | 7.9308e-5      |
+/// | 3        | 1.6573e-6      | 4.9166e-6      | 4.3752e-6       | 4.7693e-6      | 2.4801e-4      |
+/// | 4        | 5.4706e-6      | 2.5806e-6      | 1.0410e-6       | 1.8560e-6      | 2.4252e-3      |
+/// | 5        | 2.1820e-6      | 5.9421e-7      | 6.0163e-6       | 2.3731e-5      | 6.4120e-3      |
+/// | 6        | 8.9125e-7      | 1.4110e-6      | 4.8574e-6       | 4.7471e-5      | 1.0189e-2      |
+/// | 7        | 3.0391e-6      | 1.6316e-6      | 8.4827e-6       | 5.8825e-5      | 9.5221e-3      |
+/// | 8        | 5.8355e-6      | 4.3674e-6      | 5.9646e-6       | 7.1031e-5      | 5.2319e-3      |
+/// | 9        | 6.7675e-6      | 2.6497e-6      | 6.5098e-7       | 1.0148e-4      | 1.7730e-3      |
+/// | 10       | 1.7299e-6      | 2.4663e-6      | 9.2152e-6       | 1.2992e-4      | 3.0507e-3      |
+///
+/// In single precision, numerical error is less than \f$ 10^{-5} \f$ when \f$ n < 10^3 \f$.
+/// However, at \f$ n=10^3 \f$, numerical error is comparable to truncation error and
+/// at \f$ n=10^4 \f$, numerical error is dominant and increases as \f$ n \f$ greater.
 //////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -21,12 +21,12 @@ plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 task_list = [10, 20, 100, 1000, 10000]
 t=list(range(1, 11, 1))
-ref = np.genfromtxt('zeta100000.txt')
-offset_ref = 10000
 EA = np.zeros((10, 5))
 for i in range(5):
-    r = np.genfromtxt(f'zeta{task_list[i]}.txt')
+    r = np.genfromtxt(f'zeta{task_list[i]}f.txt')
+    ref = np.genfromtxt(f'zeta{task_list[i]}.txt')
     offset = int(task_list[i]/10)
+    offset_ref = offset
     for j in range(1, 11, 1):
         EA[j-1, i] = \
             (r[j*offset, 1]*np.cos(r[j*offset, 2]) -
@@ -41,30 +41,6 @@ for j in range(5):
     str = ''
     for i in range(1, 11, 1):
         print(f't={i}: {EA[i-1, j]}')
-
-for i in range(1, 11, 1):
-    plt.plot(task_list, EA[i-1, :], label=f't={i}', marker='o')
-plt.yscale('log')
-plt.xscale('log')
-plt.grid(True)
-plt.xlabel(r'$n$')
-plt.ylabel('error')
-plt.legend(loc='upper right')
-plt.savefig('plot_error_analysis_double.png', dpi=100)
-plt.savefig('plot_error_analysis_double.eps', dpi=300)
-
-log_n = np.log(np.array(task_list))
-log_error = np.log(np.array(EA))
-
-def f(x, a, b):
-    return a*x+b
-
-for i in range(10):
-    popt, pconv = curve_fit(f, log_n, log_error[i, :])
-    print(f't={i}')
-    print('a \t b')
-    print(f'{popt[0]} \t {popt[1]}')
-
 
 
 
