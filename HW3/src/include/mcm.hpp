@@ -6,7 +6,7 @@
  * method described in 
  * [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
  * @author pistack (Junho Lee)
- * @date 2021. 11. 7.
+ * @date 2021. 11. 9.
  */
 
 #ifndef MCM_H
@@ -54,15 +54,15 @@ class mcm
    T fourier_period;
 
    // action
-   libfourier::action<T, Lag> mcm_action;
+   libpath::action<T, Lag> mcm_action;
 
    // initial guess
    std::vector<std::vector<T>> init_guess;
-   std::vector<libfourier::fourier_path<T>> init_path;
+   std::vector<libpath::fourier_path<T>> init_path;
 
    // result
    std::vector<std::vector<T>> min_guess;
-   std::vector<libfourier::fourier_path<T>> min_path;
+   std::vector<libpath::fourier_path<T>> min_path;
 
    std::random_device rd;
    std::mt19937 gen = std::mt19937(rd()); // set random number generator
@@ -99,7 +99,7 @@ class mcm
    : t0(t_0), t1(t_1), p0(p_0), p1(p_1), \
    num_fourier(num_f), fourier_period(period)
    {
-      mcm_action = libfourier::action<T, Lag>(abs_tol);
+      mcm_action = libpath::action<T, Lag>(abs_tol);
    }
 
    /// @brief copy constructer of HW3 class
@@ -119,7 +119,7 @@ class mcm
    /// @brief set initial guess
    /// @param init_c initial coefficients to weight sum of
    /// sine and cosine function
-   /// @see libfourier::fourier
+   /// @see libpath::fourier
    void set_init_guess(std::vector<std::vector<T>> init_c);
 
    /// @brief set initial guess randomly
@@ -128,7 +128,7 @@ class mcm
    /// @brief get action of initial guess
    /// @param[out] e estimated error of action integral
    /// @return action of initial guess
-   /// @see libfourier::action 
+   /// @see libpath::action 
    T get_init_action(T &e);
 
    /// @brief get coefficients of initial guess
@@ -151,7 +151,7 @@ class mcm
    /// @brief get action of minimum guess
    /// @param[out] e estimated error of action integral
    /// @return action of minimum guess
-   /// @see libfourier::action
+   /// @see libpath::action
    T get_min_action(T &e);
 
    /// @brief get coefficients of minimum guess

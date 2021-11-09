@@ -46,11 +46,11 @@
  * This project is released under the GNU Lesser General Public License
  * v3.0.
  *
- * @defgroup libfourier libfourier
+ * @defgroup libpath libpath
  * @brief template library which
- *  1. define fourier function
- *  2. approximate path using fourier function
- *  3. compute the action of path approximated by fourier function
+ *  1. define support function (fourier function, bezier curve)
+ *  2. approximate path using support function
+ *  3. compute the action of path approximated by support function
  *
  * @defgroup libmcm libmcm
  * @brief template library which 

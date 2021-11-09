@@ -1,14 +1,14 @@
 /*!
  * @file action.tpp
- * @ingroup libfourier
+ * @ingroup libpath
  * @brief evaluates action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 7.
+ * @date 2021. 11. 9.
  */
 
-namespace libfourier {
-template<typename T, typename Lag>
-action<T, Lag> & action<T, Lag>::operator=(const action<T, Lag> &copy)
+namespace libpath {
+template<typename T, typename Path, typename Lag>
+action<T, Path, Lag> & action<T, Path, Lag>::operator=(const action<T, Path, Lag> &copy)
 {
   atol = copy.atol;
   path_action = copy.path_action;
@@ -17,8 +17,8 @@ action<T, Lag> & action<T, Lag>::operator=(const action<T, Lag> &copy)
 }
 
 /// check vaildity 
-template<typename T, typename Lag>
-void action<T, Lag>::check_vaild()
+template<typename T, typename Path, typename Lag>
+void action<T, Path, Lag>::check_vaild()
 {
   int n = path_action.size();
   vaildity = false;
@@ -33,25 +33,25 @@ void action<T, Lag>::check_vaild()
 }
 
 /// update method 
-template<typename T, typename Lag>
-void action<T, Lag>::update(std::vector<fourier_path<T>> path)
+template<typename T, typename Path, typename Lag>
+void action<T, Path, Lag>::update(std::vector<Path> path)
 {path_action = path; check_vaild();}
 
-template<typename T, typename Lag>
-void action<T, Lag>::update(T abs_tol)
+template<typename T, typename Path, typename Lag>
+void action<T, Path, Lag>::update(T abs_tol)
 {atol=abs_tol;}
 
-template<typename T, typename Lag>
-void action<T, Lag>::update(std::vector<fourier_path<T>> path, T abs_tol)
+template<typename T, typename Path, typename Lag>
+void action<T, Path, Lag>::update(std::vector<Path> path, T abs_tol)
 {atol=abs_tol; path_action = path; check_vaild();}
 
 /// get vaildity 
-template<typename T, typename Lag>
-bool action<T, Lag>::is_vaild()
+template<typename T, typename Path, typename Lag>
+bool action<T, Path, Lag>::is_vaild()
 {return vaildity;}
 
-template<typename T, typename Lag>
-T action<T, Lag>::eval_lagrangian(T t)
+template<typename T, typename Path, typename Lag>
+T action<T, Path, Lag>::eval_lagrangian(T t)
 {
   int n = path_action.size();
   std::vector<T> p(n, 0); // path
@@ -65,8 +65,8 @@ T action<T, Lag>::eval_lagrangian(T t)
   return lag(t, p, dp);
 }
 
-template<typename T, typename Lag>
-std::vector<T> action<T, Lag>::eval_lagrangian(std::vector<T> t)
+template<typename T, typename Path, typename Lag>
+std::vector<T> action<T, Path, Lag>::eval_lagrangian(std::vector<T> t)
 {
   int n = path_action.size();
   int m = t.size();
@@ -86,8 +86,8 @@ std::vector<T> action<T, Lag>::eval_lagrangian(std::vector<T> t)
   return lag_val;
 }
 
-template<typename T, typename Lag> template<typename Gau_Kron>
-void action<T, Lag>::eval_helper(T left, T right, T D, T D_tol, T &integral, T &e)
+template<typename T, typename Path, typename Lag> template<typename Gau_Kron>
+void action<T, Path, Lag>::eval_helper(T left, T right, T D, T D_tol, T &integral, T &e)
 {
   const T eps = 10.0*std::numeric_limits<T>::epsilon();
   const Gau_Kron table;
@@ -150,8 +150,8 @@ void action<T, Lag>::eval_helper(T left, T right, T D, T D_tol, T &integral, T &
   return;
 }
 
-template<typename T, typename Lag>
-T action<T, Lag>::eval_quadgk(T left, T right, int n, T &e)
+template<typename T, typename Path, typename Lag>
+T action<T, Path, Lag>::eval_quadgk(T left, T right, int n, T &e)
 { 
 
   T D_tol = atol/1000/std::abs(right-left);
@@ -173,8 +173,8 @@ T action<T, Lag>::eval_quadgk(T left, T right, int n, T &e)
   return integral;
 }
 
-template<typename T, typename Lag>
-T action<T, Lag>::eval_qthsh(T left, T right, int max_order, T &e)
+template<typename T, typename Path, typename Lag>
+T action<T, Path, Lag>::eval_qthsh(T left, T right, int max_order, T &e)
 {
   const T eps = 10*std::numeric_limits<T>::epsilon(); // machine eps
   T mid = (left+right)/2;
@@ -226,8 +226,8 @@ T action<T, Lag>::eval_qthsh(T left, T right, int max_order, T &e)
   return h*scale_int*integral;
 }
 
-template<typename T, typename Lag>
-T action<T, Lag>::eval(T &e)
+template<typename T, typename Path, typename Lag>
+T action<T, Path, Lag>::eval(T &e)
 {
   if(! vaildity)
   return 0;
@@ -237,8 +237,8 @@ T action<T, Lag>::eval(T &e)
   return eval_quadgk(t0, t1, 31, e);
 }
 
-template<typename T, typename Lag>
-T action<T, Lag>::eval(int method, int n, T &e)
+template<typename T, typename Path, typename Lag>
+T action<T, Path, Lag>::eval(int method, int n, T &e)
 {
   if(! vaildity)
   return 0;

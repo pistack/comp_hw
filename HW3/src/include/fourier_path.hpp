@@ -1,9 +1,9 @@
 /*!
  * @file fourier_path.hpp
- * @ingroup libfourier
+ * @ingroup libpath
  * @brief headerfile for path approximated by fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 7.
+ * @date 2021. 11. 10.
  */
 
 #ifndef FOURIER_PATH_H
@@ -17,16 +17,16 @@
 
 #include "fourier.hpp"
 
-namespace libfourier {
+namespace libpath {
 /// @brief Class for the path approximated by fourier function
 /// \f{equation}{\label{eq:fourier_path}
 /// \Psi\{\phi\{c, T\}(t)\}(t) = a + s\phi\{c, T\}(t)
 /// \f}
 /// ,where \f$ \phi\{c, T\}(t) \f$ is a fourier function defined in 
-/// libfourier::fourier ,
+/// libpath::fourier ,
 /// \f$ a \f$ and \f$ s \f$ are adder and scaler to match boundary
 /// condition \f$ \Psi(t_0)=p_0, \Psi(t_1)=p_1 \f$, respectively.
-/// @ingroup libfourier
+/// @ingroup libpath
 /// @param T precision should be one of float, double, long double
 /// @warning If your fourier function is not vaild for 
 /// the approximation of path, eval and deriv method return
@@ -95,34 +95,61 @@ class fourier_path
 
     /// @brief overloading of assignment operator for 
 	/// fourier_path class
-	fourier_path<T> & operator=(const fourier_path<T> &copy);
+	fourier_path<T> & operator=(const fourier_path<T> &copy)
+	{
+		// copy initial conditions
+		p_t0 = copy.p_t0; p_tf = copy.p_tf; p_0 = copy.p_0; p_f = copy.p_f; 
+		// copy fourier function, scaler and adder
+		p_func = copy.p_func; p_vaild = copy.p_vaild; 
+		scale = copy.scale; add = copy.add;
+		return *this;
+	}
 
 	/// @brief update fourier function
 	/// It also updates the validity of fourier function
 	/// @param fourier fourier function to update
-	void update(fourier<T> fourier);
+	void update(fourier<T> fourier)
+	{
+		p_func = fourier;
+		init_helper();
+	}
 
     /// @brief check whether or not the fourier function is valid to
 	/// approximate path
 	/// @return vaildity of fourier function
-	bool is_vaild();
+	bool is_vaild()
+	{
+		return p_vaild;
+	}
 
 	/// @brief get initial and final time of path
 	/// @return tuple of initial and final time of path
-	std::tuple<T, T> get_endtimes();
+	std::tuple<T, T> get_endtimes()
+	{
+		return std::make_tuple(p_t0, p_tf);
+	}
 
 	/// @brief get adder
 	/// @return adder
-	T get_adder();
+	T get_adder()
+	{
+		return add;
+	}
 
 	/// @brief get scaler
 	/// @return scaler
-	T get_scaler();
+	T get_scaler()
+	{
+		return scale;
+	}
 
 	/// @brief evaluate the path
 	/// @param t points to evaluate the path
 	/// @return the path evaluated at t
-	T eval(T t);
+	T eval(T t)
+	{
+		return scale*p_func.eval(t)+add;
+	}
 
 	/// @brief evaluate the path
 	/// @param t points to evaluate the path
@@ -132,7 +159,10 @@ class fourier_path
 	/// @brief evaluate the derivative of path
 	/// @param t points to evaluate
 	/// @return the derivative of path evaluated at t
-	T deriv(T t);
+	T deriv(T t)
+	{
+		return scale*p_func.deriv(t);
+	}
 
 	/// @brief evaluate the path
 	/// @param t points to evaluate the path
@@ -143,7 +173,10 @@ class fourier_path
 	/// @param n order of derivative to compute
 	/// @param t points to evaluate
 	/// @return the nth order derivative of path evaluated at t
-	T nderiv(int n, T t);
+	T nderiv(int n, T t)
+	{
+		return scale*p_func.nderiv(n, t);
+	}
 
 	/// @brief evaluate the nth derivative of path
 	/// @param n order of derivative to compute

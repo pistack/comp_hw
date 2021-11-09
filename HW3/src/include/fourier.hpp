@@ -1,9 +1,9 @@
 /*!
  * @file fourier.hpp
- * @ingroup libfourier
+ * @ingroup libpath
  * @brief headerfile for fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 7.
+ * @date 2021. 11. 9.
  */
 
 #ifndef FOURIER_H
@@ -13,14 +13,10 @@
 #include <cmath>
 #include <vector>
 
-namespace libfourier {
+namespace libpath {
 
 template<typename T>
 constexpr T pi = T(std::acos(-1)); ///< pi
-template<typename T>
-constexpr T h_pi = T(std::acos(0)); ///< half pi
-template<typename T>
-constexpr T q_pi = T(std::atan(1)); ///< quarter of pi
 
 /// @brief Class which defines fourier function
 /// \f{equation}{\label{eq:fourier_func} 
@@ -32,7 +28,7 @@ constexpr T q_pi = T(std::atan(1)); ///< quarter of pi
 /// fourier function.
 /// @param T precision should be one of float, double,
 /// and long double
-/// @ingroup libfourier
+/// @ingroup libpath
 
 template<typename T>
 class fourier

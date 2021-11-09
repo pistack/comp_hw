@@ -1,23 +1,12 @@
 /*!
  * @file fourier_path.tpp
- * @ingroup libfourier
+ * @ingroup libpath
  * @brief evaluate path and derivative
  * @author pistack (Junho Lee)
- * @date 2021. 11. 2.
+ * @date 2021. 11. 9.
  */
 
-namespace libfourier {
-template<typename T>
-fourier_path<T> & fourier_path<T>::operator=(const fourier_path<T> & copy)
-{
-  // copy initial conditions
-  p_t0 = copy.p_t0; p_tf = copy.p_tf; p_0 = copy.p_0; p_f = copy.p_f; 
-  // copy fourier function, scaler and adder
-	p_func = copy.p_func; p_vaild = copy.p_vaild; 
-  scale = copy.scale; add = copy.add;
-  return *this;
-}
-
+namespace libpath {
 template<typename T>
 void fourier_path<T>::init_helper()
 {
@@ -60,43 +49,6 @@ void fourier_path<T>::init_helper()
 }
 
 template<typename T>
-void fourier_path<T>::update(fourier<T> fourier)
-{
-  p_func = fourier;
-  init_helper();
-}
-
-template<typename T>
-bool fourier_path<T>::is_vaild()
-{
-  return p_vaild;
-}
-
-template<typename T>
-T fourier_path<T>::get_adder()
-{
-  return add;
-}
-
-template<typename T>
-T fourier_path<T>::get_scaler()
-{
-  return scale;
-}
-
-template<typename T>
-std::tuple<T, T> fourier_path<T>::get_endtimes()
-{
-  return std::make_tuple(p_t0, p_tf);
-}
-
-template<typename T>
-T fourier_path<T>::eval(T t)
-{
-  return scale*p_func.eval(t)+add;
-}
-
-template<typename T>
 std::vector<T> fourier_path<T>::eval(std::vector<T> t)
 {
   // init variable
@@ -117,12 +69,6 @@ std::vector<T> fourier_path<T>::eval(std::vector<T> t)
 }
 
 template<typename T>
-T fourier_path<T>::deriv(T t)
-{
-  return scale*p_func.deriv(t);
-}
-
-template<typename T>
 std::vector<T> fourier_path<T>::deriv(std::vector<T> t)
 {
   // init variable
@@ -136,12 +82,6 @@ std::vector<T> fourier_path<T>::deriv(std::vector<T> t)
   [scaler](T &x){return x *= scaler;});
 
   return result;
-}
-
-template<typename T>
-T fourier_path<T>::nderiv(int n, T t)
-{
-  return scale*p_func.nderiv(n, t);
 }
 
 template<typename T>

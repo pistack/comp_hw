@@ -2,7 +2,7 @@
  * @file test_fourier.cpp
  * @brief test fourier class routine 
  * @author pistack (Junho Lee)
- * @date 2021. 11. 6.
+ * @date 2021. 11. 9.
  */
 
 #include <cmath>
@@ -19,7 +19,7 @@
     #define DIGITS 14
 #endif
 
-using namespace libfourier;
+using namespace libpath;
 using namespace std;
 
 int main()

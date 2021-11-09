@@ -1,17 +1,21 @@
 /*!
  * @file bezier.tpp
- * @ingroup libfourier
+ * @ingroup libpath
  * @brief define and evaluates bezier curve
  * @author pistack (Junho Lee)
  * @date 2021. 11. 9.
  */
 
+namespace libpath {
 template<typename T>
 bezier<T> & bezier<T>::operator=(const bezier<T> &copy)
 {
     this.n = copy.n; this.c = copy.c;
     return *this;
 }
+
+template<typename T>
+void bezier<T>::update(std::vector<T> c_) {c = c_;}
 
 /// evaluates bezier curve of order n with 
 /// De Casteljau's Algorithm
@@ -67,4 +71,5 @@ std::vector<T> bezier<T>::deriv(std::vector<T> t)
     for(int i=0; i<dim; i++)
     result[i] = deriv(t[i]);
     return result;
+}
 }

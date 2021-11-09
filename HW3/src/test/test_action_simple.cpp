@@ -2,13 +2,14 @@
  * @file test_action_simple.cpp
  * @brief test action::eval() routine with simple function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 7.
+ * @date 2021. 11. 9.
  */
 
 #include <chrono>
 #include <cmath>
 #include <iostream>
 #include <limits>
+#include "fourier_path.hpp"
 #include "action.hpp"
 
 #if PRECISION_LEVEL == 0
@@ -19,7 +20,7 @@
     #define DIGITS 14
 #endif
 
-using namespace libfourier;
+using namespace libpath;
 using namespace std;
 
 #ifndef DOXYGEN_SKIP
@@ -134,13 +135,13 @@ int main(void)
   vector<fourier_path<PRECISION>> path(1, fourier_path<PRECISION>(0.0, 2.0, 2.0, 2.0, tmp));
   vector<fourier_path<PRECISION>> path2(1, fourier_path<PRECISION>(0.0, 2.0, 0.0, 0.0, tmp));
   vector<fourier_path<PRECISION>> path3(1, fourier_path<PRECISION>(0.0, 1.0, 0.0, 0.0, tmp));
-  action<PRECISION, id_lag<PRECISION>> tst1(path);
-  action<PRECISION, inv_lag<PRECISION>> tst2(path);
-  action<PRECISION, sine_lag<PRECISION>> tst3(path2);
-  action<PRECISION, square_lag<PRECISION>> tst4(path2);
-  action<PRECISION, zero_lag<PRECISION>> tst5(path2);
-  action<PRECISION, weird_lag<PRECISION>> tst6(path2);
-  action<PRECISION, sqrt_lag<PRECISION>> tst7(path3);
+  action<PRECISION, fourier_path<PRECISION>, id_lag<PRECISION>> tst1(path);
+  action<PRECISION, fourier_path<PRECISION>, inv_lag<PRECISION>> tst2(path);
+  action<PRECISION, fourier_path<PRECISION>, sine_lag<PRECISION>> tst3(path2);
+  action<PRECISION, fourier_path<PRECISION>, square_lag<PRECISION>> tst4(path2);
+  action<PRECISION, fourier_path<PRECISION>, zero_lag<PRECISION>> tst5(path2);
+  action<PRECISION, fourier_path<PRECISION>, weird_lag<PRECISION>> tst6(path2);
+  action<PRECISION, fourier_path<PRECISION>, sqrt_lag<PRECISION>> tst7(path3);
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(DIGITS); // print significant digits
   for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)

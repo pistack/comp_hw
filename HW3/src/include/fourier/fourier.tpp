@@ -1,12 +1,12 @@
 /*!
  * @file fourier.tpp
- * @ingroup libfourier
+ * @ingroup libpath
  * @brief evaluate sum and derivative of sine and cosine function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 2.
+ * @date 2021. 11. 9.
  */
 
-namespace libfourier {
+namespace libpath {
 template<typename T>
 fourier<T>& fourier<T>::operator=(const fourier<T> &copy)
 {

@@ -2,7 +2,7 @@
  * @file test_fourier_path.cpp
  * @brief test fourier_path class routine 
  * @author pistack (Junho Lee)
- * @date 2021. 11. 5.
+ * @date 2021. 11. 9.
  */
 
 #include <cmath>
@@ -12,7 +12,7 @@
 #include "fourier_path.hpp"
 
 using namespace std;
-using namespace libfourier;
+using namespace libpath;
 
 #if PRECISION_LEVEL == 0
     #define PRECISION float

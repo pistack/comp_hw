@@ -1,16 +1,16 @@
 /*!
  * @file node_weight_table.hpp
- * @ingroup libfourier
+ * @ingroup libpath
  * @brief table for node and weights
  * @author pistack (Junho Lee)
- * @date 2021. 11. 7.
+ * @date 2021. 11. 9.
  */
 
 #ifndef NODE_WEIGHT_TABLE_H
 #define NODE_WEIGHT_TABLE_H
 #include <vector>
 
-namespace libfourier{
+namespace libpath{
 /// @brief table for gauss kronrod node and weights
 /// @param T precision should be one of float, double, long double
 /// @param N order of gauss-kronrod quadrature
@@ -18,7 +18,7 @@ namespace libfourier{
 /// @note coefficients are obtained from 
 /// [gau-kronrod-nodes-weights]
 /// (https://www.advanpix.com/2011/11/07/gauss-kronrod-quadrature-nodes-weights/)
-/// @ingroup libfourier
+/// @ingroup libpath
 template<typename T, int N>
 class gau_kron_table
 {

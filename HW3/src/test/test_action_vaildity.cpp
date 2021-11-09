@@ -2,12 +2,13 @@
  * @file test_action_vaildity.cpp
  * @brief test action::is_vaild() routine 
  * @author pistack (Junho Lee)
- * @date 2021. 11. 7.
+ * @date 2021. 11. 9.
  */
 
 #include <cmath>
 #include <iostream>
 #include <iomanip>
+#include "fourier_path.hpp"
 #include "action.hpp"
 
 #if PRECISION_LEVEL == 0
@@ -18,7 +19,7 @@
     #define DIGITS 14
 #endif
 
-using namespace libfourier;
+using namespace libpath;
 using namespace std;
 
 /// dummy lagrangian functor class
@@ -60,7 +61,7 @@ int main()
   fourier<PRECISION>(1, 4.0, c1)), 
   fourier_path<PRECISION>(0.0, 1.0, 1.0, 1.0,
   fourier<PRECISION>(1, 2.0, c2))}; // both path invalid
-  action<PRECISION, zero_lag<PRECISION>> tst;
+  action<PRECISION, fourier_path<PRECISION>, zero_lag<PRECISION>> tst;
 
   cout << "==========================================================" << endl;
   cout << "               Test action::is_vaild() routine            " << endl;

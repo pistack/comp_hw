@@ -33,4 +33,5 @@
 /// However if \f$ t \not \in [t_0, t_f] \f$, \f$ \Psi(t) \f$ could not approximate
 /// \f$ p(t) \f$, in general. This is due to the inconsistency of \f$ \hat{p}(t) \f$ and
 /// \f$ p(t) \f$ at \f$ t \not \in [t_0, t_f] \f$. 
+/// @section bezier_curve Bezier Curve
 ////////////////////////////////////////////////////////////////////////////

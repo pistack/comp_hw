@@ -5,7 +5,7 @@
  * number of points to evaluate, number of interation, step size and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 11. 7.
+ * @date 2021. 11. 9.
  */
 
 #include <algorithm>
@@ -106,10 +106,10 @@ int main(void)
   // initial condition
   PRECISION zeta_max = zeta_min/(2*zeta_min-1);
   PRECISION a = (zeta_min+zeta_max)/2;
-  PRECISION tmax = libfourier::pi<PRECISION>*pow(a, 1.5);
+  PRECISION tmax = libpath::pi<PRECISION>*pow(a, 1.5);
   PRECISION period = 2*tmax;
   vector<PRECISION> p0 = {zeta_min, 0};
-  vector<PRECISION> p1 = {zeta_max, libfourier::pi<PRECISION>};
+  vector<PRECISION> p1 = {zeta_max, libpath::pi<PRECISION>};
   libmcm::mcm<PRECISION, kepler_lag<PRECISION>> kepler(PRECISION(0), 
   tmax, p0, p1, atol, num_fourier, period);
 

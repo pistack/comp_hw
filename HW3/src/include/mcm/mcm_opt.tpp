@@ -3,7 +3,7 @@
  * @brief template for minimization of the action
  * using Monte Carlo Metropolis method
  * @author pistack (Junho Lee)
- * @date 2021. 11. 6.
+ * @date 2021. 11. 9.
  * @ingroup libmcm
  */
 
@@ -25,7 +25,7 @@ mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda)
   T min_action; // minimum action
   std::vector<std::vector<T>> accept_guess = init_guess;
   std::vector<std::vector<T>> tmp_guess = init_guess;
-  std::vector<libfourier::fourier_path<T>> tmp_path = init_path;
+  std::vector<libpath::fourier_path<T>> tmp_path = init_path;
 
   mcm_action.update(init_path);
   init_action = mcm_action.eval(e);
@@ -44,7 +44,7 @@ mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda)
       tmp_guess = move(accept_guess, step_size);
       for(int i=0; i<dim_1; ++i)
       {
-        libfourier::fourier<T> tmp_fourier(num_fourier, fourier_period,
+        libpath::fourier<T> tmp_fourier(num_fourier, fourier_period,
         tmp_guess[i]);
         tmp_path[i].update(tmp_fourier);
       }
@@ -93,7 +93,7 @@ std::string monitor)
   T min_action; // minimum action
   std::vector<std::vector<T>> accept_guess = init_guess;
   std::vector<std::vector<T>> tmp_guess = init_guess;
-  std::vector<libfourier::fourier_path<T>> tmp_path = init_path;
+  std::vector<libpath::fourier_path<T>> tmp_path = init_path;
 
   mcm_action.update(init_path);
   init_action = mcm_action.eval(e);
@@ -115,7 +115,7 @@ std::string monitor)
       tmp_guess = move(accept_guess, step_size);
       for(int i=0; i<dim_1; ++i)
       {
-        libfourier::fourier<T> tmp_fourier(num_fourier, fourier_period,
+        libpath::fourier<T> tmp_fourier(num_fourier, fourier_period,
         tmp_guess[i]);
         tmp_path[i].update(tmp_fourier);
       }

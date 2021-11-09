@@ -1,9 +1,9 @@
 /*!
- * @ingroup libfourier
+ * @ingroup libpath
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 7.
+ * @date 2021. 11. 9.
  */
 
 #ifndef ACTION_H
@@ -13,13 +13,18 @@
 #include <cmath>
 #include <limits>
 #include <vector>
-#include "fourier_path.hpp"
 #include "node_weight_table.hpp"
 
-namespace libfourier{
+namespace libpath{
+
+template<typename T>
+constexpr T h_pi = T(std::acos(0)); ///< half pi
+
 /// @brief class which computes action
 /// @param T precision should be one of
 /// float, double and long double
+/// @param Path type of path
+/// should be one of fourier_path or bezier_path
 /// @param Lag lagranian of action
 /// functor class which has
 /// time, path and derivative of path
@@ -43,15 +48,15 @@ namespace libfourier{
 /// (https://doi.org/10.2977%2Fprims%2F1145474600)
 /// @see [David H. Bailey, Tanh-Sinh High-Precision Quadrature]
 /// (https://www.davidhbailey.com/dhbpapers/dhb-tanh-sinh.pdf)
-/// @ingroup libfourier
-template<typename T, typename Lag>
+/// @ingroup libpath
+template<typename T, typename Path, typename Lag>
 class action
 {
 	private:
 
 	T atol; // absoulte tolerance
 	
-	std::vector<fourier_path<T>> path_action; // path
+	std::vector<Path> path_action; // path
 
 	bool vaildity=false; // vaildity of path
 
@@ -112,7 +117,7 @@ class action
 	/// @brief initialize action class
 	/// @param path path
 
-	action(std::vector<fourier_path<T>> path)
+	action(std::vector<Path> path)
 	: path_action(path)
 	{check_vaild();}
 
@@ -128,23 +133,23 @@ class action
 	/// @param path path
 
 	action(T abs_tol,
-	std::vector<fourier_path<T>> path)
+	std::vector<Path> path)
 	: atol(abs_tol), path_action(path) 
 	{check_vaild();}
 
 	/// @brief copy constructer of action class
-	action(const action<T, Lag> &copy)
+	action(const action<T, Path, Lag> &copy)
 	: atol(copy.atol), path_action(copy.path_action), \
 	vaildity(copy.vaildity)
 	{}
 
     /// @brief overloading of assignment operator for 
 	/// action class
-	action<T, Lag> & operator=(const action<T, Lag> &copy);
+	action<T, Path, Lag> & operator=(const action<T, Path, Lag> &copy);
 
 	/// @brief update path
 	/// @param path path to update
-	void update(std::vector<fourier_path<T>> path);
+	void update(std::vector<Path> path);
 
     /// @brief update absolute tolerance
 	/// @param abs_tol absolute tolerance
@@ -153,7 +158,7 @@ class action
 	/// @brief update absolute tolerance and path
 	/// @param path path to update
 	/// @param abs_tol absolute tolerance
-	void update(std::vector<fourier_path<T>> path,
+	void update(std::vector<Path> path,
 	T abs_tol);
 
 	/// @brief check vaildity of path

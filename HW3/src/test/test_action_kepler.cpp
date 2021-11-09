@@ -2,12 +2,13 @@
  * @file test_action_kepler.cpp
  * @brief test action::eval() routine with kepler action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 7.
+ * @date 2021. 11. 9.
  */
 
 #include <cmath>
 #include <chrono>
 #include <iostream>
+#include "fourier_path.hpp"
 #include "action.hpp"
 
 #if PRECISION_LEVEL == 0
@@ -18,7 +19,7 @@
     #define DIGITS 14
 #endif
 
-using namespace libfourier;
+using namespace libpath;
 using namespace std;
 
 #ifndef DOXYGEN_SKIP
@@ -86,8 +87,8 @@ int main(void)
     fourier_path<PRECISION>(0.0, tmax, 0.0, pi<PRECISION>,
     fourier<PRECISION>(4, period, c2[1])),
   };
-  action<PRECISION, kepler_lag<PRECISION>> tst1(path1);
-  action<PRECISION, kepler_lag<PRECISION>> tst2(path2);
+  action<PRECISION, fourier_path<PRECISION>, kepler_lag<PRECISION>> tst1(path1);
+  action<PRECISION, fourier_path<PRECISION>, kepler_lag<PRECISION>> tst2(path2);
 
   cout.unsetf(ios::floatfield); // initialize floatfield
   cout.precision(DIGITS); // print significant digits
