@@ -56,7 +56,7 @@
 /// I set initial time \f$ t_0 = 0 \f$ and periapsis \f$ \zeta_{min} = 0.9 \f$.
 /// @section opt_setup Optimization Setup
 /// I use following setup during optimization.
-/// Period of fourier function \f$ T \f$: \f$ 2t_f \f$.
+/// - Period of fourier function \f$ T \f$: \f$ 2t_f \f$.
 /// - Single precision
 ///   - setup: 1
 ///     1. Absolute tolerance of action integration: \f$ 10^{-6} \f$
@@ -160,11 +160,35 @@
 /// Then we could estimate converged distribution as following plots.
 ///
 /// @image html plot_distf.png "Distribution: single precision"
-/// @image latex plot_distf_latex.png "Distribution: single precision" width=10cm
+/// @image latex plot_distf.eps "Distribution: single precision" width=10cm
 ///
 /// @image html plot_dist.png "Distribution: double precision"
-/// @image latex plot_dist_latex.png "Distribution: double precision" width=10cm
-/// For \f$ n_f = 1 \f$, 
+/// @image latex plot_dist.eps "Distribution: double precision" width=10cm
+/// 
+/// ### Distribution: setup 1 table
+/// | \f$ n_f \f$ | precision | \f$ S_{min} \f$ | \f$ S_{most} \f$ | \f$ S_{most} - S_{min} \f$ | \f$ \mathrm{prob}_{min}/\mathrm{prob}_{most} \f$ |
+/// | :---------: | :-------: | :-------------- | :--------------  | :------------------------- | :----------------------------------------------- |
+/// | 1           | single    | 5.03173         | 5.03179          | 0.00006                    | 1.00000                                          |
+/// | 2           | single    | 4.75822         | 4.77818          | 0.01996                    | 0.00270                                          |
+/// | 3           | single    | 4.74388         | 4.77544          | 0.03156                    | 0.00043                                          |
+/// | 1           | double    | 5.03173         | 5.03179          | 0.00006                    | 1.00000                                          |
+/// | 2           | double    | 4.75814         | 4.77614          | 0.01800                    | 0.00202                                          |
+/// | 3           | double    | 4.74501         | 4.77550          | 0.03049                    | 0.00195                                          |
+///
+/// @image html plot_dist2f.png "Distribution: setup 2, single precision"
+/// @image latex plot_dist2f.eps "Distribution: setup 2, single precision" width=10cm
+///
+/// @image html plot_dist2.png "Distribution: setup 2, double precision"
+/// @image latex plot_dist2.eps "Distribution: setup 2, double precision" width=10cm
+///
+/// ### Distribution: setup 2 table
+/// | \f$ n_f \f$ | precision | \f$ S_{min} \f$ | \f$ S_{most} \f$ | \f$ S_{most} - S_{min} \f$ | \f$ \mathrm{prob}_{min}/\mathrm{prob}_{most} \f$ |
+/// | :---------: | :-------: | :-------------- | :--------------  | :------------------------- | :----------------------------------------------- |
+/// | 3           | single    | 4.74250         | 4.74292          |  0.00042                   | 0.00052                                          |
+/// | 4           | single    | 4.74191         | 4.74250          |  0.00059                   | 0.00047                                          |
+/// | 3           | double    | 4.74250         | 4.74306          |  0.00056                   | 0.00028                                          |
+/// | 4           | double    | 4.74184         | 4.74235          |  0.00051                   | 0.00051                                          |
+///
 /// @section error_kepler Error Analysis
 /// 
 /// ### Error Analysis
