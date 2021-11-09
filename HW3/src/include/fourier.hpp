@@ -60,11 +60,18 @@ class fourier
 
     /// @brief overloading of assignment operator for 
 	/// fourier class
-	fourier<T> & operator=(const fourier<T> &copy);
+	fourier<T> & operator=(const fourier<T> &copy)
+	{
+	f_num_fourier = copy.f_num_fourier;
+	f_period = copy.f_period;
+	f_c = copy.f_c;
+	return *this;
+	}
 
     /// @brief update coefficients
 	/// @param c coefficients of fourier function
-	void update(std::vector<T> c);
+	void update(std::vector<T> c)
+	{ f_c = c;}
 
 	/// @brief evaluate the fourier function
 	/// @param t points to evaluate the fourier function

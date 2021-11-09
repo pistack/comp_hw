@@ -3,21 +3,10 @@
  * @ingroup libpath
  * @brief evaluate sum and derivative of sine and cosine function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 9.
+ * @date 2021. 11. 10.
  */
 
 namespace libpath {
-template<typename T>
-fourier<T>& fourier<T>::operator=(const fourier<T> &copy)
-{
-	f_num_fourier = copy.f_num_fourier;
-	f_period = copy.f_period;
-	f_c = copy.f_c;
-	return *this;
-}
-
-template<typename T>
-void fourier<T>::update(std::vector<T> c){ f_c = c;}
 
 template<typename T>
 T fourier<T>::eval(T t)

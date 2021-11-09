@@ -109,47 +109,34 @@ class fourier_path
 	/// It also updates the validity of fourier function
 	/// @param fourier fourier function to update
 	void update(fourier<T> fourier)
-	{
-		p_func = fourier;
-		init_helper();
-	}
+	{p_func = fourier; init_helper();}
 
     /// @brief check whether or not the fourier function is valid to
 	/// approximate path
 	/// @return vaildity of fourier function
 	bool is_vaild()
-	{
-		return p_vaild;
-	}
+	{return p_vaild;}
 
 	/// @brief get initial and final time of path
 	/// @return tuple of initial and final time of path
 	std::tuple<T, T> get_endtimes()
-	{
-		return std::make_tuple(p_t0, p_tf);
-	}
+	{return std::make_tuple(p_t0, p_tf);}
 
 	/// @brief get adder
 	/// @return adder
 	T get_adder()
-	{
-		return add;
-	}
+	{return add;}
 
 	/// @brief get scaler
 	/// @return scaler
 	T get_scaler()
-	{
-		return scale;
-	}
+	{return scale;}
 
 	/// @brief evaluate the path
 	/// @param t points to evaluate the path
 	/// @return the path evaluated at t
 	T eval(T t)
-	{
-		return scale*p_func.eval(t)+add;
-	}
+	{return scale*p_func.eval(t)+add;}
 
 	/// @brief evaluate the path
 	/// @param t points to evaluate the path
@@ -160,9 +147,7 @@ class fourier_path
 	/// @param t points to evaluate
 	/// @return the derivative of path evaluated at t
 	T deriv(T t)
-	{
-		return scale*p_func.deriv(t);
-	}
+	{return scale*p_func.deriv(t);}
 
 	/// @brief evaluate the path
 	/// @param t points to evaluate the path
@@ -174,9 +159,7 @@ class fourier_path
 	/// @param t points to evaluate
 	/// @return the nth order derivative of path evaluated at t
 	T nderiv(int n, T t)
-	{
-		return scale*p_func.nderiv(n, t);
-	}
+	{return scale*p_func.nderiv(n, t);}
 
 	/// @brief evaluate the nth derivative of path
 	/// @param n order of derivative to compute

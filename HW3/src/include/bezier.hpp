@@ -50,11 +50,16 @@ class bezier
 
     /// @brief overloading of assignment operator for 
 	/// bezier class
-	bezier<T> & operator=(const bezier<T> &copy);
+	bezier<T> & operator=(const bezier<T> &copy)
+    {
+    this.n = copy.n; this.c = copy.c;
+    return *this;
+    }
 
     /// @brief update control points
 	/// @param c_ control points of bezier curve
-	void update(std::vector<T> c_);
+	void update(std::vector<T> c_)
+    {c = c_;}
 
     /// @brief evaluate bezier curve at given point
     /// \f$ 0 \leq t \leq 1 \f$.

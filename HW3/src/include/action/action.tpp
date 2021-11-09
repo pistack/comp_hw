@@ -3,18 +3,10 @@
  * @ingroup libpath
  * @brief evaluates action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 9.
+ * @date 2021. 11. 10.
  */
 
 namespace libpath {
-template<typename T, typename Path, typename Lag>
-action<T, Path, Lag> & action<T, Path, Lag>::operator=(const action<T, Path, Lag> &copy)
-{
-  atol = copy.atol;
-  path_action = copy.path_action;
-  vaildity = copy.vaildity;
-  return *this;
-}
 
 /// check vaildity 
 template<typename T, typename Path, typename Lag>
@@ -31,24 +23,6 @@ void action<T, Path, Lag>::check_vaild()
   vaildity = true;
   return;
 }
-
-/// update method 
-template<typename T, typename Path, typename Lag>
-void action<T, Path, Lag>::update(std::vector<Path> path)
-{path_action = path; check_vaild();}
-
-template<typename T, typename Path, typename Lag>
-void action<T, Path, Lag>::update(T abs_tol)
-{atol=abs_tol;}
-
-template<typename T, typename Path, typename Lag>
-void action<T, Path, Lag>::update(std::vector<Path> path, T abs_tol)
-{atol=abs_tol; path_action = path; check_vaild();}
-
-/// get vaildity 
-template<typename T, typename Path, typename Lag>
-bool action<T, Path, Lag>::is_vaild()
-{return vaildity;}
 
 template<typename T, typename Path, typename Lag>
 T action<T, Path, Lag>::eval_lagrangian(T t)

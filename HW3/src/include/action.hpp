@@ -3,7 +3,7 @@
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 9.
+ * @date 2021. 11. 10.
  */
 
 #ifndef ACTION_H
@@ -145,25 +145,35 @@ class action
 
     /// @brief overloading of assignment operator for 
 	/// action class
-	action<T, Path, Lag> & operator=(const action<T, Path, Lag> &copy);
+	action<T, Path, Lag> & operator=(const action<T, Path, Lag> &copy)
+	{
+		 atol = copy.atol;
+		 path_action = copy.path_action;
+		 vaildity = copy.vaildity;
+		 return *this;
+	}
 
 	/// @brief update path
 	/// @param path path to update
-	void update(std::vector<Path> path);
+	void update(std::vector<Path> path)
+	{path_action = path; check_vaild();}
 
     /// @brief update absolute tolerance
 	/// @param abs_tol absolute tolerance
-	void update(T abs_tol);
+	void update(T abs_tol)
+	{atol=abs_tol;}
 
 	/// @brief update absolute tolerance and path
 	/// @param path path to update
 	/// @param abs_tol absolute tolerance
 	void update(std::vector<Path> path,
-	T abs_tol);
+	T abs_tol)
+	{atol=abs_tol; path_action = path; check_vaild();}
 
 	/// @brief check vaildity of path
 	/// @return vaildity of path
-	bool is_vaild();
+	bool is_vaild()
+	{return vaildity;}
 
 	/// @brief evaluate the action of given path
 	/// by default method:
