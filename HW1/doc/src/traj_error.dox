@@ -1,16 +1,19 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// @page traj_error Trajectory Error analysis
-/// Trajectory approximated by finite difference method is converges to exact epllipse trajectory
+/// @tableofcontents
+/// Trajectory approximated by finite difference method converges to exact ellipse trajectory
 /// in double precision. 
 /// Thus, I assume that double precision trajectory calculated with \f$ 10^5 \f$ steps 
 /// is the exact path.
-/// Then we can estimate error at the selected points \f$(t=1,2,...,10)\f$.
+/// Then we can estimate error at the selected points \f$(t=1,2,...,10)\f$ as
 /// \f{equation}{\label{eq:traj_error}
 /// \mathrm{error} = \sqrt{(x(t)-x_{ref}(t))^2+(y(t)-y_{ref}(t))^2}
 ///\f}
 /// Error can be seperated to numerical and truncation part.
 /// Usually numerical part of error increases and 
 /// turncation part of error decreases as \f$ n \f$ increases.
+///
+/// @section tot_error_single Error Analysis: Single precision 
 ///
 /// ### Error Analysis: Single precision
 /// |\f$ t \f$ | \f$ n = 10 \f$ | \f$ n = 20 \f$ | \f$ n= 10^2 \f$ | \f$ n=10^3 \f$ | \f$ n=10^4 \f$ |
@@ -28,8 +31,10 @@
 ///
 /// @image html plot_error_analysis_float.png "Error Analysis: single precision"
 /// @image latex plot_error_analysis_float.eps "Error Analysis: single precision" width=10cm
-/// In single precision, turncation error is dominant when \f$ n > 10^3 \f$. So, 
+/// In single precision, numerical error is dominant when \f$ n > 10^3 \f$. So, 
 /// above \f$ n = 10^3 \f$, accuracy is worsen as \f$ n \f$ increases.
+/// 
+/// @section tot_error_double Error Analysis: Double precision
 ///
 /// ### Error Analysis: Double precision
 /// |\f$ t \f$ | \f$ n = 10 \f$ | \f$ n = 20 \f$ | \f$ n= 10^2 \f$ | \f$ n=10^3 \f$ | \f$ n=10^4 \f$ |
@@ -50,24 +55,30 @@
 /// However, when double precision, accuracy is better and better as \f$ n \f$ increases.
 /// Thus, we can conclude that in double precision, truncation error is much more
 /// dominant than numerical error.
-/// Therefore we can estimate the order of numerical error using above plot.
+/// Therefore we can estimate the order of turncation error using above plot.
 /// Order of error is estimated to
 /// \f{equation}{\label{eq:order_of_error}
 /// O(n^{-2})
 /// \f}
 /// Practical error bound is same as estimated error bound \f$ O(n^{-2}) \f$.
-/// Combine double precision error analysis table and order of error \f$ O(n^{-2}) \f$.
-/// We can estimate prefactor \f$ C \leq 10 \f$.
+/// Combining double precision error analysis table and order of error \f$ O(n^{-2}) \f$,
+/// we can estimate prefactor \f$ C \leq 10 \f$.
 /// Thus, for \f$ t \in [0, 10] \f$, 
 /// \f{equation}{\label{eq:error_bound_detail}
 /// \mathrm{error} \leq \frac{10}{n^2}
 /// \f}
-/// Also, we can estimate the numerical error of single precision results as
+///
+/// \latexonly \newpage \endlatexonly 
+/// @section num_error_single Numerical Error Analysis: single precision
+///
+/// Since, in double precision, numerical error is neglectable in \f$ n < 10^5 \f$,
+/// we can estimate the numerical error of single precision results as
 /// following equation.
 /// \f{equation}{\label{eq:num_err_single}
 /// \mathrm{error}_{num} = \sqrt{(x_{float}(t)-x_{double}(t))^2+(y_{float}(t)-y_{double}(t))^2}
 /// \f}
 /// 
+///
 /// ### Numerical Error: Single precision
 /// |\f$ t \f$ | \f$ n = 10 \f$ | \f$ n = 20 \f$ | \f$ n= 10^2 \f$ | \f$ n=10^3 \f$ | \f$ n=10^4 \f$ |
 /// | :------: | :------------- | :------------- | :-------------- | :------------- | :------------- | 
@@ -86,5 +97,5 @@
 /// However, at \f$ n=10^3 \f$, numerical error is comparable to truncation error and
 /// at \f$ n=10^4 \f$, numerical error is dominant and increases as \f$ n \f$ greater.
 /// Therefore, in single precision, we need to concern about numerical error and
-/// to find optimal step number \f$ n \f$.
+/// to find optimal step number \f$ n_{opt} \f$.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

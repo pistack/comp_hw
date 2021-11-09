@@ -25,5 +25,5 @@
 /// @image latex plot_converge_traj_double.eps "Convergence plot: double precision" width=10cm
 /// However, in double precision, both calculated \f$ \zeta \f$ and \f$ \theta \f$ converges to
 /// exact solution. Thus, in double precision, trajectory also converges to
-/// exact epllipse trajectory.
+/// exact ellipse trajectory.
 //////////////////////////////////////////////////////////////////////////////////////////////////////
