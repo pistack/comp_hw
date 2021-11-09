@@ -109,6 +109,7 @@
 /// @image latex plot_zeta.eps "Zeta: double precision" width=10cm
 /// @image html plot_theta.png "Theta: double precision"
 /// @image latex plot_theta.eps "Theta: double precision" width=10cm
+///
 /// Trajectory of path can be evaluated by following relation
 /// \f{equation}{\label{eq:traj}
 /// \begin{aligned}
@@ -120,6 +121,7 @@
 /// @image latex plot_traj_float.eps "Trajectory: single precision" width=10cm
 /// @image html plot_traj.png "Trajectory: double precision"
 /// @image latex plot_traj.eps "Trajectory: double precision" width=10cm
+/// 
 /// Both single and double precision, the optimized fourier path reaches to
 /// exact path as \f$ n_f \f$ increases.
 /// At \f$ n_f = 3 \f$, optimized path is improved as step_size decreases from
@@ -128,6 +130,7 @@
 /// (compare \f$ n_f=3 \f$, setup:1 and \f$ n_f=3 \f$, setup: 2). 
 /// To see how setup_size and \f$ \lambda \f$ affect optimization process
 /// we need to monitor optimization process.
+///
 /// @section monitor_kepler Monitoring Optimization process
 /// @image html plot_monitor1f.png "Monitor: n_f=1, setup: 1, single precision"
 /// @image latex plot_monitor1f_latex.png "Monitor: n_f=1, setup: 1, single precision" width=10cm
@@ -150,6 +153,7 @@
 /// @image latex plot_monitor3_2_latex.png "Monitor: n_f=3, setup: 2, double precision" width=10cm
 /// @image html plot_monitor4_2.png "Monitor: n_f=4, setup: 2, double precision"
 /// @image latex plot_monitor4_2_latex.png "Monitor: n_f=4, setup: 2, double precision" width=10cm
+///
 /// Markov Chain converges at \f$ n > 10^4 \f$.
 /// Now extract distribution from the Markov Chains.
 /// @section conv_dist_kepler Converged distribution

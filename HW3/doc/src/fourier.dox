@@ -1,6 +1,7 @@
 /////////////////////////////////////////////////////////////////////////
-///
 /// @page approx_path Approximation of Path
+/// @tableofcontents
+/// @section fourier_approx Fourier function
 /// To approximate path, I define following fourier function.
 /// \f{equation}{\label{eq:fourier_doc}
 /// \phi(t) = \sum_{i=0}^{N_f-1} c_{2i} 
@@ -22,20 +23,9 @@
 /// \latexonly \eqref{eq:fourier} \endlatexonly.
 /// Using adder and scaler, we can confine coefficients of fourier function
 /// \f$ c_i \f$ to \f$ [-1, 1] \f$. 
-/// Define 
-/// \f{equation}{\label{eq:perodic_ext}
-/// \hat{p}(t) = \begin{cases}
-/// \min\{A(t_0, t_f) \}, \text{with}\ p(t_0) = p_0, p(t_f) = p_f & 
-/// \text{if}\ t_0 \leq t \leq t_f \\
-/// \min\{A(t_f, 2t_f-t_0)\}, \text{with}\ p(t_f) = p_f, p(2t_f-t_0) = p_0 & 
-/// \text{if}\ t_f \leq t \leq 2t_f - t_0
-/// \end{cases}
-/// \f}
-/// then by the time translation symmetry of the Newtonian Mechanics,
-/// \f$ \hat{p}(t) \f$ is 
-/// - The periodic function with period \f$ 2(t_f-t_0) \f$.
-/// - For \f$ t_0 \leq t \leq t_f \f$, \f$ \hat{p}(t) = p(t) \f$. 
-///
+/// When path \f$ p(t) \f$ with initial time \f$ t_0 \f$ and finial time 
+/// \f$ t_f \f$ is given, then we can extend such path \f$ p(t) \f$ to
+/// a periodic function \f$ \hat{p}(t) \f$ of the period \f$ 2(t_f-t_0) \f$.
 /// If we set the period of fourier function used by fourier path to
 /// \f$ 2(t_f-t_0) \f$ then fourier path \f$ \Psi(t) \f$ would approximate
 /// \f$ \hat{p}(t) \f$. Since \f$ \hat{p}(t) = p(t) \f$ when \f$ t \in [t_0, t_f] \f$,
