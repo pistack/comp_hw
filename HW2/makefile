@@ -1,7 +1,7 @@
 .SUFFIXES: .cpp .o
 
 CXX = g++
-INC = -I src/include/
+INC = -I include/
 CPPFLAGS = -O3 -D PRECISION_LEVEL=0 $(INC) # for float precision
 #CPPFLAGS = -O3 -D PRECISION_LEVEL=1 $(INC) # for double precision
 
@@ -26,4 +26,4 @@ new :
 	$(MAKE)
 # DO NOT DELETE
 
-./src/main.o: src/include/hw2.hpp src/include/hw2.tpp
+./src/main.o: include/hw2.hpp include/hw2.tpp

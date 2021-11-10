@@ -56,7 +56,7 @@ HW2(T zeta_min, T t0, std::size_t n)
   u[n] = std::sqrt(zeta[n]);
 
   // numerical integration using 
-  // non equi-spacing Simpson's rule
+  // non equi-spacing trapezoidal rule
   // Quite fun, integrand_1(u) = v and
   // integrand_2(v) = u
   // integral_1[0] = integral_2[0]

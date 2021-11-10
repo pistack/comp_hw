@@ -8,16 +8,14 @@ endif()
 
 include(CTest)
 enable_testing()
-include_directories(src/include)
+include_directories(include)
 
 if(PRECISION_LEVEL EQUAL 0)
 add_executable(hw2f
-src/main.cpp src/include/hw2.tpp 
-src/include/hw2.hpp)
+src/main.cpp include/hw2.tpp include/hw2.hpp)
 else()
 add_executable(hw2d
-src/main.cpp src/include/hw2.tpp 
-src/include/hw2.hpp)
+src/main.cpp include/hw2.tpp include/hw2.hpp)
 endif()
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
