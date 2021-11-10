@@ -3,13 +3,14 @@
  * @brief headerfile for homework2 of Computer1 class in Yonsei University
  *        Use numerical integration to solve Kepler problem
  * @author pistack (Junho Lee)
- * @date 2021. 10. 28.
+ * @date 2021. 11. 10.
  */
 
 #ifndef HW2_H
 #define HW2_H
 
 #include <algorithm>
+#include <cstddef>
 #include <cmath>
 #include <tuple>
 #include <vector>
@@ -26,7 +27,7 @@
  /// @see \ref num_int
 template <typename T>
 std::tuple<std::vector<T>, std::vector<T>>
-HW2(T zeta_min, T t0, int n);
+HW2(T zeta_min, T t0, std::size_t n);
 
 #include "hw2.tpp"
 

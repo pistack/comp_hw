@@ -4,9 +4,10 @@
  * Interactively reads inital condition, number of gird points to evaluate and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 11. 2.
+ * @date 2021. 11. 10.
  */
 
+#include <cstddef>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -27,7 +28,7 @@ int main(void) {
   // init variables
   PRECISION zeta_min; // minimum value of zeta
   PRECISION t0; // initial time
-  int n; // number of points to evaluate
+  std::size_t n; // number of points to evaluate
   vector<PRECISION> t, y; // store results
   string filename; // file name to store results
   ofstream fout; // file output stream

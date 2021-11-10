@@ -3,12 +3,12 @@
  * @brief template for homework2 of Computer1 class in Yonsei University
  * Use numerical integration to solve Kepler problem
  * @author pistack (Junho Lee)
- * @date 2021. 11. 7.
+ * @date 2021. 11. 10.
  */
 
 template<typename T>
 std::tuple<std::vector<T>, std::vector<T>>
-HW2(T zeta_min, T t0, int n)
+HW2(T zeta_min, T t0, std::size_t n)
 {
   //initialize variable
   T grid_space; // grid spacing
@@ -45,7 +45,7 @@ HW2(T zeta_min, T t0, int n)
   // and seperate integral
   // Note v_i == u_(n-i)
   // v_(mid,i) == u_(mid,n-1-i)
-  for(int i=1; i<n; ++i)
+  for(std::size_t i=1; i<n; ++i)
     {
       zeta[i] = zeta[i-1] + grid_space;
       u[i] = std::sqrt(zeta[i]);
@@ -61,7 +61,7 @@ HW2(T zeta_min, T t0, int n)
   // integrand_2(v) = u
   // integral_1[0] = integral_2[0]
   // integral_1[n+1-i] = integral_2[i]
-  for(int i=1; i<n+1; ++i)
+  for(std::size_t i=1; i<n+1; ++i)
   {
     T integral_part1;
     T integral_part2;
