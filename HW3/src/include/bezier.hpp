@@ -63,6 +63,11 @@ class bezier
 	T get_last() const
     {return c[n];}
 
+    /// @brief get control points of bezier curve
+    /// @return control points of bezier curve
+    std::vector<T> get_crtl_pts() const
+    {return c;}
+
     /// @brief update control points
 	/// @param c_ control points to update
 	void update(std::vector<T> c_)

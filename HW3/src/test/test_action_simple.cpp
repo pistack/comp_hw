@@ -9,6 +9,7 @@
 #include <cmath>
 #include <iostream>
 #include <limits>
+#include "bezier_path.hpp"
 #include "fourier_path.hpp"
 #include "action.hpp"
 
@@ -115,6 +116,12 @@ int main(void)
   cout << " Test 5. integrate 0 from 0 to 2 " << endl;
   cout << " Test 6. integrate sin(2*exp(2*sin(2(exp(2*sin(pi*x)))))) from 0 to 2 " << endl;
   cout << " Test 7. integrate 1/sqrt(sin(pi*x)) from 0 to 1 " << endl; 
+  cout << " Test 8. integrate 2.0 + x from 0 to 2                " << endl;
+  cout << " Test 9. integrate 1/(2.0+x) from 0 to 2    " << endl;
+  cout << " Test 10. integrate sin(x) from 0 to 2 " << endl;
+  cout << " Test 11. integrate x**2 from 0 to 2 " << endl;;
+  cout << " Test 12. integrate sin(2*exp(2*sin(2(exp(2*x))))) from 0 to 2 " << endl;
+  cout << " Test 13. integrate 1/sqrt(x) from 0 to 1 " << endl; 
 
   // order of Gauss-Kronrod quadrature method
   vector<int> order = {15, 21, 31, 41, 51, 61};
@@ -126,11 +133,24 @@ int main(void)
 
   // initial condition
   vector<PRECISION> c = {1.0, 0.0};
+  vector<PRECISION> c2 = {0.0, 1.0};
   #if PRECISION_LEVEL == 0
   vector<PRECISION> tol = {1.0, 1e-2, 1e-4};
   #elif PRECISION_LEVEL == 1
   vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6, 1e-8};
   #endif
+  /// bezier
+  bezier<PRECISION> B(1, c2); // f(t)=t
+  vector<bezier_path<PRECISION>> B_path(1, bezier_path<PRECISION>(0.0, 2.0, 2.0, 4.0, B));
+  vector<bezier_path<PRECISION>> B_path2(1, bezier_path<PRECISION>(0.0, 2.0, 0.0, 2.0, B));
+  vector<bezier_path<PRECISION>> B_path3(1, bezier_path<PRECISION>(0.0, 1.0, 0.0, 1.0, B));
+  action<PRECISION, bezier_path<PRECISION>, id_lag<PRECISION>> tst8(B_path);
+  action<PRECISION, bezier_path<PRECISION>, inv_lag<PRECISION>> tst9(B_path);
+  action<PRECISION, bezier_path<PRECISION>, sine_lag<PRECISION>> tst10(B_path2);
+  action<PRECISION, bezier_path<PRECISION>, square_lag<PRECISION>> tst11(B_path2);
+  action<PRECISION, bezier_path<PRECISION>, weird_lag<PRECISION>> tst12(B_path2);
+  action<PRECISION, bezier_path<PRECISION>, sqrt_lag<PRECISION>> tst13(B_path3);
+  /// fourier
   fourier<PRECISION> tmp(1, 2.0, c);
   vector<fourier_path<PRECISION>> path(1, fourier_path<PRECISION>(0.0, 2.0, 2.0, 2.0, tmp));
   vector<fourier_path<PRECISION>> path2(1, fourier_path<PRECISION>(0.0, 2.0, 0.0, 0.0, tmp));
@@ -303,6 +323,21 @@ int main(void)
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh quadrature" << endl;
     cout << "Integration value: " << tst7.eval(1, 10, e) << endl;
+    cout << "Estimated error: " << e << endl;
+    cout << "Execution time: " << \
+    std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/1000.0 << \
+    " microsecond" << endl;
+  }
+  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
+  {
+    tst13.update(*it);
+    cout << " Test 13. atol: " << *it <<  endl;
+    start = std::chrono::steady_clock::now();
+    for(int j=0; j<1000; ++j)
+    tst13.eval(1, 10, e);
+    end = std::chrono::steady_clock::now();
+    cout << "Integration Method: Tanh-Sinh quadrature" << endl;
+    cout << "Integration value: " << tst13.eval(1, 10, e) << endl;
     cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/1000.0 << \

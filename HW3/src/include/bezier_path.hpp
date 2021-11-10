@@ -75,7 +75,8 @@ class bezier_path
     /// @brief copy constructor of bezier_path class
     bezier_path(const bezier_path<T> & copy)
     : t_init(copy.t_init), t_final(copy.t_final), \
-    p_init(copy.p_init), p_final(copy.p_final), B(copy.B)
+    p_init(copy.p_init), p_final(copy.p_final), B(copy.B), \
+    vaildity(copy.vaildity), scale2(copy.scale2)
     {}
 
     /// @brief overloading of assignment operator for 
@@ -84,7 +85,8 @@ class bezier_path
     {
         t_init = copy.t_init; t_final = copy.t_final;
         p_init = copy.p_init; p_final = copy.p_final;
-        B = copy.B;
+        B = copy.B; vaildity = copy.vaildity;
+        scale2 = copy.scale2;
         return *this;
     }
 
@@ -107,7 +109,7 @@ class bezier_path
 	/// @brief get modified control points
 	/// @return modified control points
 	std::vector<T> get_ctrl_pts() const
-    {return B.c;}
+    {return B.get_crtl_pts();}
 
 	/// @brief get the second scaler parameter
 	/// @return second scaler parameter
