@@ -3,15 +3,14 @@
  * @brief template for homework1 of Computer1 class in Yonsei University
  * Use finite difference method to solve Kepler problem
  * @author pistack (Junho Lee)
- * @date 2021. 11. 3.
+ * @date 2021. 11. 10.
  */
 
 template<typename T>
 std::tuple<std::vector<T>, std::vector<T>, std::vector<T>> 
 HW1(T t0, T t1,
-int n, T y0, T y0p, T theta0)
+std::size_t n, T y0, T y0p, T theta0)
 { 
-
     // initialize the variable
     T spacing;
     T y_inv;
@@ -25,7 +24,7 @@ int n, T y0, T y0p, T theta0)
     // use uniform n points bewteen t0 and t1
     // additional one point needed for end point
     // to avoid numerical problem add t0 later
-    for(int i=1; i< n+1; ++i)
+    for(std::size_t i=1; i< n+1; ++i)
       t[i] = t[i-1] + spacing;
 
     // to avoid numerical problem add initial condition
@@ -44,7 +43,7 @@ int n, T y0, T y0p, T theta0)
     // Solve 2nd order ODE using
     // Explict Euler Method
 
-    for(int i = 2; i < n+1; ++i)
+    for(std::size_t i = 2; i < n+1; ++i)
     {
       spacing = (t[i] - t[i-2])/2.0; // spacing for zeta
       y_inv = 1 /(y0+y[i-1]);

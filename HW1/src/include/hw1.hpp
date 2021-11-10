@@ -3,13 +3,14 @@
  * @brief Header file for homework1 of Computer1 class in Yonsei University
  * Use finite difference method to solve Kepler problem
  * @author pistack (Junho Lee)
- * @date 2021. 11. 3.
+ * @date 2021. 11. 10.
  */
 
 #ifndef HW1_H
 #define HW1_H
 
 #include <algorithm>
+#include <cstddef>
 #include <tuple>
 #include <vector>
 
@@ -27,7 +28,7 @@
  /// @see \ref theta
 template <typename T>
 std::tuple<std::vector<T>, std::vector<T>, std::vector<T>>
-HW1(T t0, T t1, int n, T y0, T y0p, T theta0);
+HW1(T t0, T t1, std::size_t n, T y0, T y0p, T theta0);
 
 #include "hw1.tpp"
 

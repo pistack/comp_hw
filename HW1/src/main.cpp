@@ -4,9 +4,10 @@
  * Interactively reads inital condition, number of gird points to evaluate and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 11. 3.
+ * @date 2021. 11. 10.
  */
 
+#include <cstddef>
 #include <chrono>
 #include <string>
 #include <iostream>
@@ -30,7 +31,7 @@ int main(void) {
   std::chrono::steady_clock::time_point end; // check elapsed
   PRECISION t0; // initial time
   PRECISION t1; // finial time
-  int n; // number of points to evaluate
+  std::size_t n; // number of points to evaluate
   PRECISION y0; // intial condition zeta(0)
   PRECISION y0p; // initial condition zeta'(0)
   PRECISION theta0; // initial condition theta(0)
