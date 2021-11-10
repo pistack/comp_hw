@@ -22,9 +22,9 @@
 using namespace libpath;
 using namespace std;
 
+#ifndef DOXYGEN_SKIP
 /// dummy lagrangian functor class
 /// used to define action
-#ifndef DOXYGEN_SKIP
 template<typename T>
 class zero_lag{
   public :
@@ -35,6 +35,7 @@ class zero_lag{
   }
 };
 #endif /* DOXYGEN_SKIP */
+
 int main()
 {
   bool sucess = true;
