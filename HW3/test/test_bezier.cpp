@@ -9,7 +9,7 @@
 #include <iostream>
 #include <iomanip>
 #include <limits>
-#include "bezier.hpp"
+#include "libpath/bezier.hpp"
 
 #if PRECISION_LEVEL == 0
     #define PRECISION float

@@ -5,7 +5,7 @@
  * number of points to evaluate, number of interation, step size and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 11. 9.
+ * @date 2021. 11. 11.
  */
 
 #include <algorithm>
@@ -14,7 +14,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "mcm.hpp"
+#include "libmcm/mcm.hpp"
 
 #if PRECISION_LEVEL == 0
     #define PRECISION float

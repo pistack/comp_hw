@@ -9,7 +9,7 @@
 #include <iostream>
 #include <iomanip>
 #include <limits>
-#include "fourier.hpp"
+#include "libpath/fourier.hpp"
 
 #if PRECISION_LEVEL == 0
     #define PRECISION float

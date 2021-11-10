@@ -8,8 +8,8 @@
 #include <cmath>
 #include <iostream>
 #include <iomanip>
-#include "fourier_path.hpp"
-#include "action.hpp"
+#include "libpath/fourier_path.hpp"
+#include "libpath/action.hpp"
 
 #if PRECISION_LEVEL == 0
     #define PRECISION float

@@ -9,7 +9,7 @@
 #include <iostream>
 #include <iomanip>
 #include <limits>
-#include "fourier_path.hpp"
+#include "libpath/fourier_path.hpp"
 
 using namespace std;
 using namespace libpath;

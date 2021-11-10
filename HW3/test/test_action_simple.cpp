@@ -9,9 +9,9 @@
 #include <cmath>
 #include <iostream>
 #include <limits>
-#include "bezier_path.hpp"
-#include "fourier_path.hpp"
-#include "action.hpp"
+#include "libpath/bezier_path.hpp"
+#include "libpath/fourier_path.hpp"
+#include "libpath/action.hpp"
 
 #if PRECISION_LEVEL == 0
     #define PRECISION float

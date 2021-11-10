@@ -6,7 +6,7 @@
  * method described in 
  * [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
  * @author pistack (Junho Lee)
- * @date 2021. 11. 9.
+ * @date 2021. 11. 11.
  */
 
 #ifndef MCM_H
@@ -18,8 +18,8 @@
 #include <vector>
 #include <string>
 #include <random>
-#include "fourier_path.hpp"
-#include "action.hpp"
+#include "libpath/fourier_path.hpp"
+#include "libpath/action.hpp"
 
 namespace libmcm {
 /// @brief class to
@@ -54,7 +54,7 @@ class mcm
    T fourier_period;
 
    // action
-   libpath::action<T, Lag> mcm_action;
+   libpath::action<T, libpath::fourier_path<T>, Lag> mcm_action;
 
    // initial guess
    std::vector<std::vector<T>> init_guess;
@@ -99,7 +99,7 @@ class mcm
    : t0(t_0), t1(t_1), p0(p_0), p1(p_1), \
    num_fourier(num_f), fourier_period(period)
    {
-      mcm_action = libpath::action<T, Lag>(abs_tol);
+      mcm_action = libpath::action<T, libpath::fourier_path<T>, Lag>(abs_tol);
    }
 
    /// @brief copy constructer of HW3 class

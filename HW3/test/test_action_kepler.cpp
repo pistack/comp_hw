@@ -2,14 +2,14 @@
  * @file test_action_kepler.cpp
  * @brief test action::eval() routine with kepler action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 9.
+ * @date 2021. 11. 10.
  */
 
 #include <cmath>
 #include <chrono>
 #include <iostream>
-#include "fourier_path.hpp"
-#include "action.hpp"
+#include "libpath/fourier_path.hpp"
+#include "libpath/action.hpp"
 
 #if PRECISION_LEVEL == 0
     #define PRECISION float
@@ -51,6 +51,11 @@ int main(void)
   // measure execution time of action::eval() method
   std::chrono::steady_clock::time_point start;
   std::chrono::steady_clock::time_point end;
+  // test condition
+  // if difference of two integration method greather than 2*atol then
+  // test would fail.
+  bool sucess = true;
+  PRECISION int_method0, int_method1;
   // estimated error
   PRECISION e;
 
@@ -100,8 +105,9 @@ int main(void)
     for(int j=0; j<10000; ++j)
     tst1.eval(e);
     end = std::chrono::steady_clock::now();
+    int_method0 = tst1.eval(e);
     cout << "Integration Method: gauss-kronrod quadrature" << endl;
-    cout << "Integration value: " << tst1.eval(e) << endl;
+    cout << "Integration value: " << int_method0 << endl;
     cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
@@ -111,11 +117,14 @@ int main(void)
     for(int j=0; j<10000; ++j)
     tst1.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
-    cout << "Integration value: " << tst1.eval(1, 7, e) << endl;
+    int_method1 = tst1.eval(1, 7, e);
+    cout << "Integration value: " << int_method1 << endl;
     cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
+    if(std::abs(int_method1-int_method0)>=2*(*it))
+    sucess = false;
   }
   for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
@@ -125,8 +134,9 @@ int main(void)
     for(int j=0; j<10000; ++j)
     tst2.eval(e);
     end = std::chrono::steady_clock::now();
+    int_method0 = tst2.eval(e);
     cout << "Integration Method: gauss-kronrod quadrature" << endl;
-    cout << "Integration value: " << tst2.eval(e) << endl;
+    cout << "Integration value: " << int_method0 << endl;
     cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
@@ -136,16 +146,20 @@ int main(void)
     for(int j=0; j<10000; ++j)
     tst2.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
-    cout << "Integration value: " << tst2.eval(1, 7, e) << endl;
+    int_method1 = tst2.eval(1, 7, e);
+    cout << "Integration value: " << int_method1 << endl;
     cout << "Estimated error: " << e << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
+    if(std::abs(int_method0-int_method1)>=2*(*it))
+    sucess = false;
   }
   cout << "Test finished!" << endl;
   cout << "==========================================================" << endl;
-
+  if(sucess)
   return 0;
+  return -1;
 }
       
       
