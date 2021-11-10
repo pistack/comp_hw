@@ -3,13 +3,14 @@
  * @ingroup libpath
  * @brief headerfile for fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 9.
+ * @date 2021. 11. 10.
  */
 
 #ifndef FOURIER_H
 #define FOURIER_H
 
 #include <algorithm>
+#include <cstddef>
 #include <cmath>
 #include <vector>
 

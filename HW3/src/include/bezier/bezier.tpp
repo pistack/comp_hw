@@ -25,9 +25,9 @@ T bezier<T>::eval(T t)
 template<typename T>
 std::vector<T> bezier<T>::eval(std::vector<T> t)
 {
-    int dim = t.size();
+    std::size_t dim = t.size();
     std::vector<T> result(dim, 0);
-    for(int i=0; i<dim; i++)
+    for(std::size_t i=0; i<dim; i++)
     result[i] = eval(t[i]);
 
     return result;
@@ -57,9 +57,9 @@ T bezier<T>::deriv(T t)
 template<typename T>
 std::vector<T> bezier<T>::deriv(std::vector<T> t)
 {
-    int dim = t.size();
+    std::size_t dim = t.size();
     std::vector<T> result(dim, 0);
-    for(int i=0; i<dim; i++)
+    for(std::size_t i=0; i<dim; i++)
     result[i] = deriv(t[i]);
     return result;
 }

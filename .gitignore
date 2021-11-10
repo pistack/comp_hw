@@ -136,9 +136,6 @@ dmypy.json
 *.bak
 
 # HW exe file
-*/bin/hw1
-*/bin/hw2
-*/bin/hw3
 *.exe
 
 # doxygen build file

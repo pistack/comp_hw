@@ -10,6 +10,7 @@
 #define BEZIER_H
 
 #include <algorithm>
+#include <cstddef>
 #include <cmath>
 #include <limits>
 #include <tuple>
