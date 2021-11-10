@@ -39,9 +39,9 @@ void bezier_path<T>::init_helper()
     // first control point is zero.
     // 2. finial value of path should not be zero but
     // last control points is zero.
-    if(!c0 && std::abs(B.c[0]) < eps*(1+std::abs(B.c[B.n])))
+    if(!c0 && std::abs(B.get_first()) < eps*(1+std::abs(B.get_last())))
     return;
-    if(!cn && std::abs(B.c[B.n]) < eps*(1+std::abs(B.c[0])))
+    if(!cn && std::abs(B.get_last()) < eps*(1+std::abs(B.get_first())))
     return;
 
     vaildity = true;

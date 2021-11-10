@@ -49,7 +49,7 @@ class bezier
 	/// bezier class
 	bezier<T> & operator=(const bezier<T> &copy)
     {
-    this.n = copy.n; this.c = copy.c;
+    n = copy.n; c = copy.c;
     return *this;
     }
 

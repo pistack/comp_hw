@@ -29,75 +29,86 @@ int main()
     vector<PRECISION> c1 = {1, 0}; // two control points -> order 1 bezier curve
     vector<PRECISION> c2 = {1, 2, 1}; // three control points -> order 2 bezier curve
     vector<PRECISION> c3 = {1, 2, 3, 1}; // four control points -> order 3 bezier curve
+    vector<PRECISION> c4 = {17, 2, 3, 1}; // four control points -> order 3 bezier curve
+    bezier_path<PRECISION> path(-1, 1, 0, 1);
+    bezier_path<PRECISION> path2(-1, 1, 0.3, 0.5);
     bezier<PRECISION> fun1(1, c1); // f(t) = 1-t
     bezier<PRECISION> fun2(2, c2); // f(t) = -2t^2 + 2t+1 
     bezier<PRECISION> fun3(3, c3); // f(t) = -3t^3 + 3t + 1
     vector<PRECISION> t{
-        0, 1.0/3, 1.0/2, 1
+        -1, -1.0/3, 0, 1
     };
     vector<PRECISION> result;
     vector<vector<PRECISION>> result_eval
     {
-        {1, 2.0/3, 1.0/2, 0},
-        {1, 13.0/9, 3.0/2, 1},
+        {0, 0, 0, 0},
+        {0, 1, 5.0/4, 1},
         {1, 17.0/9,  17.0/8, 1}
     };
     vector<vector<PRECISION>> result_deriv
     {
-        {-1, -1, -1, -1},
-        {2, 2.0/3, 0, -2},
+        {0, 0, 0, 0},
+        {2, 1, 0.5, -1},
         {3, 2, 3.0/4, -6},
     };  
     cout << "==================================================================" << endl;
     cout << "                   Test bezier_path class                         " << endl;
+    cout << " initial condition of path:                                       " << endl;
+    cout << " t_0: -1, t_1: 1, p_0 = 0, p_1 = 1                                " << endl;
     cout << " Test 1. order 1 bezier with control points: (1, 0)               " << endl;
     cout << " Test 2. order 2 bezier with control points: (1, 2, 1)            " << endl;
     cout << " Test 3. order 3 bezier with control points: (1, 2, 3, 1)         " << endl;
+    cout << " initial condition of path2:                                      " << endl;
     /// Test 1.
-    result = fun1.eval(t);
+    cout << boolalpha;
+    path.update(fun1); // invalid
+    result = path.eval(t);
     for(int i=0; i<4; i++)
     {
         if(std::abs(result[i]-result_eval[0][i])>eps)
         sucess = false;
     }
     cout << "Test 1. order 1 bezier" << endl;
+    cout << "Vaildity of bezier curve " << path.is_vaild() << endl;
     cout << "function value: " << endl;
-    cout << "0" << '\t' << "1/3" << '\t' << "1/2" << '\t' << "1" << endl;
+    cout << "-1" << '\t' << "-1/3" << '\t' << "0" << '\t' << "1" << endl;
     for(int i=0; i<4; ++i)
     cout << result[i] << '\t';
     cout << endl;
-    result = fun1.deriv(t);
+    result = path.deriv(t);
     for(int i=0; i<4; i++)
     {
         if(std::abs(result[i]-result_deriv[0][i])>eps)
         sucess = false;
     }
     cout << "derivative: " << endl;
-    cout << "0" << '\t' << "1/3" << '\t' << "1/2" << '\t' << "1" << endl;
+    cout << "-1" << '\t' << "-1/3" << '\t' << "0" << '\t' << "1" << endl;
     for(int i=0; i<4; ++i)
     cout << result[i] << '\t';
     cout << endl;
     /// Test 2. 
-    result = fun2.eval(t);
+    path.update(fun2); /// control point changes to (1, 2, 1) to (0, 2, 1)
+    result = path.eval(t);
     for(int i=0; i<4; i++)
     {
         if(std::abs(result[i]-result_eval[1][i])>eps)
         sucess = false;
     }
     cout << "Test 2. order 2 bezier" << endl;
+    cout << "Vaildity of bezier curve " << path.is_vaild() << endl;
     cout << "function value: " << endl;
-    cout << "0" << '\t' << "1/3" << '\t' << "1/2" << '\t' << "1" << endl;
+    cout << "-1" << '\t' << "-1/3" << '\t' << "0" << '\t' << "1" << endl;
     for(int i=0; i<4; ++i)
     cout << result[i] << '\t';
     cout << endl;
-    result = fun2.deriv(t);
+    result = path.deriv(t);
     for(int i=0; i<4; i++)
     {
         if(std::abs(result[i]-result_deriv[1][i])>eps)
         sucess = false;
     }
     cout << "derivative: " << endl;
-    cout << "0" << '\t' << "1/3" << '\t' << "1/2" << '\t' << "1" << endl;
+    cout << "-1" << '\t' << "-1/3" << '\t' << "0" << '\t' << "1" << endl;
     for(int i=0; i<4; ++i)
     cout << result[i] << '\t';
     cout << endl;
