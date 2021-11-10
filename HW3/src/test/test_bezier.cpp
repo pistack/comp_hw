@@ -53,7 +53,7 @@ int main()
     cout << " Test 1. order 1 bezier with control points: (1, 0)               " << endl;
     cout << " Test 2. order 2 bezier with control points: (1, 2, 1)            " << endl;
     cout << " Test 3. order 3 bezier with control points: (1, 2, 3, 1)         " << endl;
-    /// Test 1.
+    // Test 1.
     result = fun1.eval(t);
     for(int i=0; i<4; i++)
     {
@@ -77,7 +77,7 @@ int main()
     for(int i=0; i<4; ++i)
     cout << result[i] << '\t';
     cout << endl;
-    /// Test 2. 
+    // Test 2. 
     result = fun2.eval(t);
     for(int i=0; i<4; i++)
     {
@@ -101,7 +101,7 @@ int main()
     for(int i=0; i<4; ++i)
     cout << result[i] << '\t';
     cout << endl;
-    /// Test 3.
+    // Test 3.
     result = fun3.eval(t);
     for(int i=0; i<4; i++)
     {

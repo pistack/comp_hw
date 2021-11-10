@@ -59,7 +59,7 @@ int main()
     cout << " Test 2. order 2 bezier with control points: (1, 2, 1)            " << endl;
     cout << " Test 3. order 3 bezier with control points: (1, 2, 3, 1)         " << endl;
     cout << " initial condition of path2:                                      " << endl;
-    /// Test 1.
+    // Test 1.
     cout << boolalpha;
     path.update(fun1); // invalid
     result = path.eval(t);
@@ -86,7 +86,7 @@ int main()
     for(int i=0; i<4; ++i)
     cout << result[i] << '\t';
     cout << endl;
-    /// Test 2. 
+    // Test 2. 
     path.update(fun2); /// control point changes to (1, 2, 1) to (0, 2, 1)
     result = path.eval(t);
     for(int i=0; i<4; i++)
@@ -112,7 +112,7 @@ int main()
     for(int i=0; i<4; ++i)
     cout << result[i] << '\t';
     cout << endl;
-    /// Test 3.
+    // Test 3.
     result = fun3.eval(t);
     for(int i=0; i<4; i++)
     {

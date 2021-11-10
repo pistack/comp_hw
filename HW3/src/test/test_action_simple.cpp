@@ -139,7 +139,7 @@ int main(void)
   #elif PRECISION_LEVEL == 1
   vector<PRECISION> tol = {1.0, 1e-2, 1e-4, 1e-6, 1e-8};
   #endif
-  /// bezier
+  // bezier
   bezier<PRECISION> B(1, c2); // f(t)=t
   vector<bezier_path<PRECISION>> B_path(1, bezier_path<PRECISION>(0.0, 2.0, 2.0, 4.0, B));
   vector<bezier_path<PRECISION>> B_path2(1, bezier_path<PRECISION>(0.0, 2.0, 0.0, 2.0, B));
@@ -150,7 +150,7 @@ int main(void)
   action<PRECISION, bezier_path<PRECISION>, square_lag<PRECISION>> tst11(B_path2);
   action<PRECISION, bezier_path<PRECISION>, weird_lag<PRECISION>> tst12(B_path2);
   action<PRECISION, bezier_path<PRECISION>, sqrt_lag<PRECISION>> tst13(B_path3);
-  /// fourier
+  // fourier
   fourier<PRECISION> tmp(1, 2.0, c);
   vector<fourier_path<PRECISION>> path(1, fourier_path<PRECISION>(0.0, 2.0, 2.0, 2.0, tmp));
   vector<fourier_path<PRECISION>> path2(1, fourier_path<PRECISION>(0.0, 2.0, 0.0, 0.0, tmp));
