@@ -1,1 +1,1 @@
-hw2 executation would be located here. 
+hw2 executable file would be located here. 
