@@ -7,15 +7,13 @@ add_compile_definitions(PRECISION_LEVEL=1)
 endif()
 include(CTest)
 enable_testing()
-include_directories(src/include)
+include_directories(include)
 if(PRECISION_LEVEL EQUAL 0)
 add_executable(hw1f
-src/main.cpp src/include/hw1.tpp 
-src/include/hw1.hpp)
+src/main.cpp include/hw1.tpp include/hw1.hpp)
 else()
 add_executable(hw1d
-src/main.cpp src/include/hw1.tpp 
-src/include/hw1.hpp)
+src/main.cpp include/hw1.tpp include/hw1.hpp)
 endif()
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
