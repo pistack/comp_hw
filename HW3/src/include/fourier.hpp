@@ -16,7 +16,7 @@
 namespace libpath {
 
 template<typename T>
-constexpr T pi = T(std::acos(-1)); ///< pi
+constexpr T pi = std::acos(T(-1)); ///< pi
 
 /// @brief Class which defines fourier function
 /// \f{equation}{\label{eq:fourier_func} 

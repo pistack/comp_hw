@@ -63,24 +63,23 @@ std::vector<T> action<T, Path, Lag>::eval_lagrangian(std::vector<T> t)
 template<typename T, typename Path, typename Lag> template<typename Gau_Kron>
 void action<T, Path, Lag>::eval_helper(T left, T right, T D, T D_tol, T &integral, T &e)
 {
-  const T eps = 10.0*std::numeric_limits<T>::epsilon();
+  const T eps = 10*std::numeric_limits<T>::epsilon();
   const Gau_Kron table;
-  std::vector<T> tnodes(table.order, 0);
   std::vector<T> fnodes(table.order, 0);
   T D_lr;
-  T scale_factor = 0.5*(right - left);
-  T mid = 0.5*(left+right);
+  T scale_factor = (right - left)/2;
+  T mid = (left+right)/2;
   T mean_abs = 0;
   T integral_l=0, integral_r=0; // left and right integral
   T e_l=0, e_r=0; // left and right error
-  tnodes[(table.order-1)/2] = mid;
+  fnodes[(table.order-1)/2] = mid;
   for(int i=0; i<(table.order-1)/2; ++i)
   {
     T tmp = (1.0+table.nodes[i])*scale_factor;
-    tnodes[i] = right-tmp;
-    tnodes[table.order-1-i] = tmp+left;
+    fnodes[i] = right-tmp;
+    fnodes[table.order-1-i] = tmp+left;
   }
-  fnodes = eval_lagrangian(tnodes);
+  fnodes = eval_lagrangian(fnodes);
   T int_kron=table.weight_kronrod[(table.order-1)/2]*fnodes[(table.order-1)/2];
   T int_gauss=0;
   if(table.order % 4 == 3)
@@ -133,17 +132,17 @@ T action<T, Path, Lag>::eval_quadgk(T left, T right, int n, T &e)
 
   // currently only supports n=15,21,31,41,51,61
   if(n==15)
-  eval_helper<gau_kron_table<T, 15>>(left, right, 0.0, D_tol, integral, e);
+  eval_helper<gau_kron_table<T, 15>>(left, right, 0, D_tol, integral, e);
   if(n==21)
-  eval_helper<gau_kron_table<T, 21>>(left, right, 0.0, D_tol, integral, e);
+  eval_helper<gau_kron_table<T, 21>>(left, right, 0, D_tol, integral, e);
   if(n==31)
-  eval_helper<gau_kron_table<T, 31>>(left, right, 0.0, D_tol, integral, e);
+  eval_helper<gau_kron_table<T, 31>>(left, right, 0, D_tol, integral, e);
   if(n==41)
-  eval_helper<gau_kron_table<T, 41>>(left, right, 0.0, D_tol, integral, e);
+  eval_helper<gau_kron_table<T, 41>>(left, right, 0, D_tol, integral, e);
   if(n==51)
-  eval_helper<gau_kron_table<T, 51>>(left, right, 0.0, D_tol, integral, e);
+  eval_helper<gau_kron_table<T, 51>>(left, right, 0, D_tol, integral, e);
   if(n==61)
-  eval_helper<gau_kron_table<T, 61>>(left, right, 0.0, D_tol, integral, e);
+  eval_helper<gau_kron_table<T, 61>>(left, right, 0, D_tol, integral, e);
   return integral;
 }
 
@@ -151,12 +150,13 @@ template<typename T, typename Path, typename Lag>
 T action<T, Path, Lag>::eval_qthsh(T left, T right, int max_order, T &e)
 {
   const T eps = 10*std::numeric_limits<T>::epsilon(); // machine eps
+  constexpr T const_e = std::exp(T(1)); // exp constant
   T mid = (left+right)/2;
   T scale_coord = (right-left)/2;
   T scale_int = h_pi<T>*scale_coord;
   T h = 2; // step_size
-  T dt_pre = std::exp(1.0); // previous step size
-  T dt = std::exp(1.0); // current step size
+  T dt_pre = const_e; // previous step size
+  T dt = const_e; // current step size
   T integral_pre = 0; // previous integration value
   T integral = eval_lagrangian(mid); // integration value
   T tmp_e = 0; // error estimation

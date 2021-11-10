@@ -18,7 +18,7 @@
 namespace libpath{
 
 template<typename T>
-constexpr T h_pi = T(std::acos(0)); ///< half pi
+constexpr T h_pi = std::acos(T(0)); ///< half pi
 
 /// @brief class which computes action
 /// @param T precision should be one of

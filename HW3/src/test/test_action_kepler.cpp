@@ -57,7 +57,7 @@ int main(void)
   // initial condition
   PRECISION zeta_min = 0.9;
   PRECISION zeta_max = zeta_min/(2*zeta_min-1);
-  PRECISION a = 0.5*(zeta_min+zeta_max);
+  PRECISION a = (zeta_min+zeta_max)/2;
   PRECISION tmax = pi<PRECISION>*pow(a, 1.5);
   PRECISION period = 2*tmax;
   #if PRECISION_LEVEL == 0

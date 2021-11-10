@@ -10,6 +10,8 @@
 #define BEZIER_H
 
 #include <algorithm>
+#include <cmath>
+#include <limits>
 #include <tuple>
 #include <vector>
 
@@ -106,7 +108,7 @@ class bezier_path
     T t_init, t_final, p_init, p_final;
     bezier<T> B; // bezier curve
     bool vaildity; // vaildity of path
-    T scale_2; // second scaling parameter
+    T scale2; // second scaling parameter
 
     /// @brief helper function for 
     /// initialization of bezier_path class
@@ -160,27 +162,28 @@ class bezier_path
     /// @brief check whether or not the bezier curve is valid to
 	/// approximate path
 	/// @return vaildity of bezier curve
-	bool is_vaild()
+	bool is_vaild() const
     {return vaildity;}
 
 	/// @brief get initial and final time of path
 	/// @return tuple of initial and final time of path
-	std::tuple<T, T> get_endtimes()
+	std::tuple<T, T> get_endtimes() const
     {return std::make_tuple(t_init, t_final);}
 
 	/// @brief get modified control points
 	/// @return modified control points
-	std::vector<T> get_ctrl_pts()
+	std::vector<T> get_ctrl_pts() const
     {return B.c;}
 
 	/// @brief get the second scaler parameter
 	/// @return second scaler parameter
-	T get_scaler()
-    {return scale_2;}
+	T get_scaler() const
+    {return scale2;}
 
     /// @brief evaluate path approximated by bezier curve at given point
     /// @param t point at which bezier_path is evaluated
-    T eval(T t);
+    T eval(T t)
+    {return scale2*B.eval((t-t_init)/(t_final-t_init));}
 
     /// @brief evaluate path approximated by bezier curve at given points
     /// @param t points at which bezier_path is evaluated
@@ -188,7 +191,8 @@ class bezier_path
 
     /// @brief evaluate derivative of bezier_path at given point
     /// @param t point at which bezier_path is evaluated
-    T deriv(T t);
+    T deriv(T t)
+    {return scale2*B.deriv((t-t_init)/(t_final-t_init))/(t_final-t_init);}
 
     /// @brief evaluate derivative of bezier_path at given points
     /// @param t points at which bezier_path is evaluated

@@ -114,22 +114,22 @@ class fourier_path
     /// @brief check whether or not the fourier function is valid to
 	/// approximate path
 	/// @return vaildity of fourier function
-	bool is_vaild()
+	bool is_vaild() const
 	{return p_vaild;}
 
 	/// @brief get initial and final time of path
 	/// @return tuple of initial and final time of path
-	std::tuple<T, T> get_endtimes()
+	std::tuple<T, T> get_endtimes() const
 	{return std::make_tuple(p_t0, p_tf);}
 
 	/// @brief get adder
 	/// @return adder
-	T get_adder()
+	T get_adder() const
 	{return add;}
 
 	/// @brief get scaler
 	/// @return scaler
-	T get_scaler()
+	T get_scaler() const
 	{return scale;}
 
 	/// @brief evaluate the path

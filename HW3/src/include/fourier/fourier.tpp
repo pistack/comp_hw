@@ -105,7 +105,7 @@ T fourier<T>::nderiv(int n, T t)
 		iter != c.end(); ++++iter)
 		{
 			std::iter_swap(iter, iter+1);
-			*iter *= -1.0;
+			*iter *= -1;
 		}
 	}
 	for(int j=0; j<term; ++++j)
@@ -118,7 +118,7 @@ T fourier<T>::nderiv(int n, T t)
 	}
 	if((n%2 == 0 && n/2 % 2 != 0) ||
 	(n%2 != 0 && (n-1)/2 % 2 != 0))
-	yp *= -1.0;
+	yp *= -1;
 	return yp;
 }
 
@@ -139,7 +139,7 @@ std::vector<T> fourier<T>::nderiv(int n, std::vector<T> t)
 		else
 		{
 			std::transform(c.begin(), c.end(), c.begin(), 
-			[](T &x){return x *= -1.0;});
+			[](T &x){return x *= -1;});
 		}
 	}
 	else
@@ -148,13 +148,13 @@ std::vector<T> fourier<T>::nderiv(int n, std::vector<T> t)
 		iter != c.end(); ++++iter)
 		{
 			std::iter_swap(iter, iter+1);
-			*iter *= -1.0;
+			*iter *= -1;
 		}
 		if((n-1)/2 %2 == 0){}
 		else
 		{
 			std::transform(c.begin(), c.end(), c.begin(), 
-			[](T &x){return x *= -1.0;});
+			[](T &x){return x *= -1;});
 		}
 	}
 	
