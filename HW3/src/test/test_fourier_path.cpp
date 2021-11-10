@@ -2,7 +2,7 @@
  * @file test_fourier_path.cpp
  * @brief test fourier_path class routine 
  * @author pistack (Junho Lee)
- * @date 2021. 11. 9.
+ * @date 2021. 11. 10.
  */
 
 #include <cmath>
@@ -83,6 +83,7 @@ int main(void)
     cout << "==========================================================" << endl;
     if(sucess)
     return 0;
+    cout << "Test failed!" << endl;
     return -1;
 }
 

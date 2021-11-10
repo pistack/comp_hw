@@ -2,7 +2,7 @@
  * @file test_action_vaildity.cpp
  * @brief test action::is_vaild() routine 
  * @author pistack (Junho Lee)
- * @date 2021. 11. 9.
+ * @date 2021. 11. 10.
  */
 
 #include <cmath>
@@ -89,5 +89,6 @@ int main()
   cout << "Test finished " << endl;
   if(sucess)
   return 0;
+  cout << "Test failed" << endl;
   return -1;
 }

@@ -51,7 +51,7 @@ T bezier<T>::deriv(T t)
         for(int i=0; i<n-j-1; i++)
         result[i] = result[i]*(1-t) + result[i+1]*t;
     }
-    return result[0];
+    return n*result[0];
 }
 
 template<typename T>

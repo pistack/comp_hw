@@ -2,7 +2,7 @@
  * @file test_fourier.cpp
  * @brief test fourier class routine 
  * @author pistack (Junho Lee)
- * @date 2021. 11. 9.
+ * @date 2021. 11. 10.
  */
 
 #include <cmath>
@@ -154,5 +154,6 @@ int main()
     cout << "Test finished" << endl;
     if(sucess)
     return 0;
+    cout << "Test failed" << endl;
     return -1;
 }
