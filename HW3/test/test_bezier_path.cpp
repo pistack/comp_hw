@@ -2,7 +2,7 @@
  * @file test_bezier_path.cpp
  * @brief test bezier_path class routine 
  * @author pistack (Junho Lee)
- * @date 2021. 11. 10.
+ * @date 2021. 11. 11.
  */
 
 #include <cmath>
@@ -87,7 +87,7 @@ int main()
     cout << result[i] << '\t';
     cout << endl;
     // Test 2. 
-    path.update(fun2); /// control point changes to (1, 2, 1) to (0, 2, 1)
+    path.update(fun2); // control point changes to (1, 2, 1) to (0, 2, 1)
     result = path.eval(t);
     for(int i=0; i<4; i++)
     {

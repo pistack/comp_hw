@@ -187,7 +187,7 @@ class action
 	/// @param method numerical integration method
 	/// - method 0: Gauss-Kronrod quadrature method
 	/// - method 1: Tanh-Sinh quadrature method
-	/// @param n  
+	/// @param n  additional parameter
 	/// - order of Gauss-Kronrod quadrature if method equals to 0,
 	///   currently, only support n=15, 21, 31, 41, 51, 61.
 	/// - maximum depth if method equals to 1.
