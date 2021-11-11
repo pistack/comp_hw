@@ -9,8 +9,3 @@ Testing action, bezier, bezier_path, fourier, fourier_path class
 5. test_fourier_path: test fourier path class
 6. test_bezier: test bezier class
 7. test_bezier_path: test bezier_path class
-
-## TODO
-1. reinforce test_bezier_path
-2. simplify test_action_simple
-3. add bezier_path case to test_action_*

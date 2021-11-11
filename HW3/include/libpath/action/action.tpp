@@ -3,7 +3,7 @@
  * @ingroup libpath
  * @brief evaluates action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 10.
+ * @date 2021. 11. 11.
  */
 
 namespace libpath {
@@ -63,7 +63,7 @@ std::vector<T> action<T, Path, Lag>::eval_lagrangian(std::vector<T> t)
 template<typename T, typename Path, typename Lag> template<typename Gau_Kron>
 void action<T, Path, Lag>::eval_helper(T left, T right, T D, T D_tol, T &integral, T &e)
 {
-  const T eps = 10*std::numeric_limits<T>::epsilon();
+  const T eps = std::numeric_limits<T>::epsilon();
   const Gau_Kron table;
   std::vector<T> fnodes(table.order, 0);
   T D_lr;
@@ -149,7 +149,7 @@ T action<T, Path, Lag>::eval_quadgk(T left, T right, int n, T &e)
 template<typename T, typename Path, typename Lag>
 T action<T, Path, Lag>::eval_qthsh(T left, T right, int max_order, T &e)
 {
-  const T eps = 10*std::numeric_limits<T>::epsilon(); // machine eps
+  const T eps = std::numeric_limits<T>::epsilon(); // machine eps
   constexpr T const_e = std::exp(T(1)); // exp constant
   T mid = (left+right)/2;
   T scale_coord = (right-left)/2;
@@ -189,14 +189,14 @@ T action<T, Path, Lag>::eval_qthsh(T left, T right, int max_order, T &e)
     integral_pre = integral; // previous term 
     integral += corr;
     tmp_e = std::abs(h*scale_int*(corr-integral_pre)); //
-    if(tmp_e<atol/2)
+    if(tmp_e<atol)
     break; // integral meets tolerance
     if(std::abs(corr-integral_pre)<=eps*(eps+std::abs(integral)))
     break; // numerical tuncation reaches
     dt_pre = dt;
     dt = std::sqrt(dt_pre);
   }
-  e = 2*tmp_e;
+  e = tmp_e;
   return h*scale_int*integral;
 }
 

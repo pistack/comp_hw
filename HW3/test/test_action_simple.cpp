@@ -86,7 +86,7 @@ class exp_lag{
   exp_lag() {}
   T operator()(T t, vector<T> p, vector<T> dp) const
   {
-    return std::exp(-p[0]);
+    return std::exp(p[0]);
   }
 };
 
@@ -137,16 +137,18 @@ int main(void)
   cout << " Test Integrand which has singularties at end points          " << endl;
   cout << " Test 13. integrate 1/sqrt(sin(pi*x)) from 0 to 1             " << endl;
   cout << " Test 14. integrate 1/sqrt(x) from 0 to 1                     " << endl;
-  cout << " Test 15. integrate 1/sqrt((x-0.9)*(9/8-x)) from 0.9 to 9/8   " << endl;
+  cout << " Test 15. integrate 1/sqrt(x*(1-x)) from 0 to 1               " << endl;
   cout << " Test wildly oscillate integrand                              " << endl;
   cout << " Test 16. integrate sin(2*exp(2*sin(2*exp(2*sin(pi*x))))) from 0 to 2 " << endl;
+
+  PRECISION sqrt_eps = std::sqrt(10*std::numeric_limits<PRECISION>::epsilon());
 
   // exact result
   // values are obtained by wolfram-alpha
   vector<PRECISION> exact {
-    0, 2/pi<PRECISION>, 0, 0.63661977236758134308, 1.15470053837925152902, 0.5, 0, 
+    0, 2/pi<PRECISION>, 0, 0.384900179459750509673, 1.15470053837925152902, 0.5, 0, 
     2.5321317555040166712,
-    0.5, 36.0/11, std::log(2.0), pi<PRECISION>/4, std::sqrt(pi<PRECISION>)*std::erf(1.0)/2,
+    0.5, 36.0/11, std::log(PRECISION(2.0)), pi<PRECISION>/4, std::sqrt(pi<PRECISION>)*std::erf(1.0)/2,
     1.6692536833481463726, 2, pi<PRECISION>,
     0.0561899582642922203122
   };
@@ -166,9 +168,9 @@ int main(void)
   // bezier curve
   vector<PRECISION> B_c1 = {0, 1}; // x
   vector<PRECISION> B_c2 = {1, 2}; // 1+x
-  vector<PRECISION> B_c3 = {1, 2, 2}; // 1+x^2
+  vector<PRECISION> B_c3 = {1, 1, 2}; // 1+x^2
   vector<PRECISION> B_c4 = {0, 0, 1}; // x^2
-  vector<PRECISION> B_c5 = {0, 1, 0}; // x(1-x)
+  vector<PRECISION> B_c5 = {0, 1./2, 0}; // x(1-x)
   vector<PRECISION> B_c6 = {1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1}; // 10th order bezier
 
   #if PRECISION_LEVEL == 0
@@ -180,9 +182,9 @@ int main(void)
   bezier<PRECISION> B_fun1(1, B_c1); // x
   bezier<PRECISION> B_fun2(1, B_c2); // 1+x
   bezier<PRECISION> B_fun3(2, B_c3); // 1+x^2
-  bezier<PRECISION> B_fun4(1, B_c4); // x^2
-  bezier<PRECISION> B_fun5(1, B_c5); // x(1-x)
-  bezier<PRECISION> B_fun6(1, B_c6); // 10 th order bezier
+  bezier<PRECISION> B_fun4(2, B_c4); // x^2
+  bezier<PRECISION> B_fun5(2, B_c5); // x(1-x)
+  bezier<PRECISION> B_fun6(10, B_c6); // 10 th order bezier
   // x
   vector<bezier_path<PRECISION>> B_path1(1, bezier_path<PRECISION>(0, 1, 0, 1, B_fun1));
   // 1+x
@@ -191,8 +193,8 @@ int main(void)
   vector<bezier_path<PRECISION>> B_path3(1, bezier_path<PRECISION>(0, 1, 1, 2, B_fun3));
   // -x^2
   vector<bezier_path<PRECISION>> B_path4(1, bezier_path<PRECISION>(0, 1, 0, -1, B_fun4));
-  // (x-0.9)(9/8-x)
-  vector<bezier_path<PRECISION>> B_path5(1, bezier_path<PRECISION>(0.9, 9./8, 0, 0, B_fun5));
+  // 9/40*(x-0.9)(9/8-x)
+  vector<bezier_path<PRECISION>> B_path5(1, bezier_path<PRECISION>(0, 1, 0, 0, B_fun5));
   // 10 th order bezier
   vector<bezier_path<PRECISION>> B_path6(1, bezier_path<PRECISION>(0, 1, 1, 1, B_fun6));
   // fourier
@@ -277,11 +279,12 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
   }
+  ++tst_num;
   // test 1
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst1.update(*it);
-    cout << " Test 0. atol: " << *it <<  endl;
+    cout << " Test 1. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst1.eval(e);
@@ -318,14 +321,14 @@ int main(void)
   // test 2
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
-    tst1.update(*it);
-    cout << " Test 0. atol: " << *it <<  endl;
+    tst2.update(*it);
+    cout << " Test 2. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
-    tst1.eval(e);
+    tst2.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    result = tst1.eval(e);
+    result = tst2.eval(e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -337,10 +340,10 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst1.eval(1, 7, e);
+    tst2.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    result = tst1.eval(1, 7, e);
+    result = tst2.eval(1, 7, e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -356,14 +359,14 @@ int main(void)
   // test 3
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
-    tst1.update(*it);
-    cout << " Test 0. atol: " << *it <<  endl;
+    tst3.update(*it);
+    cout << " Test 3. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
-    tst1.eval(e);
+    tst3.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    result = tst1.eval(e);
+    result = tst3.eval(e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -375,10 +378,10 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst1.eval(1, 7, e);
+    tst3.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    result = tst1.eval(1, 7, e);
+    result = tst3.eval(1, 7, e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -394,14 +397,14 @@ int main(void)
   // test 4
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
-    tst1.update(*it);
-    cout << " Test 0. atol: " << *it <<  endl;
+    tst4.update(*it);
+    cout << " Test 4. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
-    tst1.eval(e);
+    tst4.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    result = tst1.eval(e);
+    result = tst4.eval(e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -413,10 +416,10 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst1.eval(1, 7, e);
+    tst4.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    result = tst1.eval(1, 7, e);
+    result = tst4.eval(1, 7, e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -432,14 +435,14 @@ int main(void)
   // test 5
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
-    tst1.update(*it);
-    cout << " Test 0. atol: " << *it <<  endl;
+    tst5.update(*it);
+    cout << " Test 5. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
-    tst1.eval(e);
+    tst5.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    result = tst1.eval(e);
+    result = tst5.eval(e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -451,10 +454,10 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst1.eval(1, 7, e);
+    tst5.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    result = tst1.eval(1, 7, e);
+    result = tst5.eval(1, 7, e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -470,14 +473,14 @@ int main(void)
   // test 6
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
-    tst1.update(*it);
-    cout << " Test 0. atol: " << *it <<  endl;
+    tst6.update(*it);
+    cout << " Test 6. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
-    tst1.eval(e);
+    tst6.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    result = tst1.eval(e);
+    result = tst6.eval(e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -489,10 +492,10 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst1.eval(1, 7, e);
+    tst6.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    result = tst1.eval(1, 7, e);
+    result = tst6.eval(1, 7, e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -508,14 +511,14 @@ int main(void)
   // test 7
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
-    tst1.update(*it);
-    cout << " Test 0. atol: " << *it <<  endl;
+    tst7.update(*it);
+    cout << " Test 7. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
-    tst1.eval(e);
+    tst7.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    result = tst1.eval(e);
+    result = tst7.eval(e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -527,10 +530,10 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst1.eval(1, 7, e);
+    tst7.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    result = tst1.eval(1, 7, e);
+    result = tst7.eval(1, 7, e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -546,14 +549,14 @@ int main(void)
   // test 8
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
-    tst1.update(*it);
-    cout << " Test 0. atol: " << *it <<  endl;
+    tst8.update(*it);
+    cout << " Test 8. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
-    tst1.eval(e);
+    tst8.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    result = tst1.eval(e);
+    result = tst8.eval(e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -565,10 +568,10 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst1.eval(1, 7, e);
+    tst8.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    result = tst1.eval(1, 7, e);
+    result = tst8.eval(1, 7, e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -584,14 +587,14 @@ int main(void)
   // test 9 
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
-    tst1.update(*it);
-    cout << " Test 0. atol: " << *it <<  endl;
+    tst9.update(*it);
+    cout << " Test 9. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
-    tst1.eval(e);
+    tst9.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    result = tst1.eval(e);
+    result = tst9.eval(e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -603,10 +606,10 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst1.eval(1, 7, e);
+    tst9.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    result = tst1.eval(1, 7, e);
+    result = tst9.eval(1, 7, e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -622,14 +625,14 @@ int main(void)
   // test 10
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
-    tst1.update(*it);
-    cout << " Test 0. atol: " << *it <<  endl;
+    tst10.update(*it);
+    cout << " Test 10. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
-    tst1.eval(e);
+    tst10.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    result = tst1.eval(e);
+    result = tst10.eval(e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -641,10 +644,10 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst1.eval(1, 7, e);
+    tst10.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    result = tst1.eval(1, 7, e);
+    result = tst10.eval(1, 7, e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -660,14 +663,14 @@ int main(void)
   // test 11
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
-    tst1.update(*it);
-    cout << " Test 0. atol: " << *it <<  endl;
+    tst11.update(*it);
+    cout << " Test 11. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
-    tst1.eval(e);
+    tst11.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    result = tst1.eval(e);
+    result = tst11.eval(e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -679,10 +682,10 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst1.eval(1, 7, e);
+    tst11.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    result = tst1.eval(1, 7, e);
+    result = tst11.eval(1, 7, e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -698,14 +701,14 @@ int main(void)
   // test 12
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
-    tst1.update(*it);
-    cout << " Test 0. atol: " << *it <<  endl;
+    tst12.update(*it);
+    cout << " Test 12. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst1.eval(e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: default (G15, K31) gauss-kronrod quadrature" << endl;
-    result = tst1.eval(e);
+    result = tst12.eval(e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -717,10 +720,10 @@ int main(void)
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/10000.0 << \
     " microsecond" << endl;
     for(int j=0; j<10000; ++j)
-    tst1.eval(1, 7, e);
+    tst12.eval(1, 7, e);
     end = std::chrono::steady_clock::now();
     cout << "Integration Method: Tanh-Sinh Quadrature" << endl;
-    result = tst1.eval(1, 7, e);
+    result = tst12.eval(1, 7, e);
     exact_error = std::abs(result-exact[tst_num]);
     if(exact_error>(*it))
     sucess = false;
@@ -734,37 +737,98 @@ int main(void)
   }
   ++tst_num;
   // singularity in end points
+  // test 13
+  cout << " Test integrand with singularity in end points" << endl;
   for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
-    tst7.update(*it);
-    cout << " Test 7. atol: " << *it <<  endl;
+    tst13.update(*it);
+    cout << " Test 13. atol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<1000; ++j)
-    tst7.eval(1, 10, e);
+    tst13.eval(1, 10, e);
     end = std::chrono::steady_clock::now();
-    cout << "Integration Method: Tanh-Sinh quadrature" << endl;
-    cout << "Integration value: " << tst7.eval(1, 10, e) << endl;
+    result = tst13.eval(1, 10, e);
+    exact_error = std::abs(result-exact[tst_num]);
+    if(exact_error>(*it))
+    sucess = false;
+    cout << "Integration value: " << result << endl;
+    cout << "Exact value from Wolfram-Alpha: " << exact[tst_num] << endl;
     cout << "Estimated error: " << e << endl;
+    cout << "Exact error: " << exact_error << endl;
     cout << "Execution time: " << \
     std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/1000.0 << \
     " microsecond" << endl;
   }
-
-  // perforcemance test
+  ++tst_num;
+  // test 14
   for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
-    tst6.update(*it);
-    cout << " Test 6. atol: " << *it <<  endl;
-    cout << "Integration Method: Gauss-Kron quadrature" << endl;
+    tst14.update(*it);
+    cout << " Test 14. atol: " << *it <<  endl;
+    start = std::chrono::steady_clock::now();
+    for(int j=0; j<1000; ++j)
+    tst14.eval(1, 10, e);
+    end = std::chrono::steady_clock::now();
+    result = tst14.eval(1, 10, e);
+    exact_error = std::abs(result-exact[tst_num]);
+    if(exact_error>(*it))
+    sucess = false;
+    cout << "Integration value: " << result << endl;
+    cout << "Exact value from Wolfram-Alpha: " << exact[tst_num] << endl;
+    cout << "Estimated error: " << e << endl;
+    cout << "Exact error: " << exact_error << endl;
+    cout << "Execution time: " << \
+    std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/1000.0 << \
+    " microsecond" << endl;
+  }
+  ++tst_num;
+  // test 15
+  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
+  {
+    tst15.update(*it);
+    cout << " Test 15. atol: " << *it <<  endl;
+    start = std::chrono::steady_clock::now();
+    for(int j=0; j<1000; ++j)
+    tst15.eval(1, 10, e);
+    end = std::chrono::steady_clock::now();
+    result = tst15.eval(1, 10, e);
+    exact_error = std::abs(result-exact[tst_num]);
+    if(exact_error>(*it) && (*it)>sqrt_eps)
+    sucess = false;
+    if((*it)<sqrt_eps)
+    cout << "Due to turncation error such integral not much accurate than " << sqrt_eps << endl;
+    cout << "Integration value: " << result << endl;
+    cout << "Exact value from Wolfram-Alpha: " << exact[tst_num] << endl;
+    cout << "Estimated error: " << e << endl;
+    cout << "Exact error: " << exact_error << endl;
+    cout << "Execution time: " << \
+    std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/1000.0 << \
+    " microsecond" << endl;
+  }
+  ++tst_num;
+
+  // perforcemance test
+  cout << "Test perforcemance of Gauss-Kronrod quadrature with different nodes" << endl;
+  for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
+  {
+    tst16.update(*it);
+    cout << " Test 16. atol: " << *it <<  endl;
+    cout << "Integration Method: Gauss-Kronrod quadrature" << endl;
     for(int i=0; i<6; ++i)
     {
       start = std::chrono::steady_clock::now();
       for(int j=0; j<1000; ++j)
-      tst6.eval(0, order[i], e);
+      tst16.eval(0, order[i], e);
       end = std::chrono::steady_clock::now();
+      result = tst16.eval(0, order[i], e);
+      exact_error = std::abs(result-exact[tst_num]);
+      if(exact_error>(*it))
+      sucess = false;
       cout << "Order: " << order[i] << endl;
-      cout << "Integration value: " << tst6.eval(0, order[i], e) << endl;
+      cout << "Integration value: " << result << endl;
+      cout << "Exact value from Wolfram-Alpha: " << exact[tst_num] << endl;
       cout << "Estimated error: " << e << endl;
+      cout << "Exact error: " << exact_error << endl;
       cout << "Execution time: " << \
       std::chrono::duration_cast<std::chrono::microseconds>(end-start).count()/1000.0 << \
       " microsecond" << endl;
@@ -772,8 +836,9 @@ int main(void)
   }
   cout << "Test finished!" << endl;
   cout << "==========================================================" << endl;
-
+  if(sucess)
   return 0;
+  return -1;
 }
       
       
