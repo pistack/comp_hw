@@ -10,7 +10,9 @@
  * - gnu make or cmake
  * @section install Installation
  * - gnu make
- *   - Type make, then we can see hw3 executable file in bin directory
+ *   1. modify make.inc file
+ *   2. Type make, then you can see hw3 executable file in bin directory
+ *   3. [optional] type make test to test your compilation
  * - cmake
  *   1. make build directory
  *   2. go to build directory and type cmake .. -Doption_flag=option

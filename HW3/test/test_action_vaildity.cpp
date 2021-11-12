@@ -2,7 +2,7 @@
  * @file test_action_vaildity.cpp
  * @brief test action::is_vaild() routine 
  * @author pistack (Junho Lee)
- * @date 2021. 11. 10.
+ * @date 2021. 11. 12.
  */
 
 #include <cmath>
@@ -10,33 +10,13 @@
 #include <iomanip>
 #include "libpath/fourier_path.hpp"
 #include "libpath/action.hpp"
-
-#if PRECISION_LEVEL == 0
-    #define PRECISION float
-    #define DIGITS 6
-#elif PRECISION_LEVEL == 1
-    #define PRECISION double
-    #define DIGITS 14
-#endif
+#include "test.hpp"
 
 using namespace libpath;
 using namespace std;
 
-#ifndef DOXYGEN_SKIP
-/// dummy lagrangian functor class
-/// used to define action
-template<typename T>
-class zero_lag{
-  public :
-  zero_lag() {}
-  T operator()(T t, vector<T> p, vector<T> dp) const
-  {
-    return 0;
-  }
-};
-#endif /* DOXYGEN_SKIP */
-
-int main()
+namespace test {
+int test_action_vaildity()
 {
   bool sucess = true;
   bool result;
@@ -92,4 +72,5 @@ int main()
   return 0;
   cout << "Test failed" << endl;
   return -1;
+}
 }

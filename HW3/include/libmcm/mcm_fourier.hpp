@@ -77,3 +77,5 @@ libpath::fourier_path<T>, Lag>
 
 };
 }
+
+#include "mcm_fourier/mcm_fourier.tpp"

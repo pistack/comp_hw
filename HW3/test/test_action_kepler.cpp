@@ -2,45 +2,20 @@
  * @file test_action_kepler.cpp
  * @brief test action::eval() routine with kepler action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 10.
+ * @date 2021. 11. 12.
  */
 
-#include <cmath>
 #include <chrono>
 #include <iostream>
 #include "libpath/fourier_path.hpp"
 #include "libpath/action.hpp"
-
-#if PRECISION_LEVEL == 0
-    #define PRECISION float
-    #define DIGITS 6
-#elif PRECISION_LEVEL == 1
-    #define PRECISION double
-    #define DIGITS 14
-#endif
+#include "test.hpp"
 
 using namespace libpath;
 using namespace std;
 
-#ifndef DOXYGEN_SKIP
-template<typename T>
-class kepler_lag{
-
-  public :
-
-  kepler_lag() {}
-
-  T operator()(T t, 
-  vector<T> p, vector<T> dp) const
-  {
-    return 0.5*(pow(dp[0], 2.0)+pow(p[0]*dp[1], 2.0))+
-    1/abs(p[0]);
-  }
-
-};
-#endif /* DOXYGEN_SKIP */
-
-int main(void)
+namespace test {
+int test_action_kepler()
 {
 
   cout << "==========================================================" << endl;
@@ -160,6 +135,7 @@ int main(void)
   if(sucess)
   return 0;
   return -1;
+}
 }
       
       

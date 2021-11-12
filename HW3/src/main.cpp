@@ -232,7 +232,7 @@ int main(void)
   fout.open(filename_coeff);
   fout << '#' << '\t' << "zeta" << '\t' << "theta" << endl;
   #ifdef PATH_TYPE_FOURIER
-  fout << 'ADDER' << endl;
+  fout << "ADDER" << endl;
   fout << adder[0] << '\t' << adder[1] << endl;
   #endif
   fout << "SCALER" << endl;

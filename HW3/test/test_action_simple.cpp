@@ -2,7 +2,7 @@
  * @file test_action_simple.cpp
  * @brief test action::eval() routine with simple function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 11.
+ * @date 2021. 11. 12.
  */
 
 #include <chrono>
@@ -12,110 +12,13 @@
 #include "libpath/bezier_path.hpp"
 #include "libpath/fourier_path.hpp"
 #include "libpath/action.hpp"
-
-#if PRECISION_LEVEL == 0
-    #define PRECISION float
-    #define DIGITS 6
-#elif PRECISION_LEVEL == 1
-    #define PRECISION double
-    #define DIGITS 14
-#endif
+#include "test.hpp"
 
 using namespace libpath;
 using namespace std;
 
-#ifndef DOXYGEN_SKIP
-
-template<typename T>
-class zero_lag{
-  public :
-  zero_lag() {}
-  T operator()(T t, vector<T> p, vector<T> dp) const
-  {
-    return 0;
-  }
-};
-
-template<typename T>
-class id_lag{
-  public :
-  id_lag() {}
-  T operator()(T t, vector<T> p, vector<T> dp) const
-  {
-    return p[0];
-  }
-};
-
-template<typename T>
-class inv_lag{
-
-  public :
-
-  inv_lag() {}
-
-  T operator()(T t, 
-  vector<T> p, vector<T> dp) const
-  {
-    return 1/p[0];
-  }
-};
-
-template<typename T>
-class square_lag{
-  public :
-  square_lag() {}
-  T operator()(T t, vector<T> p, vector<T> dp) const
-  {
-    return p[0]*p[0];
-  }
-};
-
-template<typename T>
-class sine_lag{
-  public :
-  sine_lag() {}
-  T operator()(T t, vector<T> p, vector<T> dp) const
-  {
-    return std::sin(p[0]);
-  }
-};
-
-template<typename T>
-class exp_lag{
-  public :
-  exp_lag() {}
-  T operator()(T t, vector<T> p, vector<T> dp) const
-  {
-    return std::exp(p[0]);
-  }
-};
-
-template<typename T>
-class inv_sqrt_lag{
-
-  public :
-
-  inv_sqrt_lag() {}
-
-  T operator()(T t, 
-  vector<T> p, vector<T> dp) const
-  {
-    return 1/std::sqrt(p[0]);
-  }
-};
-
-template<typename T>
-class weird_lag{
-  public :
-  weird_lag() {}
-  T operator()(T t, vector<T> p, vector<T> dp) const
-  {
-    return std::sin(2*std::exp(2*(std::sin(2*(std::exp(2*p[0]))))));
-  }
-};
-#endif /* DOXYGEN_SKIP */
-
-int main(void)
+namespace test {
+int test_action_simple()
 {
 
   cout << "==============================================================" << endl;
@@ -840,7 +743,7 @@ int main(void)
   return 0;
   return -1;
 }
-      
+}
       
 
   

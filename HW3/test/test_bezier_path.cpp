@@ -2,7 +2,7 @@
  * @file test_bezier_path.cpp
  * @brief test bezier_path class routine 
  * @author pistack (Junho Lee)
- * @date 2021. 11. 11.
+ * @date 2021. 11. 12.
  */
 
 #include <cmath>
@@ -10,19 +10,13 @@
 #include <iomanip>
 #include <limits>
 #include "libpath/bezier_path.hpp"
-
-#if PRECISION_LEVEL == 0
-    #define PRECISION float
-    #define DIGITS 6
-#elif PRECISION_LEVEL == 1
-    #define PRECISION double
-    #define DIGITS 14
-#endif
+#include "test.hpp"
 
 using namespace libpath;
 using namespace std;
 
-int main()
+namespace test {
+int test_bezier_path()
 {
     bool sucess = true;
     PRECISION eps = 100*std::numeric_limits<PRECISION>::epsilon();
@@ -320,4 +314,5 @@ int main()
     return 0;
     cout << "Test failed" << endl;
     return -1;
+}
 }
