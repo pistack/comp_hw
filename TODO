@@ -1,6 +1,10 @@
 HW3
-detailed error analysis
-study Gauss-Kronrod quadrature method
+1. detailed error analysis
+2. study Gauss-Kronrod quadrature method
+3. study tanh-sinh quadrature method 
+4. finalize derived class
+5. add bezier curve result
+6. cmake build system: add test
 
 make plotting script
 1. python (OK)
