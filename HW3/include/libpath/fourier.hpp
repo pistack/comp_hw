@@ -36,7 +36,7 @@ class fourier
 {
 	private:
 
-	int f_num_fourier; // number of sine and cosine function to add
+	unsigned int f_num_fourier; // number of sine and cosine function to add
 	T f_period; // the period of fourier function 
 	std::vector<T> f_c; // coefficients
 
@@ -50,7 +50,7 @@ class fourier
 	/// @param period period of fourier function
 	/// @param c coefficients of fourier function
 
-	fourier(int num_fourier, T period, std::vector<T> c)
+	fourier(unsigned int num_fourier, T period, std::vector<T> c)
 	: f_num_fourier(num_fourier), f_period(period), f_c(c) {}
 
 	/// @brief copy constructer of fourier class
@@ -101,14 +101,14 @@ class fourier
 	/// @param t points to evaluate the derivative of fourier function
 	/// @return values of the nth order derivative of fourier function
 	/// evaluated at t
-	T nderiv(int n, T t);
+	T nderiv(unsigned int n, T t);
 
 	/// @brief evaluate the nth derivative of fourier function
 	/// @param n order of derivative to compute
 	/// @param t points to evaluate the derivative of fourier function
 	/// @return values of the nth order derivative of fourier function
 	/// evaluated at t
-	std::vector<T> nderiv(int n, std::vector<T> t);
+	std::vector<T> nderiv(unsigned int n, std::vector<T> t);
 };
 }
 

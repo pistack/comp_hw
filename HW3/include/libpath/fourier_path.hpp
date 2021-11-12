@@ -158,14 +158,14 @@ class fourier_path
 	/// @param n order of derivative to compute
 	/// @param t points to evaluate
 	/// @return the nth order derivative of path evaluated at t
-	T nderiv(int n, T t)
+	T nderiv(unsigned int n, T t)
 	{return scale*p_func.nderiv(n, t);}
 
 	/// @brief evaluate the nth derivative of path
 	/// @param n order of derivative to compute
 	/// @param t points to evaluate
 	/// @return the nth order derivative of path evaluated at t
-	std::vector<T> nderiv(int n, std::vector<T> t);
+	std::vector<T> nderiv(unsigned int n, std::vector<T> t);
 };
 }
 

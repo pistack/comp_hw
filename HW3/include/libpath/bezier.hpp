@@ -3,7 +3,7 @@
  * @ingroup libpath
  * @brief headerfile for bezier curve and path approximated by bezier curve
  * @author pistack (Junho Lee)
- * @date 2021. 11. 10.
+ * @date 2021. 11. 12.
  */
 
 #ifndef BEZIER_H
@@ -26,7 +26,7 @@ template<typename T>
 class bezier
 {
     private:
-    int n; // order of Bezier curve
+    unsigned int n; // order of Bezier curve
     std::vector<T> c; // control points of Bezier curve
 
     public:
@@ -36,7 +36,7 @@ class bezier
     /// @brief initialize bezier class
     /// @param n_ order of Bezier curve
     /// @param c_ control points of Bezier curve
-    bezier(int n_, std::vector<T> c_)
+    bezier(unsigned int n_, std::vector<T> c_)
     : n(n_), c(c_)
     {}
 

@@ -3,7 +3,7 @@
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 10.
+ * @date 2021. 11. 12.
  */
 
 #ifndef ACTION_H
@@ -96,7 +96,7 @@ class action
 	/// @param[out] e estimated error
 	/// @return action of given path
 
-	T eval_quadgk(T left, T right, int n, T &e);
+	T eval_quadgk(T left, T right, unsigned int n, T &e);
 
 	/// @brief evaluate the action of given path
 	/// tanh-sinh quadrature method
@@ -108,7 +108,7 @@ class action
 	/// @param[out] e estimated error 
 	/// @return action of given path
 
-	T eval_qthsh(T left, T right, int max_depth, T &e);
+	T eval_qthsh(T left, T right, unsigned int max_depth, T &e);
 
 	public:
     /// @brief initialize action class
@@ -194,7 +194,7 @@ class action
 	/// @param[out] e estimated error
 	/// @return action of given path
 
-	T eval(int method, int n, T &e);
+	T eval(int method, unsigned int n, T &e);
 };
 }
 

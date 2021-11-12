@@ -3,7 +3,7 @@
  * @ingroup libpath
  * @brief define and evaluates bezier curve
  * @author pistack (Junho Lee)
- * @date 2021. 11. 10.
+ * @date 2021. 11. 12.
  */
 
 namespace libpath {
@@ -14,9 +14,9 @@ template<typename T>
 T bezier<T>::eval(T t)
 {
     std::vector<T> result = c; // store beta_i^{0}
-    for(int j=0; j < n; j++)
+    for(unsigned int j=0; j < n; ++j)
     {
-        for(int i=0; i<n-j; i++)
+        for(unsigned int i=0; i<n-j; ++i)
         result[i] = result[i]*(1-t) + result[i+1]*t;
     }
     return result[0];
@@ -27,7 +27,7 @@ std::vector<T> bezier<T>::eval(std::vector<T> t)
 {
     std::size_t dim = t.size();
     std::vector<T> result(dim, 0);
-    for(std::size_t i=0; i<dim; i++)
+    for(std::size_t i=0; i<dim; ++i)
     result[i] = eval(t[i]);
 
     return result;
@@ -43,12 +43,12 @@ T bezier<T>::deriv(T t)
 {
     std::vector<T> result(n, 0); 
     // store beta_i^{0}
-    for(int i=0; i<n; i++)
+    for(unsigned int i=0; i<n; ++i)
     result[i] = c[i+1] - c[i];
 
-    for(int j=0; j < n-1; j++)
+    for(int j=0; j < n-1; ++j)
     {
-        for(int i=0; i<n-j-1; i++)
+        for(unsigned int i=0; i<n-j-1; ++i)
         result[i] = result[i]*(1-t) + result[i+1]*t;
     }
     return n*result[0];
@@ -59,7 +59,7 @@ std::vector<T> bezier<T>::deriv(std::vector<T> t)
 {
     std::size_t dim = t.size();
     std::vector<T> result(dim, 0);
-    for(std::size_t i=0; i<dim; i++)
+    for(std::size_t i=0; i<dim; ++i)
     result[i] = deriv(t[i]);
     return result;
 }

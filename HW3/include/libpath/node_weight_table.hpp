@@ -3,7 +3,7 @@
  * @ingroup libpath
  * @brief table for node and weights
  * @author pistack (Junho Lee)
- * @date 2021. 11. 11.
+ * @date 2021. 11. 12.
  */
 
 #ifndef NODE_WEIGHT_TABLE_H
@@ -19,11 +19,11 @@ namespace libpath{
 /// [gau-kronrod-nodes-weights]
 /// (https://www.advanpix.com/2011/11/07/gauss-kronrod-quadrature-nodes-weights/)
 /// @ingroup libpath
-template<typename T, int N>
+template<typename T, unsigned int N>
 class gau_kron_table
 {
     public:
-    int order; ///< order of gauss-kronrod quadrature;
+    unsigned int order; ///< order of gauss-kronrod quadrature;
     std::vector<T> nodes; ///< node of gauss-kronrod quadrature;
     std::vector<T> weight_gauss; ///< weight of gauss quadrature;
     std::vector<T> weight_kronrod; ///< weight of kronrod quadrature;
@@ -34,7 +34,7 @@ template<typename T>
 class gau_kron_table<T, 15>
 {
     public:
-    const int order = 15;
+    const unsigned int order = 15;
     const std::vector<T> nodes
     {
         9.914553711208126392068546975263285e-01l,
@@ -69,7 +69,7 @@ template<typename T>
 class gau_kron_table<T, 21>
 {
     public:
-    const int order = 21;
+    const unsigned int order = 21;
     const std::vector<T> nodes
     {
         9.956571630258080807355272806890028e-01l,
@@ -111,7 +111,7 @@ template<typename T>
 class gau_kron_table<T, 31>
 {
     public:
-    const int order = 31;
+    const unsigned int order = 31;
     const std::vector<T> nodes
     {
         9.980022986933970602851728401522712e-01l, 
@@ -166,7 +166,7 @@ template<typename T>
 class gau_kron_table<T, 41>
 {
     public:
-    const int order=41;
+    const unsigned int order=41;
     const std::vector<T> nodes
     {
         9.988590315882776638383155765458630e-01l,
@@ -233,7 +233,7 @@ template<typename T>
 class gau_kron_table<T, 51>
 {
     public:
-    const int order=51;
+    const unsigned int order=51;
     const std::vector<T> nodes
     {
         9.992621049926098341934574865403406e-01l,
@@ -313,7 +313,7 @@ template<typename T>
 class gau_kron_table<T, 61>
 {
     public:
-    const int order = 61;
+    const unsigned int order = 61;
     const std::vector<T> nodes
     {
         9.994844100504906375713258957058108e-01l,

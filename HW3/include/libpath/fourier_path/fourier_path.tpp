@@ -3,7 +3,7 @@
  * @ingroup libpath
  * @brief evaluate path and derivative
  * @author pistack (Junho Lee)
- * @date 2021. 11. 10.
+ * @date 2021. 11. 12.
  */
 
 namespace libpath {
@@ -52,10 +52,9 @@ template<typename T>
 std::vector<T> fourier_path<T>::eval(std::vector<T> t)
 {
   // init variable
-  int n = t.size();
   T scaler = scale;
   T adder = add;
-  std::vector<T> result(n, 0);
+  std::vector<T> result = t;
   
   result = p_func.eval(t);
 
@@ -72,9 +71,8 @@ template<typename T>
 std::vector<T> fourier_path<T>::deriv(std::vector<T> t)
 {
   // init variable
-  int n = t.size();
   T scaler = scale;
-  std::vector<T> result(n, 0);
+  std::vector<T> result = t;
   
   result = p_func.deriv(t);
 
@@ -85,12 +83,11 @@ std::vector<T> fourier_path<T>::deriv(std::vector<T> t)
 }
 
 template<typename T>
-std::vector<T> fourier_path<T>::nderiv(int n, std::vector<T> t)
+std::vector<T> fourier_path<T>::nderiv(unsigned int n, std::vector<T> t)
 {
   // init variable
-  int n_t = t.size();
   T scaler = scale;
-  std::vector<T> result(n_t, 0);
+  std::vector<T> result = t;
   
   result = p_func.nderiv(n, t);
 

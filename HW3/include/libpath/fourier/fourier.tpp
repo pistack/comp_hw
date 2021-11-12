@@ -3,7 +3,7 @@
  * @ingroup libpath
  * @brief evaluate sum and derivative of sine and cosine function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 10.
+ * @date 2021. 11. 12.
  */
 
 namespace libpath {
@@ -11,12 +11,12 @@ namespace libpath {
 template<typename T>
 T fourier<T>::eval(T t)
 {
-	int term = 2*f_num_fourier;
+	unsigned int term = 2*f_num_fourier;
 	T omega = 2*pi<T>/f_period;
 	T tmp=0;
 	T y=0;
 	
-	for(int j=0; j<term; ++++j)
+	for(unsigned int j=0; j<term; ++++j)
 	{
 		tmp += omega;
 		y += f_c[j]*std::sin(tmp*t);
@@ -29,7 +29,7 @@ T fourier<T>::eval(T t)
 template<typename T>
 std::vector<T> fourier<T>::eval(std::vector<T> t)
 {
-	int term = 2*f_num_fourier;
+	unsigned int term = 2*f_num_fourier;
 	std::size_t n = t.size();
 	T omega = 2*pi<T>/f_period;
 	std::vector<T> y(n, 0);
@@ -51,12 +51,12 @@ std::vector<T> fourier<T>::eval(std::vector<T> t)
 template<typename T>
 T fourier<T>::deriv(T t)
 {
-	int term = 2*f_num_fourier;
+	unsigned int term = 2*f_num_fourier;
 	T omega = 2*pi<T>/f_period;
 	T tmp=0;
 	T yp=0;
 	
-	for(int j=0; j<term; ++++j)
+	for(unsigned int j=0; j<term; ++++j)
 	{
 		tmp += omega;
 		yp += f_c[j]*tmp*std::cos(tmp*t);
@@ -69,7 +69,7 @@ T fourier<T>::deriv(T t)
 template<typename T>
 std::vector<T> fourier<T>::deriv(std::vector<T> t)
 {
-	int term = 2*f_num_fourier;
+	unsigned int term = 2*f_num_fourier;
 	std::size_t n = t.size();
 	T omega = 2*pi<T>/f_period;
 	std::vector<T> yp(n, 0);
@@ -77,7 +77,7 @@ std::vector<T> fourier<T>::deriv(std::vector<T> t)
 	for(std::size_t i=0; i<n; ++i)
 	{
 		T tmp = 0;
-		for(int j=0; j<term; ++++j)
+		for(unsigned int j=0; j<term; ++++j)
 		{
 			tmp += omega;
 			yp[i] += f_c[j]*tmp*std::cos(tmp*t[i]);
@@ -88,9 +88,9 @@ std::vector<T> fourier<T>::deriv(std::vector<T> t)
 }
 
 template<typename T>
-T fourier<T>::nderiv(int n, T t)
+T fourier<T>::nderiv(unsigned int n, T t)
 {
-	int term = 2*f_num_fourier;
+	unsigned int term = 2*f_num_fourier;
 	T omega = 2*pi<T>/f_period;
 	T tmp=0;
 	T yp=0;
@@ -108,7 +108,7 @@ T fourier<T>::nderiv(int n, T t)
 			*iter *= -1;
 		}
 	}
-	for(int j=0; j<term; ++++j)
+	for(unsigned int j=0; j<term; ++++j)
 	{
 		T tmpower;
 		tmp += omega;
@@ -123,9 +123,9 @@ T fourier<T>::nderiv(int n, T t)
 }
 
 template<typename T>
-std::vector<T> fourier<T>::nderiv(int n, std::vector<T> t)
+std::vector<T> fourier<T>::nderiv(unsigned int n, std::vector<T> t)
 {
-	int term = 2*f_num_fourier;
+	unsigned int term = 2*f_num_fourier;
 	std::size_t n_t = t.size();
 	T omega = 2*pi<T>/f_period;
 	std::vector<T> c(term, 0);
@@ -161,7 +161,7 @@ std::vector<T> fourier<T>::nderiv(int n, std::vector<T> t)
 	for(std::size_t i=0; i<n_t; ++i)
 	{
 		T tmp = 0;
-		for(int j=0; j<term; ++++j)
+		for(unsigned int j=0; j<term; ++++j)
 		{
 			T tmpower;
 			tmp += omega;

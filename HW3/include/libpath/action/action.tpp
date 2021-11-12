@@ -3,7 +3,7 @@
  * @ingroup libpath
  * @brief evaluates action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 11.
+ * @date 2021. 11. 12.
  */
 
 namespace libpath {
@@ -12,10 +12,10 @@ namespace libpath {
 template<typename T, typename Path, typename Lag>
 void action<T, Path, Lag>::check_vaild()
 {
-  int n = path_action.size();
+  unsigned int n = path_action.size();
   vaildity = false;
 
-  for(int i=0; i<n; ++i)
+  for(unsigned int i=0; i<n; ++i)
   {
     if(! path_action[i].is_vaild())
     return;
@@ -27,11 +27,11 @@ void action<T, Path, Lag>::check_vaild()
 template<typename T, typename Path, typename Lag>
 T action<T, Path, Lag>::eval_lagrangian(T t)
 {
-  int n = path_action.size();
+  unsigned int n = path_action.size();
   std::vector<T> p(n, 0); // path
   std::vector<T> dp(n, 0); // derivative of path
 
-  for(int i=0; i<n; ++i)
+  for(unsigned int i=0; i<n; ++i)
   {
     p[i] = path_action[i].eval(t);
     dp[i] = path_action[i].deriv(t);
@@ -42,15 +42,15 @@ T action<T, Path, Lag>::eval_lagrangian(T t)
 template<typename T, typename Path, typename Lag>
 std::vector<T> action<T, Path, Lag>::eval_lagrangian(std::vector<T> t)
 {
-  int n = path_action.size();
-  int m = t.size();
+  unsigned int n = path_action.size();
+  unsigned int m = t.size();
   std::vector<T> p(n, 0); // path
   std::vector<T> dp(n, 0); // derivative of path
   std::vector<T> lag_val(m, 0); // result
 
-  for(int j=0; j<m; ++j)
+  for(unsigned int j=0; j<m; ++j)
   {
-    for(int i=0; i<n; ++i)
+    for(unsigned int i=0; i<n; ++i)
     {
       p[i] = path_action[i].eval(t[j]);
       dp[i] = path_action[i].deriv(t[j]);
@@ -72,29 +72,41 @@ void action<T, Path, Lag>::eval_helper(T left, T right, T D, T D_tol, T &integra
   T mean_abs = 0;
   T integral_l=0, integral_r=0; // left and right integral
   T e_l=0, e_r=0; // left and right error
+
+  // calculate gauss and kronrod quadrature
+  // calculate lagrangian at nodes
   fnodes[(table.order-1)/2] = mid;
-  for(int i=0; i<(table.order-1)/2; ++i)
+  for(unsigned int i=0; i<(table.order-1)/2; ++i)
   {
     T tmp = (1.0+table.nodes[i])*scale_factor;
     fnodes[i] = right-tmp;
     fnodes[table.order-1-i] = tmp+left;
   }
   fnodes = eval_lagrangian(fnodes);
+
+  // now integrate
   T int_kron=table.weight_kronrod[(table.order-1)/2]*fnodes[(table.order-1)/2];
   T int_gauss=0;
+  // for gauss quadrature, zero only appears when order n = 4k+3
   if(table.order % 4 == 3)
   int_gauss=table.weight_gauss[(table.order-3)/4]*fnodes[(table.order-1)/2];
-  for(int i=0; i<(table.order-1)/2; ++i)
+
+  // gauss and kronrod quadrature formula
+  for(unsigned int i=0; i<(table.order-1)/2; ++i)
   {
     int_kron += table.weight_kronrod[i]*(fnodes[i]+fnodes[table.order-1-i]);
     if(i %2 != 0)
     int_gauss += table.weight_gauss[(i-1)/2]*(fnodes[i]+fnodes[table.order-1-i]);
   }
 
+  // estimate error
   D_lr = int_kron - int_gauss;
   T length = std::abs(right-left);
   T tmp = std::abs(D_lr);
   T tmp_e = 200*tmp*length;
+
+  // integral is converged when
+  // estimated error is lower than atol
   if(tmp*std::sqrt(tmp*length) < D_tol)
   {
     integral = scale_factor*int_kron;
@@ -102,10 +114,10 @@ void action<T, Path, Lag>::eval_helper(T left, T right, T D, T D_tol, T &integra
     return;
   }
 
-  /// stop recurrsion due to tuncation
-  /// difference of Dlr and D is less than 
-  /// numerical epsilon 
-  /// (estimated by 10*machine_eps*mean of abs value of function)
+  // stop recurrsion due to tuncation
+  // difference of Dlr and D is less than 
+  // numerical epsilon 
+  // (estimated by machine_eps*mean of abs value of function)
   mean_abs = (std::abs(fnodes[0])+
   std::abs(fnodes[(table.order-1)/2])+std::abs(fnodes[table.order-1]))/3;
   if(std::abs(D_lr-D) < eps*mean_abs)
@@ -124,7 +136,7 @@ void action<T, Path, Lag>::eval_helper(T left, T right, T D, T D_tol, T &integra
 }
 
 template<typename T, typename Path, typename Lag>
-T action<T, Path, Lag>::eval_quadgk(T left, T right, int n, T &e)
+T action<T, Path, Lag>::eval_quadgk(T left, T right, unsigned int n, T &e)
 { 
 
   T D_tol = atol/1000/std::abs(right-left);
@@ -147,7 +159,7 @@ T action<T, Path, Lag>::eval_quadgk(T left, T right, int n, T &e)
 }
 
 template<typename T, typename Path, typename Lag>
-T action<T, Path, Lag>::eval_qthsh(T left, T right, int max_order, T &e)
+T action<T, Path, Lag>::eval_qthsh(T left, T right, unsigned int max_order, T &e)
 {
   const T eps = std::numeric_limits<T>::epsilon(); // machine eps
   constexpr T const_e = std::exp(T(1)); // exp constant
@@ -161,7 +173,7 @@ T action<T, Path, Lag>::eval_qthsh(T left, T right, int max_order, T &e)
   T integral = eval_lagrangian(mid); // integration value
   T tmp_e = 0; // error estimation
 
-  for(int depth=0; depth<= max_order; ++depth)
+  for(unsigned int depth=0; depth<= max_order; ++depth)
   {
     T t = dt;
     T q = 0; 
@@ -212,7 +224,7 @@ T action<T, Path, Lag>::eval(T &e)
 }
 
 template<typename T, typename Path, typename Lag>
-T action<T, Path, Lag>::eval(int method, int n, T &e)
+T action<T, Path, Lag>::eval(int method, unsigned int n, T &e)
 {
   if(! vaildity)
   return 0;
