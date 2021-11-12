@@ -1,12 +1,28 @@
 /*!
  * @file main.cpp
  * @brief main program for homework3 of Computer1 class in Yonsei University
- * Interactively reads inital condition, number of sine function used for guess,
- * number of points to evaluate, number of interation, step size and
+ * Interactively reads inital condition, order of basis function,
+ * number of points to evaluate, number of iteration, step size, parameter lambda and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
  * @date 2021. 11. 12.
  */
+
+#ifndef PATH_TYPE_FOURIER
+#define PATH_TYPE_FOURIER // use default path type: fourier_path
+#endif
+
+#ifdef PATH_TYPE_BEZIER
+#undef PATH_TYPE_FOURIER
+#endif 
+
+#ifndef PRECISION_LEVEL
+#define PRECISION_LEVEL 1 // use default precision: double
+#endif
+
+#ifndef MONITOR
+#define MONITOR 0 // default: does not monitor optimization process
+#endif
 
 #include <algorithm>
 #include <cmath>
@@ -15,7 +31,14 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+
+#ifdef PATH_TYPE_FOURIER
 #include "libmcm/mcm_fourier.hpp"
+#endif
+
+#ifdef PATH_TYPE_BEZIER
+#include "libmcm/mcm_bezier.hpp"
+#endif
 
 #if PRECISION_LEVEL == 0
     #define PRECISION float
@@ -110,12 +133,20 @@ int main(void)
   PRECISION zeta_max = zeta_min/(2*zeta_min-1);
   PRECISION a = (zeta_min+zeta_max)/2;
   PRECISION tmax = pi*pow(a, 1.5);
-  PRECISION add_setup = 2*tmax;
   vector<PRECISION> p0 = {zeta_min, 0};
   vector<PRECISION> p1 = {zeta_max, pi};
+  #ifdef PATH_TYPE_FOURIER
+  PRECISION add_setup = 2*tmax;
   libmcm::mcm_fourier<PRECISION, 
   kepler_lag<PRECISION>> kepler(PRECISION(0), 
   tmax, p0, p1, atol, order, add_setup);
+  #endif
+
+  #ifdef PATH_TYPE_BEZIER
+  libmcm::mcm_bezier<PRECISION, 
+  kepler_lag<PRECISION>> kepler(PRECISION(0), 
+  tmax, p0, p1, atol, order);
+  #endif
 
   kepler.set_init_guess();
   // variable to get optimization state

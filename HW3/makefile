@@ -2,12 +2,18 @@
 
 CXX = g++
 INC = -I include/
-# CPPFLAGS = -O -g -Wall -Werror -pedantic -D MONITOR=0 -D PRECISION_LEVEL=1 $(INC)
-CPPFLAGS = -O -g -Wall -pedantic -D MONITOR=0 -D PRECISION_LEVEL=1 $(INC)
-# CPPFLAGS = -O3 -D MONITOR=1 -D PRECISION_LEVEL=0 $(INC) # for single precision
-# CPPFLAGS = -O3 -D MONITOR=1 -D PRECISION_LEVEL=1 $(INC) # for double precision
-# CPPFLAGS = -O3 -D MONITOR=0 -D PRECISION_LEVEL=0 $(INC) # for single precision
-# CPPFLAGS = -O3 -D MONITOR=0 -D PRECISION_LEVEL=1 $(INC) # for double precision
+
+PRECISION_LEVEL = 0 # precision level 0: single, 1: double
+MONITOR = 0 # Monitor optimization process 0: no, 1: yes
+# PATH_TYPE: PATH_TYPE_BEZIER: bezier curve
+# PATH_TYPE: PATH_TYPE_FOURIER: fourier function
+PATH_TYPE = PATH_TYPE_BEZIER 
+
+DFLAGS = -D MONITOR=$(MONITOR) -D PRECISION_LEVEL=$(PRECISION_LEVEL) -D $(PATH_TYPE)
+# DEBUG
+CPPFLAGS = -O -g -Wall -pedantic $(DFLAGS) $(INC)
+# RELEASE
+CPPFLAGS = -O3 $(DFLAGS) $(INC)
 
 OBJS = ./src/main.o 
 TEST1_OBJS = ./test/test_action_vaildity.o
