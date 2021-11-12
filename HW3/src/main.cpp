@@ -86,8 +86,8 @@ int main(void)
   std::chrono::steady_clock::time_point end;
   PRECISION atol; // abs tol of action integral
   PRECISION e; // estimated error
-  int num_eval; // number of points to eval
-  int order; // order of basis function
+  unsigned int num_eval; // number of points to eval
+  unsigned int order; // order of basis function
   std::size_t max_iter; // number of iteration
   PRECISION zeta_min; // minimum value of zeta
   PRECISION t0; // initial time
@@ -95,7 +95,7 @@ int main(void)
   PRECISION lambda; // parameter to accept move
   PRECISION min_action; // minimum action value
   string filename; // file name to store results
-  // string filename_coeff; // file name to store coeffcients
+  string filename_coeff; // file name to store coeffcients
   ofstream fout; // file output stream
   #ifdef MONITOR
   string filename_monitor; // file name to monitor optimization process
@@ -109,7 +109,12 @@ int main(void)
   cin >> zeta_min;
   cout << " absolute tolerance of action: ";
   cin >> atol;
-  cout << " order of basis function: ";
+  #ifdef PATH_TYPE_FOURIER
+  cout << " number of sine and cosine function to use: ";
+  #endif
+  #ifdef PATH_TYPE_BEZIER
+  cout << " order of bezier curve: ";
+  #endif
   cin >> order;
   cout << " number of points to evaluate path: ";
   cin >> num_eval;
@@ -121,8 +126,8 @@ int main(void)
   cin >> max_iter;
   cout << " file name to store result: ";
   cin >> filename;
-  // cout << " file name to store coefficient: ";
-  // cin >> filename_coeff;
+  cout << " file name to store coefficient: ";
+  cin >> filename_coeff;
   #if MONITOR == 1
   cout << " file name to monitor optimization process: ";
   cin >> filename_monitor;
@@ -175,15 +180,28 @@ int main(void)
   min_action = kepler.get_min_action(e);
 
   // store coefficients
-  // vector<PRECISION> adder;
-  // vector<PRECISION> scaler;
-  // vector<vector<PRECISION>> coeff;
+  // fourier
+  #ifdef PATH_TYPE_FOURIER
+  vector<PRECISION> adder;
+  vector<PRECISION> scaler;
+  vector<vector<PRECISION>> coeff;
 
-  // tie(adder, scaler, coeff) = 
-  // kepler.get_min_coeff();
+  tie(adder, scaler, coeff) = kepler.get_min_coeff();
 
-  // int dim1 = adder.size();
-  // int dim2 = coeff[0].size();
+  unsigned int dim1 = adder.size();
+  unsigned int dim2 = coeff[0].size();
+  #endif
+
+  // bezier
+  #ifdef PATH_TYPE_BEZIER
+  vector<PRECISION> scaler;
+  vector<vector<PRECISION>> coeff;
+
+  tie(scaler, coeff) = kepler.get_min_coeff();
+
+  unsigned int dim1 = scaler.size();
+  unsigned int dim2 = coeff[0].size();
+  #endif
 
   // move t by t0
   transform(t.begin(), t.end(), t.begin(),
@@ -208,11 +226,23 @@ int main(void)
   fout << '#' << 't' << '\t' << "zeta" << '\t' << "theta" << endl;
   fout.unsetf(ios::floatfield); // initialize floatfield
   fout.precision(DIGITS); // print significant digits
-  for(int i=0; i < num_eval+1; i++)
+  for(unsigned int i=0; i < num_eval+1; i++)
     fout << t[i] << '\t' << result[0][i] << '\t' << result[1][i] << endl;
   fout.close();
+  fout.open(filename_coeff);
+  fout << '#' << '\t' << "zeta" << '\t' << "theta" << endl;
+  #ifdef PATH_TYPE_FOURIER
+  fout << 'ADDER' << endl;
+  fout << adder[0] << '\t' << adder[1] << endl;
+  #endif
+  fout << "SCALER" << endl;
+  fout << scaler[0] << '\t' << scaler[1] << endl;
+  fout << "COEFF" << endl;
+  for(unsigned int i=0; i<dim2; ++i)
+  fout << coeff[0][i] << '\t' << coeff[1][i] << endl;
+  fout.close(); 
   cout << " Save result to " << filename << endl;
-  // cout << " Save coeffcients to " << filename_coeff << endl;
+  cout << " Save coeffcients to " << filename_coeff << endl;
   cout << " Teriminates program, good bye :) " << endl;
   cout << "==========================================================" << endl;
 

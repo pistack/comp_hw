@@ -62,17 +62,16 @@ libpath::bezier_path<T>, Lag>
     /// initial guess
     /// @return tuple of scaler and coefficients
     /// of initial guess
-    std::tuple<std::vector<T>, std::vector<T>,
-    std::vector<std::vector<T>>>
+    std::tuple<std::vector<T>, std::vector<std::vector<T>>>
     get_init_coeff();
 
     /// @brief get scaler and coefficients of
     /// minimal guess
     /// @return tuple of scaler and coefficients
     /// of minimal guess
-    std::tuple<std::vector<T>, std::vector<T>,
-    std::vector<std::vector<T>>>
+    std::tuple<std::vector<T>, std::vector<std::vector<T>>>
     get_min_coeff();
 
 };
 }
+#include "mcm_bezier/mcm_bezier.tpp"
