@@ -75,9 +75,12 @@ class fourier
     /// @return number of terms need to define
     /// fourier function 
     unsigned int terms(unsigned int n_f) const
-    {
-        return 2*n_f;
-    }
+    {return 2*n_f;}
+
+	/// @brief get fourier coefficients
+	/// @return fourier coefficients
+	std::vector<T> get_coeff() const
+	{return f_c;}
 
     /// @brief update coefficients
 	/// @param c coefficients of fourier function

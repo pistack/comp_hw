@@ -15,8 +15,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "libpath/bezier_path.hpp"
-#include "libmcm/mcm.hpp"
+#include "libmcm/mcm_fourier.hpp"
 
 #if PRECISION_LEVEL == 0
     #define PRECISION float
@@ -114,8 +113,7 @@ int main(void)
   PRECISION add_setup = 2*tmax;
   vector<PRECISION> p0 = {zeta_min, 0};
   vector<PRECISION> p1 = {zeta_max, pi};
-  libmcm::mcm<PRECISION, libpath::bezier<PRECISION>,
-  libpath::bezier_path<PRECISION>,
+  libmcm::mcm_fourier<PRECISION, 
   kepler_lag<PRECISION>> kepler(PRECISION(0), 
   tmax, p0, p1, atol, order, add_setup);
 

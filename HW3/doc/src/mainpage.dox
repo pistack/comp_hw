@@ -48,9 +48,9 @@
  *
  * @defgroup libpath libpath
  * @brief template library which
- *  1. define support function (fourier function, bezier curve)
+ *  1. define basis function (fourier function, bezier curve)
  *  2. approximate path using support function
- *  3. compute the action of path approximated by support function
+ *  3. compute the action of path approximated by basis function
  *
  * @defgroup libmcm libmcm
  * @brief template library which 

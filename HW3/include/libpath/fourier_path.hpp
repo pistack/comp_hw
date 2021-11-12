@@ -132,6 +132,11 @@ class fourier_path
 	T get_scaler() const
 	{return scale;}
 
+	/// @brief get fourier coefficients
+	/// @return fourier coefficients
+	std::vector<T> get_coeff() const
+	{return p_func.get_coeff();}
+
 	/// @brief evaluate the path
 	/// @param t points to evaluate the path
 	/// @return the path evaluated at t

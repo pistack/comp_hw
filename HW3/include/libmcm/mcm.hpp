@@ -36,7 +36,7 @@ namespace libmcm {
 /// @param Basis type of basis used to approximate
 /// path
 /// @param Path type of path
-/// @param Lag lagranian of action
+/// @param Lag lagrangian of action
 /// functor class which has
 /// time, path and derivative of path
 /// as variable and it returns
@@ -56,7 +56,7 @@ class mcm
    std::vector<T> p0, p1; // initial and final value of path
 
    // setup for basis
-   int order;
+   unsigned int order;
    T add_setup;
 
    // action
@@ -98,7 +98,7 @@ class mcm
    /// @param order_ order of basis function
    mcm(T t_0, T t_1, 
    std::vector<T> p_0, std::vector<T> p_1,
-   T abs_tol, int order_)
+   T abs_tol, unsigned int order_)
    : t0(t_0), t1(t_1), p0(p_0), p1(p_1), \
    order(order_), add_setup(0)
    {
@@ -115,7 +115,7 @@ class mcm
    /// @param add_setup_ additional setup used to define basis function
    mcm(T t_0, T t_1, 
    std::vector<T> p_0, std::vector<T> p_1,
-   T abs_tol, int order_, T add_setup_)
+   T abs_tol, unsigned int order_, T add_setup_)
    : t0(t_0), t1(t_1), p0(p_0), p1(p_1), \
    order(order_), add_setup(add_setup_)
    {
@@ -174,7 +174,7 @@ class mcm
    /// @brief get minimum path
    /// @return minimum path
    std::vector<Path>
-   get_min_coeff() const
+   get_min_path() const
    {return min_path;}
 
    /// @brief evaluate minimum path at given t
