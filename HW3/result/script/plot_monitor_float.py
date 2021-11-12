@@ -24,26 +24,31 @@ monitor2 = np.fromfile('monitor2f.bin', np.float32)
 monitor3 = np.fromfile('monitor3f.bin', np.float32)
 monitor4 = np.fromfile('monitor3f_2.bin', np.float32)
 monitor5 = np.fromfile('monitor4f_2.bin', np.float32)
+monitor6 = np.fromfile('monitor6f_b.bin', np.float32)
 monitor1_reshape = monitor1.reshape(int(monitor1.size/2), 2)
 monitor2_reshape = monitor2.reshape(int(monitor2.size/2), 2)
 monitor3_reshape = monitor3.reshape(int(monitor3.size/2), 2)
 monitor4_reshape = monitor4.reshape(int(monitor4.size/2), 2)
 monitor5_reshape = monitor5.reshape(int(monitor5.size/2), 2)
+monitor6_reshape = monitor6.reshape(int(monitor6.size/2), 2)
 converged_dist = monitor1_reshape[burn:, 0]
 converged_dist2 = monitor2_reshape[burn:, 0]
 converged_dist3 = monitor3_reshape[burn:, 0]
 converged_dist4 = monitor4_reshape[burn:, 0]
 converged_dist5 = monitor5_reshape[burn:, 0]
+converged_dist6 = monitor6_reshape[burn:, 0]
 prob1, action1 = np.histogram(converged_dist, bins=1000)
 prob2, action2 = np.histogram(converged_dist2, bins=1000)
 prob3, action3 = np.histogram(converged_dist3, bins=1000)
 prob4, action4 = np.histogram(converged_dist4, bins=1000)
 prob5, action5 = np.histogram(converged_dist5, bins=1000)
+prob6, action6 = np.histogram(converged_dist6, bins=1000)
 s1 = (action1[:1000]+action1[1:])/2
 s2 = (action2[:1000]+action2[1:])/2
 s3 = (action3[:1000]+action3[1:])/2
 s4 = (action4[:1000]+action4[1:])/2
 s5 = (action5[:1000]+action5[1:])/2
+s6 = (action6[:1000]+action6[1:])/2
 
 print(s1[np.argmax(prob1)])
 print(s1[1]-s1[0])
@@ -55,14 +60,17 @@ print(s4[np.argmax(prob4)])
 print(s4[1]-s4[0])
 print(s5[np.argmax(prob5)])
 print(s5[1]-s5[0])
+print(s6[np.argmax(prob6)])
+print(s6[1]-s6[0])
 
 print(prob1[0]/np.max(prob1))
 print(prob2[0]/np.max(prob2))
 print(prob3[0]/np.max(prob3))
 print(prob4[0]/np.max(prob4))
 print(prob5[0]/np.max(prob5))
+print(prob6[0]/np.max(prob6))
 
-'''
+
 plt.figure(1)
 plt.plot(np.arange(1, monitor1_reshape.shape[0]+1, 1), monitor1_reshape[:, 0], marker='o', 
 mfc='none', linestyle='none', color='red')
@@ -109,6 +117,15 @@ plt.grid(True)
 plt.savefig('plot_monitor4f_2.png', dpi=100)
 plt.savefig('plot_monitor4f_2_latex.png', dpi=300)
 plt.figure(6)
+plt.plot(np.arange(1, monitor6_reshape.shape[0]+1, 1), monitor6_reshape[:, 0], marker='o', 
+mfc='none', linestyle='none', color='red')
+plt.xlabel('Number of Accepted moves')
+plt.xscale('log')
+plt.ylabel('Action')
+plt.grid(True)
+plt.savefig('plot_monitor6f_b.png', dpi=100)
+plt.savefig('plot_monitor6f_b_latex.png', dpi=300)
+plt.figure(7)
 plt.hist(converged_dist, bins = 1000, label=r'$n_f=1$, setup: 1')
 plt.hist(converged_dist2, bins = 1000, label=r'$n_f=2$, setup: 1')
 plt.hist(converged_dist3, bins = 1000, label=r'$n_f=3$, setup: 1')
@@ -119,7 +136,7 @@ plt.ylabel('Occurance')
 plt.legend()
 plt.savefig('plot_distf.png', dpi=100)
 plt.savefig('plot_distf.eps', dpi=300)
-plt.figure(7)
+plt.figure(8)
 plt.hist(converged_dist4, bins = 1000, label=r'$n_f=3$, setup: 2')
 plt.hist(converged_dist5, bins = 1000, label=r'$n_f=4$, setup: 2')
 plt.xlabel('Action')
@@ -127,4 +144,10 @@ plt.ylabel('Occurance')
 plt.legend()
 plt.savefig('plot_dist2f.png', dpi=100)
 plt.savefig('plot_dist2f.eps', dpi=300)
-'''
+plt.figure(9)
+plt.hist(converged_dist6, bins = 1000, label=r'$n=6$, setup: 2')
+plt.xlabel('Action')
+plt.ylabel('Occurance')
+plt.legend()
+plt.savefig('plot_distf_bezier.png', dpi=100)
+plt.savefig('plot_distf_bezier.eps', dpi=300)

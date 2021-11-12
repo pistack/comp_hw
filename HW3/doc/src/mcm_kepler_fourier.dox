@@ -1,9 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 /// @page result_kepler Result: Fourier function
 /// @tableofcontents
-/// Reference Kepler path is calculated by solving Newton's equation
-/// via finite difference method with \f$ 10^5 \f$ steps 
-/// and double precision level.
 ///
 /// ### Monte Carlo Metropolis Optimization Results
 ///  | \f$ n_f \f$ | precision | setup | acceptance ratio | \f$ S_{min} \f$ |

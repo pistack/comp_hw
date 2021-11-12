@@ -20,6 +20,7 @@ r2 = np.genfromtxt('zeta2.txt')
 r3 = np.genfromtxt('zeta3.txt')
 r4 = np.genfromtxt('zeta3_2.txt')
 r5 = np.genfromtxt('zeta4_2.txt')
+r6 = np.genfromtxt('zeta6_b.txt')
 ref = np.genfromtxt('zeta_ref.txt')
 
 
@@ -100,3 +101,45 @@ plt.xlim(0.0, 3.2)
 plt.legend(loc='upper right')
 plt.savefig('plot_theta.png', dpi=100)
 plt.savefig('plot_theta.eps', dpi=300)
+
+plt.figure(4)
+plt.plot(r6[:, 1]*np.cos(r6[:, 2]), r6[:, 1]*np.sin(r6[:, 2]), marker='o',
+markersize=3, linestyle='none',
+label=r'$n=6$, setup: 2')
+plt.plot(ref[:, 1]*np.cos(ref[:, 2]), ref[:, 1]*np.sin(ref[:, 2]), 
+label=r'reference', color='black')
+plt.grid(True)
+plt.xlabel(r'$x$')
+plt.ylabel(r'$y$')
+plt.xlim(-1.175, 0.95)
+plt.legend(loc='upper right')
+plt.savefig('plot_traj_bezier.png', dpi=100)
+plt.savefig('plot_traj_bezier.eps', dpi=300)
+
+plt.figure(5)
+plt.plot(r6[:, 0], r6[:, 1], marker='o',
+markersize=3, linestyle='none',
+label=r'$n=6$, setup: 2')
+plt.plot(ref[:, 0], ref[:, 1], label=r'referece',
+color='black')
+plt.grid(True)
+plt.xlabel(r'$t$')
+plt.ylabel(r'$\zeta$')
+plt.xlim(0.0, 3.2)
+plt.legend(loc='upper right')
+plt.savefig('plot_zeta_bezier.png', dpi=100)
+plt.savefig('plot_zeta_bezier.eps', dpi=300)
+
+plt.figure(6)
+plt.plot(r6[:, 0], r6[:, 2], marker='o',
+markersize=3, linestyle='none',
+label=r'$n=6$, setup: 2')
+plt.plot(ref[:, 0], ref[:, 2], label=r'reference',
+color='black')
+plt.grid(True)
+plt.xlabel(r'$t$')
+plt.ylabel(r'$\theta$')
+plt.xlim(0.0, 3.2)
+plt.legend(loc='upper right')
+plt.savefig('plot_theta_bezier.png', dpi=100)
+plt.savefig('plot_theta_bezier.eps', dpi=300)

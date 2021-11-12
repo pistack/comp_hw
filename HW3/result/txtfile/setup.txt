@@ -12,6 +12,15 @@ n_f min_action estimated error acceptance_ratio  most probable bin_size prob_min
 setup 2
 3 4.7425002277806 8.1602619517921e-14 0.513363    4.7430       4.8e-6       2.8e-4
 4 4.7418424340458 1.954760796353e-10 0.411368     4.7423       2.7e-6       5.1e-4
+bezier
+order: 6
+setup: 2
+min_action: 4.7417639533219
+acceptance_move: 692832
+acceptance_ratio: 0.692832
+iter: 10^6
+atol: 1e-8
+estimated error: 0
 
 single precision
 setup atol step_size lambda iter
@@ -25,3 +34,12 @@ n_f min_action estimated error acceptance_ratio most probable bin size prob_min/
 setup 2
 3 4.7425 1.88547e-06 0.578844 4.7429 7.6e-6 5.2e-4
 4 4.74191 1.88547e-06 0.359617 4.7425 1.1e-5 4.8e-4
+bezier
+order: 6
+setup: 2
+min_action: 4.74176
+acceptance_move 704314
+acceptance_ratio: 0.704314
+iter 10^6
+atol: 1e-4
+estimated error: 1.9e-6
