@@ -40,6 +40,14 @@ class bezier
     : n(n_), c(c_)
     {}
 
+    /// @brief initialize bezier class
+    /// @param n_ order of Bezier curve
+    /// @param dummy dummy parameter used for consistence
+    /// @param c_ control points of Bezier curve
+    bezier(unsigned int n_, T dummy, std::vector<T> c_)
+    : n(n_), c(c_)
+    {}
+
     /// @brief copy constructor of bezier class
     bezier(const bezier<T> & copy)
     : n(copy.n), c(copy.c)
@@ -51,6 +59,16 @@ class bezier
     {
     n = copy.n; c = copy.c;
     return *this;
+    }
+
+    /// @brief Inform how many control points
+    /// need to define bezier curve
+    /// @param n_ order of Bezier
+    /// @return number of terms need to define
+    /// \f$ n \f$ th order bezier curve
+    unsigned int terms(unsigned int n_) const
+    {
+        return n_+1;
     }
 
     /// @brief get first control point

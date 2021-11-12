@@ -3,36 +3,37 @@
  * @brief template for minimization of the action
  * using Monte Carlo Metropolis method
  * @author pistack (Junho Lee)
- * @date 2021. 11. 9.
+ * @date 2021. 11. 12.
  * @ingroup libmcm
  */
 
 namespace libmcm {
-template<typename T, typename Lag>
-std::tuple<int, T>
-mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda)
+template<typename T, typename Basis, typename Path, typename Lag>
+std::tuple<std::size_t, T>
+mcm<T, Basis, Path, Lag>::optimize(std::size_t num_iter, T step_size, T lambda)
 {
-  // number_of_accepted move
-  int n_accept = 0;
+  // number_of_accepted rand_walk
+  std::size_t n_accept = 0;
   // acceptance ratio
   T prob = 0;
 
   // variable store temporal variable
-  int dim_1 = init_path.size();
+  unsigned int dim_1 = init_path.size();
   T e; // estimated error
   T init_action; // initial action
   T accept_action; // accept_action
   T min_action; // minimum action
   std::vector<std::vector<T>> accept_guess = init_guess;
   std::vector<std::vector<T>> tmp_guess = init_guess;
-  std::vector<libpath::fourier_path<T>> tmp_path = init_path;
+  std::vector<std::vector<T>> min_guess = init_guess;
+  std::vector<Path> tmp_path = init_path;
 
   mcm_action.update(init_path);
   init_action = mcm_action.eval(e);
   accept_action = init_action;
   min_action = init_action;
 
-  for(int i=0; i<num_iter; ++i)
+  for(std::size_t i=0; i<num_iter; ++i)
   {
     T r;
     T tmp_action;
@@ -41,12 +42,12 @@ mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda)
     // sampling vaild path
     do
     {
-      tmp_guess = move(accept_guess, step_size);
-      for(int i=0; i<dim_1; ++i)
+      tmp_guess = rand_walk(accept_guess, step_size);
+      for(unsigned int i=0; i<dim_1; ++i)
       {
-        libpath::fourier<T> tmp_fourier(num_fourier, fourier_period,
+        Basis tmp_basis(order, add_setup,
         tmp_guess[i]);
-        tmp_path[i].update(tmp_fourier);
+        tmp_path[i].update(tmp_basis);
       }
       mcm_action.update(tmp_path);
     }
@@ -55,7 +56,7 @@ mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda)
     // evaluate action
     tmp_action = mcm_action.eval(e);
 
-    // accept move or not
+    // accept rand_walk or not
     r = uniform_dist(gen);
     delta_action = tmp_action - accept_action;
     if(delta_action < 0 || r < std::exp(-lambda*delta_action))
@@ -75,25 +76,26 @@ mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda)
   return std::make_tuple(n_accept, prob);
 }
 
-template<typename T, typename Lag>
-std::tuple<int, T>
-mcm<T, Lag>::optimize(int num_iter, T step_size, T lambda,
+template<typename T, typename Basis, typename Path, typename Lag>
+std::tuple<std::size_t, T>
+mcm<T, Basis, Path, Lag>::optimize(std::size_t num_iter, T step_size, T lambda,
 std::string monitor)
 {
-  // number_of_accepted move
-  int n_accept = 0;
+  // number_of_accepted rand_walk
+  std::size_t n_accept = 0;
   // acceptance ratio
   T prob = 0;
 
   // variable store temporal variable
-  int dim_1 = init_path.size();
+  unsigned int dim_1 = init_path.size();
   T e; // estimated error
   T init_action; // initial action
   T accept_action; // accept_action
   T min_action; // minimum action
   std::vector<std::vector<T>> accept_guess = init_guess;
   std::vector<std::vector<T>> tmp_guess = init_guess;
-  std::vector<libpath::fourier_path<T>> tmp_path = init_path;
+  std::vector<std::vector<T>> min_guess = init_guess;
+  std::vector<Path> tmp_path = init_path;
 
   mcm_action.update(init_path);
   init_action = mcm_action.eval(e);
@@ -112,12 +114,12 @@ std::string monitor)
     // sampling vaild path
     do
     {
-      tmp_guess = move(accept_guess, step_size);
+      tmp_guess = rand_walk(accept_guess, step_size);
       for(int i=0; i<dim_1; ++i)
       {
-        libpath::fourier<T> tmp_fourier(num_fourier, fourier_period,
+        Basis tmp_basis(order, add_setup,
         tmp_guess[i]);
-        tmp_path[i].update(tmp_fourier);
+        tmp_path[i].update(tmp_basis);
       }
       mcm_action.update(tmp_path);
     }
@@ -126,7 +128,7 @@ std::string monitor)
     // evaluate action
     tmp_action = mcm_action.eval(e);
 
-    // accept move or not
+    // accept rand_walk or not
     r = uniform_dist(gen);
     delta_action = tmp_action - accept_action;
     if(delta_action < 0 || r < std::exp(-lambda*delta_action))

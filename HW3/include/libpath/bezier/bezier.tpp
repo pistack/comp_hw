@@ -46,7 +46,7 @@ T bezier<T>::deriv(T t)
     for(unsigned int i=0; i<n; ++i)
     result[i] = c[i+1] - c[i];
 
-    for(int j=0; j < n-1; ++j)
+    for(unsigned int j=0; j < n-1; ++j)
     {
         for(unsigned int i=0; i<n-j-1; ++i)
         result[i] = result[i]*(1-t) + result[i+1]*t;

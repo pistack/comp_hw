@@ -69,6 +69,16 @@ class fourier
 	return *this;
 	}
 
+	/// @brief Inform how many terms
+    /// need to define fourier function 
+    /// @param n_f number of fourier function
+    /// @return number of terms need to define
+    /// fourier function 
+    unsigned int terms(unsigned int n_f) const
+    {
+        return 2*n_f;
+    }
+
     /// @brief update coefficients
 	/// @param c coefficients of fourier function
 	void update(std::vector<T> c)

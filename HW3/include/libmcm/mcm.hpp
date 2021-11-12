@@ -6,19 +6,19 @@
  * method described in 
  * [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
  * @author pistack (Junho Lee)
- * @date 2021. 11. 11.
+ * @date 2021. 11. 12.
  */
 
 #ifndef MCM_H
 #define MCM_H
 
 #include <cmath>
+#include <cstddef>
 #include <fstream>
 #include <tuple>
 #include <vector>
 #include <string>
 #include <random>
-#include "libpath/fourier_path.hpp"
 #include "libpath/action.hpp"
 
 namespace libmcm {
@@ -33,15 +33,21 @@ namespace libmcm {
 /// the sampled real number.
 /// @param T precision should be one of
 /// float, double and long double
+/// @param Basis type of basis used to approximate
+/// path
+/// @param Path type of path
 /// @param Lag lagranian of action
 /// functor class which has
 /// time, path and derivative of path
 /// as variable and it returns
 /// value of lagranian at given time
 /// @see \ref mcm
+/// @note This is abstract class use
+/// libmcm::mcm_fourier (for libpath::fourier_path) or
+/// libmcm::mcm_bezier (for libpath::bezier_path), instead.
 /// @ingroup libmcm
 
-template<typename T, typename Lag>
+template<typename T, typename Basis, typename Path, typename Lag>
 class mcm
 {
    private:
@@ -49,20 +55,19 @@ class mcm
    T t0, t1; // initial and final time
    std::vector<T> p0, p1; // initial and final value of path
 
-   // setup for fourier function
-   int num_fourier;
-   T fourier_period;
+   // setup for basis
+   int order;
+   T add_setup;
 
    // action
-   libpath::action<T, libpath::fourier_path<T>, Lag> mcm_action;
+   libpath::action<T, Path, Lag> mcm_action;
 
    // initial guess
    std::vector<std::vector<T>> init_guess;
-   std::vector<libpath::fourier_path<T>> init_path;
+   std::vector<Path> init_path;
 
    // result
-   std::vector<std::vector<T>> min_guess;
-   std::vector<libpath::fourier_path<T>> min_path;
+   std::vector<Path> min_path;
 
    std::random_device rd;
    std::mt19937 gen = std::mt19937(rd()); // set random number generator
@@ -76,7 +81,7 @@ class mcm
    /// @param step_size step_size of random walk
    /// @return moved guess via random walk
    std::vector<std::vector<T>>
-   move(std::vector<std::vector<T>> guess,
+   rand_walk(std::vector<std::vector<T>> guess,
    T step_size);
 
    public:
@@ -90,36 +95,49 @@ class mcm
    /// @param p_0 value of path at initial time
    /// @param p_1 value of path at finial time
    /// @param abs_tol absolute tolerance for action integral
-   /// @param num_f number of sine and cosine function to use
-   /// @param period period of fourier function
-   /// @see fourier class and action class
+   /// @param order_ order of basis function
    mcm(T t_0, T t_1, 
    std::vector<T> p_0, std::vector<T> p_1,
-   T abs_tol, int num_f, T period)
+   T abs_tol, int order_)
    : t0(t_0), t1(t_1), p0(p_0), p1(p_1), \
-   num_fourier(num_f), fourier_period(period)
+   order(order_), add_setup(0)
    {
-      mcm_action = libpath::action<T, libpath::fourier_path<T>, Lag>(abs_tol);
+      mcm_action = libpath::action<T, Path, Lag>(abs_tol);
    }
 
-   /// @brief copy constructer of HW3 class
-   mcm(const mcm<T, Lag> &copy)
+   /// @brief initialize mcm class
+   /// @param t_0 initial time
+   /// @param t_1 finial time
+   /// @param p_0 value of path at initial time
+   /// @param p_1 value of path at finial time
+   /// @param abs_tol absolute tolerance for action integral
+   /// @param order_ order of basis function
+   /// @param add_setup_ additional setup used to define basis function
+   mcm(T t_0, T t_1, 
+   std::vector<T> p_0, std::vector<T> p_1,
+   T abs_tol, int order_, T add_setup_)
+   : t0(t_0), t1(t_1), p0(p_0), p1(p_1), \
+   order(order_), add_setup(add_setup_)
+   {
+      mcm_action = libpath::action<T, Path, Lag>(abs_tol);
+   }
+
+   /// @brief copy constructer of mcm class
+   mcm(const mcm<T, Basis, Path, Lag> &copy)
    : t0(copy.t0), t1(copy.t1), p0(copy.p0), p1(copy.p1), \
-   num_fourier(copy.num_fourier), \
-   fourier_period(copy.fourier_period), \
+   order(copy.order), \
+   add_setup(copy.add_setup), \
    mcm_action(copy.mcm_action), \
-   init_guess(copy.init_guess), init_path(copy.init_path), \
-   min_guess(copy.min_guess), min_path(copy.min_path)
+   init_path(copy.init_path), \
+   min_path(copy.min_path)
    {}
 
    /// @brief overloading of assignment operator for 
 	/// mcm class
-   mcm<T, Lag> & operator=(const mcm<T, Lag> &copy);
+   mcm<T, Basis, Path, Lag> & operator=(const mcm<T, Basis, Path, Lag> &copy);
 
    /// @brief set initial guess
-   /// @param init_c initial coefficients to weight sum of
-   /// sine and cosine function
-   /// @see libpath::fourier
+   /// @param init_c initial coefficients
    void set_init_guess(std::vector<std::vector<T>> init_c);
 
    /// @brief set initial guess randomly
@@ -131,11 +149,10 @@ class mcm
    /// @see libpath::action 
    T get_init_action(T &e);
 
-   /// @brief get coefficients of initial guess
-   /// @return tuple of adder, scaler and fourier coefficient
-   std::tuple<std::vector<T>, std::vector<T>, 
-   std::vector<std::vector<T>>>
-   get_init_coeff();
+   /// @brief get initial path
+   /// @return initial_path
+   std::vector<Path> get_init_path() const
+   {return init_path;}
 
    /// @brief evaluate initial path at given t
    /// @param t time to evaluate initial path
@@ -154,11 +171,11 @@ class mcm
    /// @see libpath::action
    T get_min_action(T &e);
 
-   /// @brief get coefficients of minimum guess
-   /// @return tuple of adder, scaler and fourier coefficient  
-   std::tuple<std::vector<T>, std::vector<T>, 
-   std::vector<std::vector<T>>>
-   get_min_coeff();
+   /// @brief get minimum path
+   /// @return minimum path
+   std::vector<Path>
+   get_min_coeff() const
+   {return min_path;}
 
    /// @brief evaluate minimum path at given t
    /// @param t time to evaluate minimum path
@@ -176,8 +193,8 @@ class mcm
    /// @param step_size step size of random walk
    /// @param lambda parameter which controls acceptance of move
    /// @return tuple of number of accepted move and acceptance ratio.
-   std::tuple<int, T>
-   optimize(int num_iter, T step_size, T lambda);
+   std::tuple<std::size_t, T>
+   optimize(std::size_t num_iter, T step_size, T lambda);
 
    /// @brief minimize the action via
    /// Monte Carlo Metropolis method
@@ -191,8 +208,8 @@ class mcm
    /// where a is the action of \f$ i \f$ th accepted move and
    /// e is the estimated error of \f$ i \f$ th action integration.
    /// @return tuple of number of accepted move and acceptance ratio.
-   std::tuple<int, T>
-   optimize(int num_iter, T step_size, T lambda, 
+   std::tuple<std::size_t, T>
+   optimize(std::size_t num_iter, T step_size, T lambda, 
    std::string monitor);
 };
 }

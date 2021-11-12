@@ -5,15 +5,17 @@
  * number of points to evaluate, number of interation, step size and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 11. 11.
+ * @date 2021. 11. 12.
  */
 
 #include <algorithm>
 #include <cmath>
+#include <cstddef>
 #include <chrono>
 #include <string>
 #include <iostream>
 #include <fstream>
+#include "libpath/bezier_path.hpp"
 #include "libmcm/mcm.hpp"
 
 #if PRECISION_LEVEL == 0
@@ -25,6 +27,8 @@
 #endif
 
 using namespace std;
+
+constexpr PRECISION pi = std::acos(PRECISION(-1)); // pi
 
 /// @brief functor class for the kepler lagranian
 /// @param T precision should be the one of
@@ -61,15 +65,15 @@ int main(void)
   PRECISION atol; // abs tol of action integral
   PRECISION e; // estimated error
   int num_eval; // number of points to eval
-  int num_fourier; // number of sine and cosine function used for guess
-  int max_iter; // number of iteration
+  int order; // order of basis function
+  std::size_t max_iter; // number of iteration
   PRECISION zeta_min; // minimum value of zeta
   PRECISION t0; // initial time
   PRECISION max_step; // step size
   PRECISION lambda; // parameter to accept move
   PRECISION min_action; // minimum action value
   string filename; // file name to store results
-  string filename_coeff; // file name to store coeffcients
+  // string filename_coeff; // file name to store coeffcients
   ofstream fout; // file output stream
   #ifdef MONITOR
   string filename_monitor; // file name to monitor optimization process
@@ -83,8 +87,8 @@ int main(void)
   cin >> zeta_min;
   cout << " absolute tolerance of action: ";
   cin >> atol;
-  cout << " number of sine and cosine function for approximation: ";
-  cin >> num_fourier;
+  cout << " order of basis function: ";
+  cin >> order;
   cout << " number of points to evaluate path: ";
   cin >> num_eval;
   cout << " size of step: ";
@@ -95,8 +99,8 @@ int main(void)
   cin >> max_iter;
   cout << " file name to store result: ";
   cin >> filename;
-  cout << " file name to store coefficient: ";
-  cin >> filename_coeff;
+  // cout << " file name to store coefficient: ";
+  // cin >> filename_coeff;
   #if MONITOR == 1
   cout << " file name to monitor optimization process: ";
   cin >> filename_monitor;
@@ -106,12 +110,14 @@ int main(void)
   // initial condition
   PRECISION zeta_max = zeta_min/(2*zeta_min-1);
   PRECISION a = (zeta_min+zeta_max)/2;
-  PRECISION tmax = libpath::pi<PRECISION>*pow(a, 1.5);
-  PRECISION period = 2*tmax;
+  PRECISION tmax = pi*pow(a, 1.5);
+  PRECISION add_setup = 2*tmax;
   vector<PRECISION> p0 = {zeta_min, 0};
-  vector<PRECISION> p1 = {zeta_max, libpath::pi<PRECISION>};
-  libmcm::mcm<PRECISION, kepler_lag<PRECISION>> kepler(PRECISION(0), 
-  tmax, p0, p1, atol, num_fourier, period);
+  vector<PRECISION> p1 = {zeta_max, pi};
+  libmcm::mcm<PRECISION, libpath::bezier<PRECISION>,
+  libpath::bezier_path<PRECISION>,
+  kepler_lag<PRECISION>> kepler(PRECISION(0), 
+  tmax, p0, p1, atol, order, add_setup);
 
   kepler.set_init_guess();
   // variable to get optimization state
@@ -140,15 +146,15 @@ int main(void)
   min_action = kepler.get_min_action(e);
 
   // store coefficients
-  vector<PRECISION> adder;
-  vector<PRECISION> scaler;
-  vector<vector<PRECISION>> coeff;
+  // vector<PRECISION> adder;
+  // vector<PRECISION> scaler;
+  // vector<vector<PRECISION>> coeff;
 
-  tie(adder, scaler, coeff) = \
-  kepler.get_min_coeff();
+  // tie(adder, scaler, coeff) = 
+  // kepler.get_min_coeff();
 
-  int dim1 = adder.size();
-  int dim2 = coeff[0].size();
+  // int dim1 = adder.size();
+  // int dim2 = coeff[0].size();
 
   // move t by t0
   transform(t.begin(), t.end(), t.begin(),
@@ -176,18 +182,8 @@ int main(void)
   for(int i=0; i < num_eval+1; i++)
     fout << t[i] << '\t' << result[0][i] << '\t' << result[1][i] << endl;
   fout.close();
-  fout.open(filename_coeff);
-  fout.unsetf(ios::floatfield); // initialize floatfield
-  fout.precision(DIGITS); // print significant digits
-  fout << '#' << "adder" << '\t' << "scaler" << endl;
-  for(int i=0; i<dim1; i++)
-  fout << adder[i] << '\t' << scaler[i] << endl;
-  fout << '#' << "zeta" << '\t' << "theta" << endl;
-  for(int i=0; i<dim2; i++)
-  fout << coeff[0][i] << '\t' << coeff[1][i] << endl;
-  fout.close();
   cout << " Save result to " << filename << endl;
-  cout << " Save coeffcients to " << filename_coeff << endl;
+  // cout << " Save coeffcients to " << filename_coeff << endl;
   cout << " Teriminates program, good bye :) " << endl;
   cout << "==========================================================" << endl;
 

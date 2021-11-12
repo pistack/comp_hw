@@ -37,7 +37,7 @@ std::vector<T> fourier<T>::eval(std::vector<T> t)
 	for(std::size_t i=0; i<n; ++i)
 	{
 		T tmp=0;
-		for(int j=0; j<term; ++++j)
+		for(unsigned int j=0; j<term; ++++j)
 		{
 			tmp += omega;
 			y[i] += f_c[j]*std::sin(tmp*t[i]);
