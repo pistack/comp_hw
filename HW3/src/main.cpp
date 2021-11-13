@@ -5,7 +5,7 @@
  * number of points to evaluate, number of iteration, step size, parameter lambda and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 11. 12.
+ * @date 2021. 11. 13.
  */
 
 #ifndef PATH_TYPE_FOURIER
