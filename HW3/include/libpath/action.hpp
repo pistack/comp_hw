@@ -37,8 +37,9 @@ constexpr T h_pi = std::acos(T(0)); ///< half pi
 /// Then the numerical integration is converged when
 /// estimated error \f$ e \f$ is 
 /// \f{equation}{\label{eq:conv_cond}
-/// e < \text{rel_tol} \cdot L_1
+/// e < r \cdot L_1
 /// \f}
+/// , where \f$ r \f$ is relative tolerance of action integral.
 /// @warning If you give invaild path, then
 /// eval method will return always zero.
 ///

@@ -1,0 +1,62 @@
+////////////////////////////////////////////////////////////////////////////////
+/// @page result_bezier Result: Bezier Curve
+/// @tableofcontents
+/// How number of basis function and parameter \f$ \lambda \f$ affect 
+/// optimization is summarized in \ref result_fourier.
+/// In \ref result_fourier, six basis function (\f$ n_f = 3 \f$) with optimization
+/// parameter \f$ \lambda = 10^4 \f$ is enough to find minimal path closed to
+/// exact one. So, I use six order bezier curve to approximate path and
+/// set optimization parameter \f$ \lambda = 10^4 \f$ to suppress
+/// degeneracy factor.
+/// Below table shows optimization result with various precision.
+/// 
+/// ### Monte Carlo Metropolis Optimization Results
+///  | \f$ n \f$ | precision | setup | acceptance ratio | \f$ S_{min} \f$ |
+///  | :--------:| :-------: | :---: | :--------------- | :-------------- |
+///  | 6         | single    | 2     | 0.713119         | 4.74177         |
+///  | 6         | double    | 2     | 0.729769         | 4.74177         |
+/// @section visual_bezier Optimized Path
+/// Optimized path with various precision are plotted below.
+/// @image html plot_zeta_bezier_float.png "Zeta: single precision"
+/// @image latex plot_zeta_bezier_float.eps "Zeta: single precision" width=10cm
+/// @image html plot_theta_bezier_float.png "Theta: single precision"
+/// @image latex plot_theta_bezier_float.eps "Theta: single precision" width=10cm
+///
+/// @image html plot_zeta_bezier.png "Zeta: double precision"
+/// @image latex plot_zeta_bezier.eps "Zeta: double precision" width=10cm
+/// @image html plot_theta_bezier.png "Theta: double precision"
+/// @image latex plot_theta_bezier.eps "Theta: double precision" width=10cm
+///
+/// @image html plot_traj_bezier_float.png "Trajectory: single precision"
+/// @image latex plot_traj_bezier_float.eps "Trajectory: single precision" width=10cm
+/// @image html plot_traj_bezier.png "Trajectory: double precision"
+/// @image latex plot_traj_bezier.eps "Trajectory: double precision" width=10cm
+/// @section monitor_bezier Monitoring Optimization process
+///
+/// @image html plot_monitor6f_b.png "Monitor: n=6, setup: 2, single precision"
+/// @image latex plot_monitor6f_b_latex.png "Monitor: n=6, setup: 2, single precision" width=10cm
+///
+/// @image html plot_monitor6_b.png "Monitor: n=6, setup: 2, double precision"
+/// @image latex plot_monitor6_b_latex.png "Monitor: n=6, setup: 2, single precision" width=10cm
+///
+/// @section conv_dist_bezier Converged distribution
+/// ### Distribution
+/// | \f$ n \f$ | precision | \f$ S_{min} \f$ | \f$ S_{most} \f$ | \f$ S_{most} - S_{min} \f$ | \f$ \mathrm{prob}_{min}/\mathrm{prob}_{most} \f$ |
+/// | :-------: | :-------: | :-------------- | :--------------  | :------------------------- | :----------------------------------------------- |
+/// | 6         | single    | 4.74177         | 4.74212          | 0.00035                    | 0.00091                                          |
+/// | 6         | double    | 4.74177         | 4.74217          | 0.00040                    | 0.00031                                          |
+///
+/// @image html plot_distf_bezier.png "Distribution: single precision"
+/// @image latex plot_distf_bezier.eps "Distribution: single precision" width=10cm
+///
+/// @image html plot_dist_bezier.png "Distribution: double precision"
+/// @image latex plot_dist_bezier.eps "Distribution: double precision" width=10cm
+///
+/// @section err_anal_bezier Error Analysis
+/// 
+/// ### Error Analysis
+///  | \f$ n \f$ | precision | setup | \f$ S_{min} \f$ | \f$ S_{exact} \f$ | \f$ \Delta S = S_{min} - S_{exact} \f$ | relative \f$ L_2 \f$ error |
+///  | :--------:| :-------: | :---: | :-------------- | :---------------- | :------------------------------------- | :------------------------- |
+///  | 6         | single    | 2     | 4.74177         | 4.74175           | 0.00002                                | 0.00064                    |
+///  | 6         | double    | 2     | 4.74177         | ^                 | 0.00002                                | 0.00168                    | 
+////////////////////////////////////////////////////////////////////////////////

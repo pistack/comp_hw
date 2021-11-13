@@ -1,22 +1,26 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// @page result_kepler Result: Fourier function
+/// @page result_fourier Result: Fourier function
 /// @tableofcontents
 ///
 /// ### Monte Carlo Metropolis Optimization Results
 ///  | \f$ n_f \f$ | precision | setup | acceptance ratio | \f$ S_{min} \f$ |
 ///  | :----------:| :-------: | :---: | :--------------- | :-------------- |
-///  | 1           | single    | 1     | 0.865962         | 5.03173         |
-///  | 2           | single    | 1     | 0.718897         | 4.75822         |
-///  | 3           | single    | 1     | 0.568154         | 4.74388         |
-///  | 3           | single    | 2     | 0.578844         | 4.74250         |
-///  | 4           | single    | 2     | 0.359617         | 4.74191         |
-///  | 1           | double    | 1     | 0.872512         | 5.03173         |
-///  | 2           | double    | 1     | 0.728195         | 4.75814         |
-///  | 3           | double    | 1     | 0.567024         | 4.74501         |
-///  | 3           | double    | 2     | 0.513363         | 4.74250         |
-///  | 4           | double    | 2     | 0.411368         | 4.74184         |
+///  | 1           | single    | 1     | 0.874679         | 5.03173         |
+///  | 2           | single    | 1     | 0.727210         | 4.75809         |
+///  | 3           | single    | 1     | 0.574712         | 4.74397         |
+///  | 3           | single    | 2     | 0.591197         | 4.74250         |
+///  | 4           | single    | 2     | 0.419363         | 4.74191         |
+///  | 1           | double    | 1     | 0.870009         | 5.03173         |
+///  | 2           | double    | 1     | 0.727406         | 4.75818         |
+///  | 3           | double    | 1     | 0.561235         | 4.74380         |
+///  | 3           | double    | 2     | 0.588501         | 4.74251         |
+///  | 4           | double    | 2     | 0.427474         | 4.74184         |
 ///
 /// Above table summarizes optimization results with various setup and precision.
+///
+/// @section visual_fourier Optimized Path
+/// Optimized path with various \f$ n_f \f$, setup and precision are plotted
+/// below.
 ///
 /// @image html plot_zeta_float.png "Zeta: single precision"
 /// @image latex plot_zeta_float.eps "Zeta: single precision" width=10cm
@@ -28,13 +32,6 @@
 /// @image html plot_theta.png "Theta: double precision"
 /// @image latex plot_theta.eps "Theta: double precision" width=10cm
 ///
-/// Trajectory of path can be evaluated by following relation
-/// \f{equation}{\label{eq:traj}
-/// \begin{aligned}
-/// x(t) &= \zeta(t)\cos \theta(t) \\
-/// y(t) &= \zeta(t)\sin \theta(t)
-/// \end{aligned}
-/// \f}
 /// @image html plot_traj_float.png "Trajectory: single precision"
 /// @image latex plot_traj_float.eps "Trajectory: single precision" width=10cm
 /// @image html plot_traj.png "Trajectory: double precision"
@@ -49,7 +46,7 @@
 /// To see how setup_size and \f$ \lambda \f$ affect optimization process
 /// we need to monitor optimization process.
 ///
-/// @section monitor_kepler Monitoring Optimization process
+/// @section monitor_fourier Monitoring Optimization process
 /// @image html plot_monitor1f.png "Monitor: n_f=1, setup: 1, single precision"
 /// @image latex plot_monitor1f_latex.png "Monitor: n_f=1, setup: 1, single precision" width=10cm
 /// @image html plot_monitor2f.png "Monitor: n_f=2, setup: 1, single precision"
@@ -74,7 +71,7 @@
 ///
 /// Markov Chain converges at \f$ n > 10^4 \f$.
 /// Now extract distribution from the Markov Chains.
-/// @section conv_dist_kepler Converged distribution
+/// @section conv_dist_fourier Converged distribution
 /// To extract converged distribution from the Markov Chain, first
 /// we need to discard unconverged Markov Chain. To do this I burns
 /// first \f$ 10^4 \f$ chains.
@@ -91,11 +88,11 @@
 /// | \f$ n_f \f$ | precision | \f$ S_{min} \f$ | \f$ S_{most} \f$ | \f$ S_{most} - S_{min} \f$ | \f$ \mathrm{prob}_{min}/\mathrm{prob}_{most} \f$ |
 /// | :---------: | :-------: | :-------------- | :--------------  | :------------------------- | :----------------------------------------------- |
 /// | 1           | single    | 5.03173         | 5.03179          | 0.00006                    | 1.00000                                          |
-/// | 2           | single    | 4.75822         | 4.77818          | 0.01996                    | 0.00270                                          |
-/// | 3           | single    | 4.74388         | 4.77544          | 0.03156                    | 0.00043                                          |
+/// | 2           | single    | 4.75809         | 4.77398          | 0.01589                    | 0.00226                                          |
+/// | 3           | single    | 4.74397         | 4.77475          | 0.03078                    | 0.00037                                          |
 /// | 1           | double    | 5.03173         | 5.03179          | 0.00006                    | 1.00000                                          |
-/// | 2           | double    | 4.75814         | 4.77614          | 0.01800                    | 0.00202                                          |
-/// | 3           | double    | 4.74501         | 4.77550          | 0.03049                    | 0.00195                                          |
+/// | 2           | double    | 4.75818         | 4.77783          | 0.01965                    | 0.00226                                          |
+/// | 3           | double    | 4.74380         | 4.77757          | 0.03377                    | 0.00039                                          |
 ///
 /// @image html plot_dist2f.png "Distribution: setup 2, single precision"
 /// @image latex plot_dist2f.eps "Distribution: setup 2, single precision" width=10cm
@@ -106,24 +103,26 @@
 /// ### Distribution: setup 2 table
 /// | \f$ n_f \f$ | precision | \f$ S_{min} \f$ | \f$ S_{most} \f$ | \f$ S_{most} - S_{min} \f$ | \f$ \mathrm{prob}_{min}/\mathrm{prob}_{most} \f$ |
 /// | :---------: | :-------: | :-------------- | :--------------  | :------------------------- | :----------------------------------------------- |
-/// | 3           | single    | 4.74250         | 4.74292          |  0.00042                   | 0.00052                                          |
-/// | 4           | single    | 4.74191         | 4.74250          |  0.00059                   | 0.00047                                          |
-/// | 3           | double    | 4.74250         | 4.74306          |  0.00056                   | 0.00028                                          |
-/// | 4           | double    | 4.74184         | 4.74235          |  0.00051                   | 0.00051                                          |
+/// | 3           | single    | 4.74250         | 4.74285          |  0.00035                   | 0.00080                                          |
+/// | 4           | single    | 4.74191         | 4.74251          |  0.00060                   | 0.00025                                          |
+/// | 3           | double    | 4.74251         | 4.74288          |  0.00037                   | 0.00016                                          |
+/// | 4           | double    | 4.74184         | 4.74236          |  0.00052                   | 0.00068                                          |
 ///
-/// @section error_kepler Error Analysis
+/// @section error_fourier Error Analysis
 /// 
 /// ### Error Analysis
-///  | \f$ n_f \f$ | precision | setup | \f$ S_{min} \f$ | \f$ S_{exact} \f$ | \f$ \Delta S = S_{min} - S_{exact} \f$ | \f$ L_2 \f$ error |
-///  | :----------:| :-------: | :---: | :-------------- | :---------------- | :------------------------------------- | :---------------- |
-///  | 1           | single    | 1     | 5.03173         | 4.74175           | 0.28998                                | 0.47278           |
-///  | 2           | single    | 1     | 4.75822         | ^                 | 0.01647                                | 0.05556           |
-///  | 3           | single    | 1     | 4.74388         | ^                 | 0.00213                                | 0.03447           |
-///  | 3           | single    | 2     | 4.74250         | ^                 | 0.00075                                | 0.00712           |
-///  | 4           | single    | 2     | 4.74191         | ^                 | 0.00016                                | 0.00549           |
-///  | 1           | double    | 1     | 5.03173         | ^                 | 0.28998                                | 0.47281           |
-///  | 2           | double    | 1     | 4.75814         | ^                 | 0.01639                                | 0.05777           |
-///  | 3           | double    | 1     | 4.74501         | ^                 | 0.00326                                | 0.03065           |
-///  | 3           | double    | 2     | 4.74250         | ^                 | 0.00075                                | 0.00747           |
-///  | 4           | double    | 2     | 4.74184         | ^                 | 0.00009                                | 0.00372           |
+///  | \f$ n_f \f$ | precision | setup | \f$ S_{min} \f$ | \f$ S_{exact} \f$ | \f$ \Delta S = S_{min} - S_{exact} \f$ | relative \f$ L_2 \f$ error |
+///  | :----------:| :-------: | :---: | :-------------- | :---------------- | :------------------------------------- | :------------------------- |
+///  | 1           | single    | 1     | 5.03173         | 4.74175           | 0.28998                                | 0.13660                    |
+///  | 2           | single    | 1     | 4.75809         | ^                 | 0.01634                                | 0.01777                    |
+///  | 3           | single    | 1     | 4.74397         | ^                 | 0.00222                                | 0.00988                    |
+///  | 3           | single    | 2     | 4.74250         | ^                 | 0.00075                                | 0.00198                    |
+///  | 4           | single    | 2     | 4.74191         | ^                 | 0.00016                                | 0.00144                    |
+///  | 1           | double    | 1     | 5.03173         | ^                 | 0.28998                                | 0.13659                    |
+///  | 2           | double    | 1     | 4.75818         | ^                 | 0.01643                                | 0.01749                    |
+///  | 3           | double    | 1     | 4.74380         | ^                 | 0.00205                                | 0.00924                    |
+///  | 3           | double    | 2     | 4.74251         | ^                 | 0.00076                                | 0.00215                    |
+///  | 4           | double    | 2     | 4.74184         | ^                 | 0.00009                                | 0.00101                    |
+/// @section sum_fourier Summary
+/// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

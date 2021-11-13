@@ -103,6 +103,18 @@ int main(void)
 
   cout << "==========================================================" << endl;
   cout << "               hw3: main program for homework3            " << endl;
+  #if PRECISION_LEVEL == 0
+  cout << "         (single precision, ";
+  #endif
+  #if PRECISION_LEVEL == 1
+  cout << "         (double precision, ";
+  #endif
+  #ifdef PATH_TYPE_BEZIER
+  cout << "Bezier path version)" << endl;
+  #endif
+  #ifdef PATH_TYPE_FOURIER
+  cout << "Fourier path version)" << endl;
+  #endif
   cout << " initial time: ";
   cin >> t0;
   cout << " minimum value of zeta: ";

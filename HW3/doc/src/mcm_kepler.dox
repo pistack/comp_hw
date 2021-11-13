@@ -59,26 +59,34 @@
 /// - Period of fourier function \f$ T \f$: \f$ 2t_f \f$.
 /// - Single precision
 ///   - setup: 1
-///     1. Absolute tolerance of action integration: \f$ 10^{-4} \f$
+///     1. Relative tolerance of action integration: \f$ 10^{-4} \f$
 ///     2. step_size: 0.01
 ///     3. \f$ \lambda \f$: 100
 ///     4. Number of iteration: \f$ 10^6 \f$
 ///   - setup: 2
-///     1. Absolute tolerance of action integration: \f$ 10^{-4} \f$
+///     1. Relative tolerance of action integration: \f$ 10^{-4} \f$
 ///     2. step_size: 0.001
 ///     3. \f$ \lambda \f$: 10000
 ///     4. Number of iteration: \f$ 10^6 \f$
 /// - Double precision
 ///   - setup: 1
-///     1. Absolute tolerance of action integration: \f$ 10^{-8} \f$
+///     1. Relative tolerance of action integration: \f$ 10^{-8} \f$
 ///     2. step_size: 0.01
 ///     3. \f$ \lambda \f$: 100
 ///     4. Number of iteration: \f$ 10^6 \f$
 ///   - setup: 2
-///     1. Absolute tolerance of action integration: \f$ 10^{-8} \f$
+///     1. Relative tolerance of action integration: \f$ 10^{-8} \f$
 ///     2. step_size: 0.001
 ///     3. \f$ \lambda \f$: 10000
 ///     4. Number of iteration: \f$ 10^6 \f$
+/// @section traj_kepler Trajectory
+/// Trajectory of path can be evaluated by following relation
+/// \f{equation}{\label{eq:traj}
+/// \begin{aligned}
+/// x(t) &= \zeta(t)\cos \theta(t) \\
+/// y(t) &= \zeta(t)\sin \theta(t)
+/// \end{aligned}
+/// \f}
 /// @section err_estimate Error Estimation
 /// Kepler problem can be solved via Newton's equation.
 /// Reference Kepler path is calculated by solving Newton's equation
@@ -92,6 +100,7 @@
 /// \f}
 /// By the minimum action principle \f$ \Delta S > 0 \f$.
 /// 2. Relative \f$ L_2 \f$ error
+/// 
 /// \f$ L_2 \f$ norm of path defined as following
 /// \f{equation}{\label{eq:l2_norm_path}
 /// L_2 = \left ( \int_{t_0}^{t_f} x^2(t) + y^2(t) \mathrm{d} t \right)^{1/2}
