@@ -144,7 +144,6 @@ class action
 
 	/// @brief initialize action class
 	/// @param rel_tol relative tolerance
-	/// @note
 
 	action(T rel_tol)
 	: rtol(rel_tol)

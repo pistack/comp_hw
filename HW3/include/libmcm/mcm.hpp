@@ -132,8 +132,8 @@ class mcm
    min_path(copy.min_path)
    {}
 
-   /// @brief overloading of assignment operator for 
-	/// mcm class
+   /// @brief overloading of assignment operator 
+   /// for mcm class
    mcm<T, Basis, Path, Lag> & operator=(const mcm<T, Basis, Path, Lag> &copy);
 
    /// @brief set initial guess
