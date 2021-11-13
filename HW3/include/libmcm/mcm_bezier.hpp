@@ -4,7 +4,7 @@
  * @brief headerfile for mcm_bezier class
  * which is derivated by libmcm::mcm class
  * @author pistack (Junho Lee)
- * @date 2021. 11. 12.
+ * @date 2021. 11. 13.
  */
 
 #include "libpath/bezier_path.hpp"
@@ -35,12 +35,12 @@ libpath::bezier_path<T>, Lag>
     /// @param t_1 final time 
     /// @param p_0 value of path at initial time
     /// @param p_1 vale of path at final time
-    /// @param abs_tol absolute tolerance for action integral
+    /// @param rel_tol relative tolerance for action integral
     /// @param n_ order of bezier curve
     mcm_bezier(T t_0, T t_1, std::vector<T> p_0, std::vector<T> p_1, 
-    T abs_tol, unsigned int n_)
+    T rel_tol, unsigned int n_)
     : mcm<T, libpath::bezier<T>, libpath::bezier_path<T>,
-    Lag>(t_0, t_1, p_0, p_1, abs_tol, n_)
+    Lag>(t_0, t_1, p_0, p_1, rel_tol, n_)
     {}
 
     /// @brief copy constructor of mcm_bezier class

@@ -2,7 +2,7 @@
  * @file test_action_kepler.cpp
  * @brief test action::eval() routine with kepler action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 12.
+ * @date 2021. 11. 13.
  */
 
 #include <chrono>
@@ -27,7 +27,7 @@ int test_action_kepler()
   std::chrono::steady_clock::time_point start;
   std::chrono::steady_clock::time_point end;
   // test condition
-  // if difference of two integration method greather than 2*atol then
+  // if difference of two integration method greather than 2*rtol then
   // test would fail.
   bool sucess = true;
   PRECISION int_method0, int_method1;
@@ -75,7 +75,7 @@ int test_action_kepler()
   for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst1.update(*it);
-    cout << " Test 1. atol: " << *it <<  endl;
+    cout << " Test 1. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst1.eval(e);
@@ -104,7 +104,7 @@ int test_action_kepler()
   for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst2.update(*it);
-    cout << " Test 2. atol: " << *it <<  endl;
+    cout << " Test 2. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst2.eval(e);

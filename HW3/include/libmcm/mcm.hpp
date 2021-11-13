@@ -6,7 +6,7 @@
  * method described in 
  * [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
  * @author pistack (Junho Lee)
- * @date 2021. 11. 12.
+ * @date 2021. 11. 13.
  */
 
 #ifndef MCM_H
@@ -94,15 +94,15 @@ class mcm
    /// @param t_1 finial time
    /// @param p_0 value of path at initial time
    /// @param p_1 value of path at finial time
-   /// @param abs_tol absolute tolerance for action integral
+   /// @param rel_tol relative tolerance for action integral
    /// @param order_ order of basis function
    mcm(T t_0, T t_1, 
    std::vector<T> p_0, std::vector<T> p_1,
-   T abs_tol, unsigned int order_)
+   T rel_tol, unsigned int order_)
    : t0(t_0), t1(t_1), p0(p_0), p1(p_1), \
    order(order_), add_setup(0)
    {
-      mcm_action = libpath::action<T, Path, Lag>(abs_tol);
+      mcm_action = libpath::action<T, Path, Lag>(rel_tol);
    }
 
    /// @brief initialize mcm class
@@ -110,16 +110,16 @@ class mcm
    /// @param t_1 finial time
    /// @param p_0 value of path at initial time
    /// @param p_1 value of path at finial time
-   /// @param abs_tol absolute tolerance for action integral
+   /// @param rel_tol relative tolerance for action integral
    /// @param order_ order of basis function
    /// @param add_setup_ additional setup used to define basis function
    mcm(T t_0, T t_1, 
    std::vector<T> p_0, std::vector<T> p_1,
-   T abs_tol, unsigned int order_, T add_setup_)
+   T rel_tol, unsigned int order_, T add_setup_)
    : t0(t_0), t1(t_1), p0(p_0), p1(p_1), \
    order(order_), add_setup(add_setup_)
    {
-      mcm_action = libpath::action<T, Path, Lag>(abs_tol);
+      mcm_action = libpath::action<T, Path, Lag>(rel_tol);
    }
 
    /// @brief copy constructer of mcm class

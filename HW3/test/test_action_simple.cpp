@@ -2,7 +2,7 @@
  * @file test_action_simple.cpp
  * @brief test action::eval() routine with simple function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 12.
+ * @date 2021. 11. 13.
  */
 
 #include <chrono>
@@ -149,7 +149,7 @@ int test_action_simple()
   for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst0.update(*it);
-    cout << " Test 0. atol: " << *it <<  endl;
+    cout << " Test 0. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst0.eval(e);
@@ -187,7 +187,7 @@ int test_action_simple()
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst1.update(*it);
-    cout << " Test 1. atol: " << *it <<  endl;
+    cout << " Test 1. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst1.eval(e);
@@ -225,7 +225,7 @@ int test_action_simple()
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst2.update(*it);
-    cout << " Test 2. atol: " << *it <<  endl;
+    cout << " Test 2. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst2.eval(e);
@@ -263,7 +263,7 @@ int test_action_simple()
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst3.update(*it);
-    cout << " Test 3. atol: " << *it <<  endl;
+    cout << " Test 3. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst3.eval(e);
@@ -301,7 +301,7 @@ int test_action_simple()
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst4.update(*it);
-    cout << " Test 4. atol: " << *it <<  endl;
+    cout << " Test 4. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst4.eval(e);
@@ -339,7 +339,7 @@ int test_action_simple()
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst5.update(*it);
-    cout << " Test 5. atol: " << *it <<  endl;
+    cout << " Test 5. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst5.eval(e);
@@ -377,7 +377,7 @@ int test_action_simple()
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst6.update(*it);
-    cout << " Test 6. atol: " << *it <<  endl;
+    cout << " Test 6. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst6.eval(e);
@@ -415,7 +415,7 @@ int test_action_simple()
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst7.update(*it);
-    cout << " Test 7. atol: " << *it <<  endl;
+    cout << " Test 7. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst7.eval(e);
@@ -453,7 +453,7 @@ int test_action_simple()
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst8.update(*it);
-    cout << " Test 8. atol: " << *it <<  endl;
+    cout << " Test 8. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst8.eval(e);
@@ -491,7 +491,7 @@ int test_action_simple()
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst9.update(*it);
-    cout << " Test 9. atol: " << *it <<  endl;
+    cout << " Test 9. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst9.eval(e);
@@ -529,7 +529,7 @@ int test_action_simple()
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst10.update(*it);
-    cout << " Test 10. atol: " << *it <<  endl;
+    cout << " Test 10. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst10.eval(e);
@@ -567,7 +567,7 @@ int test_action_simple()
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst11.update(*it);
-    cout << " Test 11. atol: " << *it <<  endl;
+    cout << " Test 11. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst11.eval(e);
@@ -605,7 +605,7 @@ int test_action_simple()
     for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst12.update(*it);
-    cout << " Test 12. atol: " << *it <<  endl;
+    cout << " Test 12. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<10000; ++j)
     tst1.eval(e);
@@ -645,7 +645,7 @@ int test_action_simple()
   for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst13.update(*it);
-    cout << " Test 13. atol: " << *it <<  endl;
+    cout << " Test 13. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<1000; ++j)
     tst13.eval(1, 10, e);
@@ -667,7 +667,7 @@ int test_action_simple()
   for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst14.update(*it);
-    cout << " Test 14. atol: " << *it <<  endl;
+    cout << " Test 14. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<1000; ++j)
     tst14.eval(1, 10, e);
@@ -689,7 +689,7 @@ int test_action_simple()
   for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst15.update(*it);
-    cout << " Test 15. atol: " << *it <<  endl;
+    cout << " Test 15. rtol: " << *it <<  endl;
     start = std::chrono::steady_clock::now();
     for(int j=0; j<1000; ++j)
     tst15.eval(1, 10, e);
@@ -715,7 +715,7 @@ int test_action_simple()
   for(std::vector<PRECISION>::iterator it=tol.begin(); it != tol.end(); ++it)
   {
     tst16.update(*it);
-    cout << " Test 16. atol: " << *it <<  endl;
+    cout << " Test 16. rtol: " << *it <<  endl;
     cout << "Integration Method: Gauss-Kronrod quadrature" << endl;
     for(int i=0; i<6; ++i)
     {

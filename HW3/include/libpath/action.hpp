@@ -3,7 +3,7 @@
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 12.
+ * @date 2021. 11. 13.
  */
 
 #ifndef ACTION_H
@@ -25,11 +25,20 @@ constexpr T h_pi = std::acos(T(0)); ///< half pi
 /// float, double and long double
 /// @param Path type of path
 /// should be one of fourier_path or bezier_path
-/// @param Lag lagranian of action
+/// @param Lag lagrangian of action
 /// functor class which has
 /// time, path and derivative of path
 /// as variable and it returns
-/// value of lagranian at given time
+/// value of lagrangian at given time
+/// @note Define \f$ L_1 \f$ norm of lagrangian as
+/// \f{equation}{\label{eq:l_1}
+/// L_1 = \int_{t_0}^{t_f} \left | L(t, p(t), p'(t)) \right | \mathrm{d} t
+/// \f}
+/// Then the numerical integration is converged when
+/// estimated error \f$ e \f$ is 
+/// \f{equation}{\label{eq:conv_cond}
+/// e < \text{rel_tol} \cdot L_1
+/// \f}
 /// @warning If you give invaild path, then
 /// eval method will return always zero.
 ///
@@ -54,13 +63,24 @@ class action
 {
 	private:
 
-	T atol; // absoulte tolerance
+	T rtol; // relative tolerance
 	
 	std::vector<Path> path_action; // path
 
 	bool vaildity=false; // vaildity of path
 
-	const Lag lag; // lagrangian
+	static const Lag lag; // lagrangian
+
+    // error scaling factor for gauss-kronrod
+	static constexpr T err_scale = 2000*std::sqrt(T(2));
+
+	// first step value of tanh-sinh
+	static constexpr T const_e = std::exp(T(1));
+
+    // machine eps
+    static constexpr T eps = std::numeric_limits<T>::epsilon(); 
+    static constexpr T eps2 = std::numeric_limits<T>::epsilon()*\
+	std::numeric_limits<T>::epsilon(); 
 
 	/// @brief checks the vaildity of path
 	void check_vaild();
@@ -83,7 +103,7 @@ class action
 	/// @param D previous \f$ |G_{(n-1)/2} - K_n| \f$. value without scaling
 	/// @param D_tol tolerance for D
 	/// @param[out] integral integration value
-	/// @param[out] e estimated error
+	/// @param[out] e estimated absolute error
 	template<typename Gau_Kron>
 	void eval_helper(T left, T right, T D, T D_tol, T &integral, T &e);
 
@@ -93,7 +113,7 @@ class action
 	/// @param right right end points of interval
 	/// @param n order of gauss-kronrod quadrature
 	/// currently only supports N=15, 21, 31, 41, 51, 61
-	/// @param[out] e estimated error
+	/// @param[out] e estimated absolute error
 	/// @return action of given path
 
 	T eval_quadgk(T left, T right, unsigned int n, T &e);
@@ -105,7 +125,7 @@ class action
 	/// @param max_depth maximum depth 
 	/// step size \f$ h \f$ would be 
 	/// \f$ h \geq 2^{-\mathrm{depth}_{max}} \f$.
-	/// @param[out] e estimated error 
+	/// @param[out] e estimated absolute error 
 	/// @return action of given path
 
 	T eval_qthsh(T left, T right, unsigned int max_depth, T &e);
@@ -122,24 +142,25 @@ class action
 	{check_vaild();}
 
 	/// @brief initialize action class
-	/// @param abs_tol absoulte tolerance
+	/// @param rel_tol relative tolerance
+	/// @note
 
-	action(T abs_tol)
-	: atol(abs_tol)
+	action(T rel_tol)
+	: rtol(rel_tol)
 	{}
 
 	/// @brief initialize action class
-	/// @param abs_tol absoulte tolerance
+	/// @param rel_tol absoulte tolerance
 	/// @param path path
 
-	action(T abs_tol,
+	action(T rel_tol,
 	std::vector<Path> path)
-	: atol(abs_tol), path_action(path) 
+	: rtol(rel_tol), path_action(path) 
 	{check_vaild();}
 
 	/// @brief copy constructer of action class
 	action(const action<T, Path, Lag> &copy)
-	: atol(copy.atol), path_action(copy.path_action), \
+	: rtol(copy.rtol), path_action(copy.path_action), \
 	vaildity(copy.vaildity)
 	{}
 
@@ -147,7 +168,7 @@ class action
 	/// action class
 	action<T, Path, Lag> & operator=(const action<T, Path, Lag> &copy)
 	{
-		 atol = copy.atol;
+		 rtol = copy.rtol;
 		 path_action = copy.path_action;
 		 vaildity = copy.vaildity;
 		 return *this;
@@ -158,17 +179,17 @@ class action
 	void update(std::vector<Path> path)
 	{path_action = path; check_vaild();}
 
-    /// @brief update absolute tolerance
-	/// @param abs_tol absolute tolerance
-	void update(T abs_tol)
-	{atol=abs_tol;}
+    /// @brief update relative tolerance
+	/// @param rel_tol relative tolerance
+	void update(T rel_tol)
+	{rtol=rel_tol;}
 
-	/// @brief update absolute tolerance and path
+	/// @brief update relative tolerance and path
 	/// @param path path to update
-	/// @param abs_tol absolute tolerance
+	/// @param rel_tol relative tolerance
 	void update(std::vector<Path> path,
-	T abs_tol)
-	{atol=abs_tol; path_action = path; check_vaild();}
+	T rel_tol)
+	{rtol=rel_tol; path_action = path; check_vaild();}
 
 	/// @brief check vaildity of path
 	/// @return vaildity of path
@@ -178,7 +199,7 @@ class action
 	/// @brief evaluate the action of given path
 	/// by default method:
 	/// (G15, K31) Gauss–Kronrod quadrature method
-	/// @param[out] e estimated error 
+	/// @param[out] e estimated absolute error 
 	/// @return action of given path
 
 	T eval(T &e);
@@ -191,7 +212,7 @@ class action
 	/// - order of Gauss-Kronrod quadrature if method equals to 0,
 	///   currently, only support n=15, 21, 31, 41, 51, 61.
 	/// - maximum depth if method equals to 1.
-	/// @param[out] e estimated error
+	/// @param[out] e estimated absolute error
 	/// @return action of given path
 
 	T eval(int method, unsigned int n, T &e);

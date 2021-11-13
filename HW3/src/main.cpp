@@ -84,7 +84,7 @@ int main(void)
   // execution time
   std::chrono::steady_clock::time_point start;
   std::chrono::steady_clock::time_point end;
-  PRECISION atol; // abs tol of action integral
+  PRECISION rtol; // abs tol of action integral
   PRECISION e; // estimated error
   unsigned int num_eval; // number of points to eval
   unsigned int order; // order of basis function
@@ -107,8 +107,8 @@ int main(void)
   cin >> t0;
   cout << " minimum value of zeta: ";
   cin >> zeta_min;
-  cout << " absolute tolerance of action: ";
-  cin >> atol;
+  cout << " relative tolerance of action: ";
+  cin >> rtol;
   #ifdef PATH_TYPE_FOURIER
   cout << " number of sine and cosine function to use: ";
   #endif
@@ -144,13 +144,13 @@ int main(void)
   PRECISION add_setup = 2*tmax;
   libmcm::mcm_fourier<PRECISION, 
   kepler_lag<PRECISION>> kepler(PRECISION(0), 
-  tmax, p0, p1, atol, order, add_setup);
+  tmax, p0, p1, rtol, order, add_setup);
   #endif
 
   #ifdef PATH_TYPE_BEZIER
   libmcm::mcm_bezier<PRECISION, 
   kepler_lag<PRECISION>> kepler(PRECISION(0), 
-  tmax, p0, p1, atol, order);
+  tmax, p0, p1, rtol, order);
   #endif
 
   kepler.set_init_guess();

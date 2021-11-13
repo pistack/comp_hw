@@ -59,12 +59,12 @@
 /// - Period of fourier function \f$ T \f$: \f$ 2t_f \f$.
 /// - Single precision
 ///   - setup: 1
-///     1. Absolute tolerance of action integration: \f$ 10^{-6} \f$
+///     1. Absolute tolerance of action integration: \f$ 10^{-4} \f$
 ///     2. step_size: 0.01
 ///     3. \f$ \lambda \f$: 100
 ///     4. Number of iteration: \f$ 10^6 \f$
 ///   - setup: 2
-///     1. Absolute tolerance of action integration: \f$ 10^{-6} \f$
+///     1. Absolute tolerance of action integration: \f$ 10^{-4} \f$
 ///     2. step_size: 0.001
 ///     3. \f$ \lambda \f$: 10000
 ///     4. Number of iteration: \f$ 10^6 \f$
@@ -80,7 +80,25 @@
 ///     3. \f$ \lambda \f$: 10000
 ///     4. Number of iteration: \f$ 10^6 \f$
 /// @section err_estimate Error Estimation
+/// Kepler problem can be solved via Newton's equation.
 /// Reference Kepler path is calculated by solving Newton's equation
 /// via finite difference method with \f$ 10^5 \f$ steps 
 /// and double precision level.
+/// Difference of optimized path and reference Kepler path can be measured 
+/// by following two ways.
+/// 1. Difference of action
+/// \f{equation}{\label{eq:err_dff_action}
+/// \Delta S = S_{min} - S_{exact}
+/// \f}
+/// By the minimum action principle \f$ \Delta S > 0 \f$.
+/// 2. Relative \f$ L_2 \f$ error
+/// \f$ L_2 \f$ norm of path defined as following
+/// \f{equation}{\label{eq:l2_norm_path}
+/// L_2 = \left ( \int_{t_0}^{t_f} x^2(t) + y^2(t) \mathrm{d} t \right)^{1/2}
+/// \f}
+/// So, relative \f$ L_2 \f$ error can be estimated by
+/// \f{equation}{\label{eq:rel_l2_err}
+/// \mathrm{rel}_{L_2} = \frac{1}{L_{2_{exact}}} 
+/// \left ( \int_{t_0}^{t_f} (x(t)-x_{exact}(t))^2 + (y(t)-y_{exact}(t))^2 \mathrm{d} t \right)^{1/2}
+/// \f}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
