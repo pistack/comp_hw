@@ -94,6 +94,16 @@
 /// | 2           | double    | 4.75818         | 4.77783          | 0.01965                    | 0.00226                                          |
 /// | 3           | double    | 4.74380         | 4.77757          | 0.03377                    | 0.00039                                          |
 ///
+/// At \f$ n_f = 1 \f$, degeneracy factor \f$ P(S) \f$ nearly constant, 
+/// so most probable probable path is same as least action path. However since \f$ n_f = 1 \f$ is not enough to describe exact path,
+/// minimum action is far greater than exact action \f$ S_{exact} = 4.74175 \f$.
+/// At \f$ n_f = 2 \f$, both minimum action and most probable action are far lower than minimum action of \f$ n_f = 1 \f$. 
+/// However due to the degeneracy factor \f$ P(S) \f$, most probable action and least probable action are different.
+/// At \f$ n_f = 3 \f$, due to the degeneracy factor, most probable action is almost same as the one of \f$ n_f = 2 \f$.
+/// Contrary to this, minimum action of \f$ n_f = 3 \f$ much less than that of \f$ n_f = 2 \f$.
+/// Therefore, we should not only increase \f$ n_f \f$ but also \f$ \lambda \f$ to obtain the minimum action path which is more close to
+/// the exact least action one.
+/// 
 /// @image html plot_dist2f.png "Distribution: setup 2, single precision"
 /// @image latex plot_dist2f.eps "Distribution: setup 2, single precision" width=10cm
 ///
@@ -107,7 +117,7 @@
 /// | 4           | single    | 4.74191         | 4.74251          |  0.00060                   | 0.00025                                          |
 /// | 3           | double    | 4.74251         | 4.74288          |  0.00037                   | 0.00016                                          |
 /// | 4           | double    | 4.74184         | 4.74236          |  0.00052                   | 0.00068                                          |
-///
+/// 
 /// @section error_fourier Error Analysis
 /// 
 /// ### Error Analysis

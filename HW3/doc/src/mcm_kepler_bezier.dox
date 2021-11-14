@@ -31,6 +31,8 @@
 /// @image latex plot_traj_bezier_float.eps "Trajectory: single precision" width=10cm
 /// @image html plot_traj_bezier.png "Trajectory: double precision"
 /// @image latex plot_traj_bezier.eps "Trajectory: double precision" width=10cm
+/// As you can see the minimum action path which approximated by six order bezier curve is
+/// almost same as the exact one.
 /// @section monitor_bezier Monitoring Optimization process
 ///
 /// @image html plot_monitor6f_b.png "Monitor: n=6, setup: 2, single precision"
@@ -39,18 +41,28 @@
 /// @image html plot_monitor6_b.png "Monitor: n=6, setup: 2, double precision"
 /// @image latex plot_monitor6_b_latex.png "Monitor: n=6, setup: 2, single precision" width=10cm
 ///
+/// Both single and double precision, Markov Chains are converged at \f$ n = 10^4 \f$.
+/// 
 /// @section conv_dist_bezier Converged distribution
-/// ### Distribution
-/// | \f$ n \f$ | precision | \f$ S_{min} \f$ | \f$ S_{most} \f$ | \f$ S_{most} - S_{min} \f$ | \f$ \mathrm{prob}_{min}/\mathrm{prob}_{most} \f$ |
-/// | :-------: | :-------: | :-------------- | :--------------  | :------------------------- | :----------------------------------------------- |
-/// | 6         | single    | 4.74177         | 4.74212          | 0.00035                    | 0.00091                                          |
-/// | 6         | double    | 4.74177         | 4.74217          | 0.00040                    | 0.00031                                          |
+/// To get converged distribution, I burns first \f$ 10^4 \f$ Markov Chains.
+///
 ///
 /// @image html plot_distf_bezier.png "Distribution: single precision"
 /// @image latex plot_distf_bezier.eps "Distribution: single precision" width=10cm
 ///
 /// @image html plot_dist_bezier.png "Distribution: double precision"
 /// @image latex plot_dist_bezier.eps "Distribution: double precision" width=10cm
+///
+/// ### Distribution
+/// | \f$ n \f$ | precision | \f$ S_{min} \f$ | \f$ S_{most} \f$ | \f$ S_{most} - S_{min} \f$ | \f$ \mathrm{prob}_{min}/\mathrm{prob}_{most} \f$ |
+/// | :-------: | :-------: | :-------------- | :--------------  | :------------------------- | :----------------------------------------------- |
+/// | 6         | single    | 4.74177         | 4.74212          | 0.00035                    | 0.00091                                          |
+/// | 6         | double    | 4.74177         | 4.74217          | 0.00040                    | 0.00031                                          |
+///
+/// Similar to fourier function result \ref result_fourier \ref conv_dist_fourier, due to the degeneracy factor \f$ P(S) \f$,
+/// least action path is not same as most probable path. Although of this, minimum action is very close to
+/// the action of exact one. Therefore we can conclude that \f$ \lambda = 10^4 \f$ is enough to lower the
+/// contribution of degeneracy factor.
 ///
 /// @section err_anal_bezier Error Analysis
 /// 

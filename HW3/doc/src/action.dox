@@ -10,5 +10,6 @@
 /// adpative gauss-kronrod quadrature method (method: 0) or
 /// tanh-sinh quadrature method (method: 1).
 /// @section gau-kronrod Gauss-Kronrod quadrature
+/// 
 /// @section tanh-sinh Tanh-Sinh quadrature
 ///////////////////////////////////////////////////////////

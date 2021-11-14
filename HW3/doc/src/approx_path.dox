@@ -20,7 +20,7 @@
 /// \f}
 /// , where \f$ a, s \f$ are adder and scaler to match boundary condition
 /// and \f$ \phi(t) \f$ is the fourier function 
-/// \latexonly \eqref{eq:fourier} \endlatexonly.
+/// \latexonly \eqref{eq:fourier_doc} \endlatexonly.
 /// Using adder and scaler, we can confine coefficients of fourier function
 /// \f$ c_i \f$ to \f$ [-1, 1] \f$. 
 /// When path \f$ p(t) \f$ with initial time \f$ t_0 \f$ and finial time 
@@ -34,4 +34,38 @@
 /// \f$ p(t) \f$, in general. This is due to the inconsistency of \f$ \hat{p}(t) \f$ and
 /// \f$ p(t) \f$ at \f$ t \not \in [t_0, t_f] \f$. 
 /// @section bezier_curve Bezier Curve
+/// Bernstein proves the Weierstrass approximation theorem by showing
+/// \f{equation}{\label{eq:bern_approx}
+/// f_n(t) = \sum_{i=0}^n f\left(\frac{i}{n}\right) \binom{n}{i}t^i(1-t)^{n-i}
+/// \f}
+/// uniformly converges to continuous function \f$ f(t) \f$ on \f$ [0, 1] \f$.
+/// Thus, we can approximate path using Bezier Curve.
+/// \f{equation}{\label{eq:basis_bezier}
+/// \phi(t, \{c_0,\dotsc, c_n\}) = \sum_{i=0}^n c_i \binom{n}{i}t^i(1-t)^{n-i}
+/// \f}
+/// , where \f$ n \f$ is the order and \f$ c_i \f$ are control points of Bezier Curve.
+/// Note that Bezier curve has following properties.
+/// \f{align}{
+/// \phi(0) &= c_0 \label{eq:bezier_start} \\
+/// \phi(1) &= c_n \label{eq:bezier_end} \\  
+/// \phi(t, \{c_0, \dotsc, c_n\}) &= (1-t)\phi(t, \{c_0, \dotsc, c_{n-1} \}) +
+/// t \phi(t, \{c_1,\dotsc, c_{n-1} \}) \label{eq:bezier_recurr} \\
+/// \phi'(t, \{c_0, \dotsc, c_n \}) &= n \phi(t, \{c_1-c_0, \dotsc, c_n-c_{n-1} \})
+/// \label{eq:bezier_deriv}
+/// \f}
+/// Bezier curve can be evaluated directly, however such method is known to
+/// numerically unstable. So, I use more numerically stable but slower
+/// De Casteljau's algorithm which exploits recurrence property 
+/// \latexonly \eqref{eq:bezier_recurr} \endlatexonly
+/// to evaluate Bezier curve.
+/// However Bezier curve is only defined in \f$ [0, 1] \f$.
+/// So, I define bezier_path surjectived with boundary condition
+/// \f$ \Psi(t_0) = p_0 \f$ and \f$ \Psi(t_1) = p_1 \f$ as
+/// \f{equation}{\label{eq:bezier_path_doc}
+/// \Psi(t) = s \phi\left(\frac{t-t_0}{t_1-t_0}, \{c_0, \dotsc, c_{n-1}, 
+/// \frac{p_1}{p_0} c_0 \} \right)
+/// \f}
+/// , where \f$ s \f$ is the scaling parameter used to match boundary codition.
+/// Then \f$ \Psi(t) \f$ is defined in \f$ [t_0, t_f] \f$ and we can bound
+/// control points \f$ c_i \f$ in \f$ [0, 1] \f$.
 ////////////////////////////////////////////////////////////////////////////
