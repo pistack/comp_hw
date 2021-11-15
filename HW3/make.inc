@@ -14,4 +14,4 @@ PATH_TYPE = PATH_TYPE_FOURIER
 # DEBUG: -O -g -Wall -pedantic
 # RELEASE: -O3
 
-CXXFLAGS = -O3
+CXXFLAGS = -O3 -std=c++14

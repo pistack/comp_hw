@@ -6,7 +6,7 @@
  * [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
  * @section req Requirements
  * To install this program, you should have
- * - C++ compiler like g++
+ * - C++ compiler like g++ (should support c++14 standard)
  * - gnu make or cmake
  * @section install Installation
  * - gnu make
