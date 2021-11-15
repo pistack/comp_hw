@@ -23,16 +23,16 @@
 /// \latexonly \eqref{eq:fourier_doc} \endlatexonly.
 /// Using adder and scaler, we can confine coefficients of fourier function
 /// \f$ c_i \f$ to \f$ [-1, 1] \f$. 
-/// When path \f$ p(t) \f$ with initial time \f$ t_0 \f$ and finial time 
+/// When path \f$ p(t) \f$ with initial time \f$ t_i \f$ and finial time 
 /// \f$ t_f \f$ is given, then we can extend such path \f$ p(t) \f$ to
-/// a periodic function \f$ \hat{p}(t) \f$ of the period \f$ 2(t_f-t_0) \f$.
+/// a periodic function \f$ \hat{p}(t) \f$ of the period \f$ 2(t_f-t_i) \f$.
 /// If we set the period of fourier function used by fourier path to
-/// \f$ 2(t_f-t_0) \f$ then fourier path \f$ \Psi(t) \f$ would approximate
-/// \f$ \hat{p}(t) \f$. Since \f$ \hat{p}(t) = p(t) \f$ when \f$ t \in [t_0, t_f] \f$,
-/// \f$ \Psi(t) \f$ also approximates \f$ p(t) \f$ when \f$ t \in [t_0, t_f] \f$.
-/// However if \f$ t \not \in [t_0, t_f] \f$, \f$ \Psi(t) \f$ could not approximate
+/// \f$ 2(t_f-t_i) \f$ then fourier path \f$ \Psi(t) \f$ would approximate
+/// \f$ \hat{p}(t) \f$. Since \f$ \hat{p}(t) = p(t) \f$ when \f$ t \in [t_i, t_f] \f$,
+/// \f$ \Psi(t) \f$ also approximates \f$ p(t) \f$ when \f$ t \in [t_i, t_f] \f$.
+/// However if \f$ t \not \in [t_i, t_f] \f$, \f$ \Psi(t) \f$ could not approximate
 /// \f$ p(t) \f$, in general. This is due to the inconsistency of \f$ \hat{p}(t) \f$ and
-/// \f$ p(t) \f$ at \f$ t \not \in [t_0, t_f] \f$. 
+/// \f$ p(t) \f$ at \f$ t \not \in [t_i, t_f] \f$. 
 /// @section bezier_curve Bezier Curve
 /// Bernstein proves the Weierstrass approximation theorem by showing
 /// \f{equation}{\label{eq:bern_approx}
@@ -60,12 +60,12 @@
 /// to evaluate Bezier curve.
 /// However Bezier curve is only defined in \f$ [0, 1] \f$.
 /// So, I define bezier_path surjectived with boundary condition
-/// \f$ \Psi(t_0) = p_0 \f$ and \f$ \Psi(t_1) = p_1 \f$ as
+/// \f$ \Psi(t_i) = p_0 \f$ and \f$ \Psi(t_f) = p_1 \f$ as
 /// \f{equation}{\label{eq:bezier_path_doc}
-/// \Psi(t) = s \phi\left(\frac{t-t_0}{t_1-t_0}, \{c_0, \dotsc, c_{n-1}, 
+/// \Psi(t) = s \phi\left(\frac{t-t_i}{t_f-t_i}, \{c_0, \dotsc, c_{n-1}, 
 /// \frac{p_1}{p_0} c_0 \} \right)
 /// \f}
 /// , where \f$ s \f$ is the scaling parameter used to match boundary codition.
-/// Then \f$ \Psi(t) \f$ is defined in \f$ [t_0, t_f] \f$ and we can bound
+/// Then \f$ \Psi(t) \f$ is defined in \f$ [t_i, t_f] \f$ and we can bound
 /// control points \f$ c_i \f$ in \f$ [0, 1] \f$.
 ////////////////////////////////////////////////////////////////////////////

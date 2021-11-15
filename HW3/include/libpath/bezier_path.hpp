@@ -3,7 +3,7 @@
  * @ingroup libpath
  * @brief headerfile for path approximated by bezier curve
  * @author pistack (Junho Lee)
- * @date 2021. 11. 10.
+ * @date 2021. 11. 15.
  */
 
 #ifndef BEZIER_PATH_H
@@ -33,7 +33,7 @@ namespace libpath {
 /// @note If initial value of path, given by boundary condition, is zero
 /// then it sets \f$ c_0 = 0 \f$.
 /// @warning If bezier curve is not appropriate to approximate path then
-/// eval and deriv method returns aways zero.
+/// eval and deriv method returns always zero.
 template<typename T>
 class bezier_path
 {
