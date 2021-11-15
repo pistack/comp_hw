@@ -3,7 +3,7 @@
  * @ingroup libpath
  * @brief headerfile for fourier function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 10.
+ * @date 2021. 11. 15.
  */
 
 #ifndef FOURIER_H
@@ -13,11 +13,9 @@
 #include <cstddef>
 #include <cmath>
 #include <vector>
+#include "math_const.hpp"
 
 namespace libpath {
-
-template<typename T>
-constexpr T pi = std::acos(T(-1)); ///< pi
 
 /// @brief Class which defines fourier function
 /// \f{equation}{\label{eq:fourier_func} 
@@ -39,6 +37,8 @@ class fourier
 	unsigned int f_num_fourier; // number of sine and cosine function to add
 	T f_period; // the period of fourier function 
 	std::vector<T> f_c; // coefficients
+
+	static constexpr T pi = PI<T>();
 
 	public:
 

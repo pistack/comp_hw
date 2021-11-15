@@ -23,11 +23,11 @@ int test_fourier()
     vector<PRECISION> c1 = {1.0, 0.0};
     vector<PRECISION> c2 = {0.0, 1.0};
     vector<PRECISION> c3 = {1.0, 0.0, 1.0, 0.0};
-    fourier<PRECISION> fun1(1, pi<PRECISION>, c1); // sin(2*x)
-    fourier<PRECISION> fun2(1, pi<PRECISION>, c2); // cos(2*x)
-    fourier<PRECISION> fun3(2, pi<PRECISION>, c3); // sin(2*x) + sin(4*x)
+    fourier<PRECISION> fun1(1, PI<PRECISION>(), c1); // sin(2*x)
+    fourier<PRECISION> fun2(1, PI<PRECISION>(), c2); // cos(2*x)
+    fourier<PRECISION> fun3(2, PI<PRECISION>(), c3); // sin(2*x) + sin(4*x)
     vector<PRECISION> t{
-        0.0, pi<PRECISION>/4, pi<PRECISION>/2, 3*pi<PRECISION>/4, pi<PRECISION>
+        0.0, PI<PRECISION>()/4, PI<PRECISION>()/2, 3*PI<PRECISION>()/4, PI<PRECISION>()
     };
     vector<PRECISION> result;
     vector<vector<PRECISION>> result_eval

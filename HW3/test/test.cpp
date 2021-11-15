@@ -9,6 +9,7 @@
 #include <vector>
 #include <iostream>
 #include <iomanip>
+#include "libpath/math_const.hpp"
 #include "test.hpp"
 
 int main(void)
@@ -24,6 +25,7 @@ int main(void)
     // tst number
     int tst_num = 0;
 
+    std::cout << libpath::PI<PRECISION>() << std::endl;
     std::cout << std::boolalpha;
     std::cout << "Testing libpath " << std::endl;
     std::cout << "Test 1. test bezier class " << std::endl;

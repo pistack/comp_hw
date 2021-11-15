@@ -3,7 +3,7 @@
  * @ingroup libpath
  * @brief evaluates action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 13.
+ * @date 2021. 11. 15.
  */
 
 namespace libpath {
@@ -168,10 +168,10 @@ T action<T, Path, Lag>::eval_qthsh(T left, T right, unsigned int max_order, T &e
 {
   T mid = (left+right)/2;
   T scale_coord = (right-left)/2;
-  T scale_int = h_pi<T>*scale_coord;
+  T scale_int = h_pi*scale_coord;
   T h = 2; // step_size
-  T dt_pre = const_e; // previous step size
-  T dt = const_e; // current step size
+  T dt_pre = std::exp(T(1)); // previous step size
+  T dt = dt_pre; // current step size
   T integral_pre = 0; // previous integration value
   T integral = eval_lagrangian(mid); // integration value
   T L1 = std::abs(integral); // L1 norm
@@ -188,7 +188,7 @@ T action<T, Path, Lag>::eval_qthsh(T left, T right, unsigned int max_order, T &e
     h /= 2; // decrease step size by half
     do
     {
-      T u = std::exp(h_pi<T>*(1/t-t)); // exp(-pi*sinh(kh))
+      T u = std::exp(h_pi*(1/t-t)); // exp(-pi*sinh(kh))
       T r = 2*u/(1+u); // (1-x_k)
       T dr = scale_coord*r;
       T w = (t+1/t)*r/(1+u);

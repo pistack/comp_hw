@@ -3,7 +3,7 @@
  * @ingroup libpath
  * @brief evaluate sum and derivative of sine and cosine function
  * @author pistack (Junho Lee)
- * @date 2021. 11. 12.
+ * @date 2021. 11. 15.
  */
 
 namespace libpath {
@@ -12,7 +12,7 @@ template<typename T>
 T fourier<T>::eval(T t)
 {
 	unsigned int term = 2*f_num_fourier;
-	T omega = 2*pi<T>/f_period;
+	T omega = 2*pi/f_period;
 	T tmp=0;
 	T y=0;
 	
@@ -31,7 +31,7 @@ std::vector<T> fourier<T>::eval(std::vector<T> t)
 {
 	unsigned int term = 2*f_num_fourier;
 	std::size_t n = t.size();
-	T omega = 2*pi<T>/f_period;
+	T omega = 2*pi/f_period;
 	std::vector<T> y(n, 0);
 	
 	for(std::size_t i=0; i<n; ++i)
@@ -52,7 +52,7 @@ template<typename T>
 T fourier<T>::deriv(T t)
 {
 	unsigned int term = 2*f_num_fourier;
-	T omega = 2*pi<T>/f_period;
+	T omega = 2*pi/f_period;
 	T tmp=0;
 	T yp=0;
 	
@@ -71,7 +71,7 @@ std::vector<T> fourier<T>::deriv(std::vector<T> t)
 {
 	unsigned int term = 2*f_num_fourier;
 	std::size_t n = t.size();
-	T omega = 2*pi<T>/f_period;
+	T omega = 2*pi/f_period;
 	std::vector<T> yp(n, 0);
 	
 	for(std::size_t i=0; i<n; ++i)
@@ -91,7 +91,7 @@ template<typename T>
 T fourier<T>::nderiv(unsigned int n, T t)
 {
 	unsigned int term = 2*f_num_fourier;
-	T omega = 2*pi<T>/f_period;
+	T omega = 2*pi/f_period;
 	T tmp=0;
 	T yp=0;
 	std::vector<T> c(term, 0);
@@ -127,7 +127,7 @@ std::vector<T> fourier<T>::nderiv(unsigned int n, std::vector<T> t)
 {
 	unsigned int term = 2*f_num_fourier;
 	std::size_t n_t = t.size();
-	T omega = 2*pi<T>/f_period;
+	T omega = 2*pi/f_period;
 	std::vector<T> c(term, 0);
 	std::vector<T> yp(n_t, 0);
 
