@@ -1,0 +1,15 @@
+//////////////////////////////////////////////////////////////
+/// @page mcm_kepler_path_con Conclusion
+/// In conclusion, Markov Chain Monte Carlo based
+/// minimization of action method described in
+/// [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916)
+/// is reliable 
+/// (relative error of minimum action is smaller than \f$ 0.001 \% \f$)
+/// and fast
+/// (less than \f$ 10^6 \f$ iteration need to find exact solution)
+/// method to search exact minimum action path with
+/// boundary condition.
+/// However, due to the degeneracy factor in target distribution,
+/// we should varying not only number or order of basis function
+/// but also acceptance parameter \f$ \lambda \f$.
+//////////////////////////////////////////////////////////////

@@ -6,10 +6,12 @@
 /// S = \int_{t_0}^{t_f} L(t, x(t), x'(t)) \mathrm{d} t
 /// \f}
 ///, where \f$ L(t, x(t), x'(t)) \f$ is Lagrangian.
+/// In general, such integral could not be calculated analytically.
 /// To evaluate the action integral accurately, I use
 /// adpative gauss-kronrod quadrature method (method: 0) or
 /// tanh-sinh quadrature method (method: 1).
 /// @section gau-kronrod Gauss-Kronrod quadrature
 /// 
 /// @section tanh-sinh Tanh-Sinh quadrature
+///
 ///////////////////////////////////////////////////////////

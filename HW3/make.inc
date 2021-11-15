@@ -7,7 +7,7 @@ CXX = g++ # c++ complier name
 
 PRECISION_LEVEL = 1
 MONITOR = 1 
-PATH_TYPE = PATH_TYPE_BEZIER 
+PATH_TYPE = PATH_TYPE_FOURIER
 
 # C++ complier flag 
 # example:

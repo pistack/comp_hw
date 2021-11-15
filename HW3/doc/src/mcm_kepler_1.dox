@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// @page result_fourier Result: Fourier function
+/// @page mcm_kepler_path_1 Result: Fourier function
 /// @tableofcontents
 ///
 /// ### Monte Carlo Metropolis Optimization Results
@@ -41,7 +41,7 @@
 /// exact path as \f$ n_f \f$ increases.
 /// At \f$ n_f = 3 \f$, optimized path is improved as step_size decreases from
 /// \f$ 0.01 \f$ to \f$ 0.001 \f$ and \f$ \lambda \f$ increases from
-/// \f$ 100 \f$ to \f$ 10000 \f$ 
+/// \f$ 10^2 \f$ to \f$ 10^4 \f$ 
 /// (compare \f$ n_f=3 \f$, setup:1 and \f$ n_f=3 \f$, setup: 2). 
 /// To see how setup_size and \f$ \lambda \f$ affect optimization process
 /// we need to monitor optimization process.
@@ -117,9 +117,25 @@
 /// | 4           | single    | 4.74191         | 4.74251          |  0.00060                   | 0.00025                                          |
 /// | 3           | double    | 4.74251         | 4.74288          |  0.00037                   | 0.00016                                          |
 /// | 4           | double    | 4.74184         | 4.74236          |  0.00052                   | 0.00068                                          |
+///
+/// Since our target distribution is 
+/// \f{equation}{\label{eq:target_dist_kepler}
+/// \begin{aligned}
+/// g(S) & = P(S)\exp\left(-\lambda(S-S_{min})\right) \\
+/// &= P(S)\exp\left(-\lambda/2(S-S_{min})\right)\exp\left(-\lambda/2(S-S_{min})\right) 
+/// \end{aligned}
+/// \f} 
+/// , contribution of degeneracy factor is lowered as \f$ \lambda \f$ increases. This decreases the value of
+/// most probable action and increases the likelihood of finding much smaller value of action.
+/// So, as parameter \f$ \lambda \f$ increases from \f$ 10^2 \f$ to \f$ 10^4 \f$, both most probable and minimum action decrease.
+/// Also, the difference between most probable action and minimum action is lowered.
+/// (Compare setp 1 table \f$ n_f = 3 \f$, \f$ n_f = 4 \f$. )
+/// At \f$ n_f = 4 \f$ with \f$ \lambda = 10^4 \f$, relative difference of the minimum action and exact action is smaller than 
+/// \f$ 0.01 \% \f$, so I stop optimization at \f$ n_f = 4 \f$.
 /// 
 /// @section error_fourier Error Analysis
-/// 
+/// Below table summerizes error analysis of the optimization process.
+///
 /// ### Error Analysis
 ///  | \f$ n_f \f$ | precision | setup | \f$ S_{min} \f$ | \f$ S_{exact} \f$ | \f$ \Delta S = S_{min} - S_{exact} \f$ | relative \f$ L_2 \f$ error |
 ///  | :----------:| :-------: | :---: | :-------------- | :---------------- | :------------------------------------- | :------------------------- |
@@ -133,6 +149,9 @@
 ///  | 3           | double    | 1     | 4.74380         | ^                 | 0.00205                                | 0.00924                    |
 ///  | 3           | double    | 2     | 4.74251         | ^                 | 0.00076                                | 0.00215                    |
 ///  | 4           | double    | 2     | 4.74184         | ^                 | 0.00009                                | 0.00101                    |
-/// @section sum_fourier Summary
 /// 
+/// As \f$ n_f \f$ increases and parameter \f$ \lambda \f$ increase, minimum action \f$ S_{min} \f$ converges rapidly to
+/// exact one. However, relative \f$ L_2 \f$ error decreases slower than convergence of \f$ S_{min} \f$, since we minimize action \f$ S \f$,
+/// rather than relative \f$ L_2 \f$ error. Although of this, at \f$ n_f = 3, 4 \f$ with parameter \f$ \lambda = 10^4 \f$,
+/// relative \f$ L_2 \f$ error is much small (less than \f$ 0.5 \% \f$.).
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
