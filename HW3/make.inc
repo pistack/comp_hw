@@ -5,7 +5,7 @@ CXX = g++ # c++ complier name
 # PATH_TYPE: PATH_TYPE_BEZIER: bezier curve
 # PATH_TYPE: PATH_TYPE_FOURIER: fourier function
 
-PRECISION_LEVEL = 1
+PRECISION_LEVEL = 0
 MONITOR = 1 
 PATH_TYPE = PATH_TYPE_FOURIER
 

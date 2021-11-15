@@ -21,6 +21,7 @@ $(TARGET) : $(OBJS)
 
 dep :
 	makedepend $(INC) $(SRCS)
+	$(MAKE) -C test dep
 
 clean :
 	rm -rf $(OBJS) $(TARGET)
@@ -35,8 +36,11 @@ new :
 	$(MAKE)
 # DO NOT DELETE
 
+./src/main.o: include/libpath/math_const.hpp
+./src/main.o: include/libpath/math_const/math_const.tpp
 ./src/main.o: include/libmcm/mcm_fourier.hpp include/libpath/fourier_path.hpp
-./src/main.o: include/libpath/fourier.hpp include/libpath/fourier/fourier.tpp
+./src/main.o: include/libpath/fourier.hpp include/libpath/math_const.hpp
+./src/main.o: include/libpath/fourier/fourier.tpp
 ./src/main.o: include/libpath/fourier_path/fourier_path.tpp
 ./src/main.o: include/libmcm/mcm.hpp include/libpath/action.hpp
 ./src/main.o: include/libpath/node_weight_table.hpp

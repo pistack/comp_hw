@@ -9,7 +9,6 @@
 #define MATH_CONST_H
 
 #include <limits>
-#include <iostream>
 
 namespace libpath {
 /// @brief provides pi
@@ -17,6 +16,12 @@ namespace libpath {
 /// float, double or long double 
 template<typename T>
 constexpr T PI();
+
+/// @brief provides exponential constant
+/// @param T precision should be one of
+/// float, double or long double
+template<typename T>
+constexpr T EXP1();
 }
 
 

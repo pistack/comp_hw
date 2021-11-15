@@ -2,10 +2,11 @@
  * @file test.cpp
  * @brief test libpath
  * @author pistack (Junho Lee)
- * @date 2021. 11. 12.
+ * @date 2021. 11. 15.
  */
 
 #include <chrono>
+#include <cmath>
 #include <vector>
 #include <iostream>
 #include <iomanip>
@@ -24,8 +25,19 @@ int main(void)
 
     // tst number
     int tst_num = 0;
-
-    std::cout << libpath::PI<PRECISION>() << std::endl;
+    
+    std::cout.unsetf(std::ios::floatfield); // initialize floatfield
+    std::cout.precision(DIGITS); // print significant digits
+    std::cout << "Test 0. mathematical constant " << std::endl;
+    std::cout << "Mathematical constant (pi) from libpath: " << libpath::PI<PRECISION>() << std::endl;
+    std::cout << "Reference: " << std::acos(PRECISION(-1)) << std::endl;
+    std::cout << "Error: " << std::abs(libpath::PI<PRECISION>()-std::acos(PRECISION(-1))) << std::endl;
+    std::cout << "Mathematical constant (e) from libpath: " << libpath::EXP1<PRECISION>() << std::endl;
+    std::cout << "Reference: " << std::exp(PRECISION(1)) << std::endl;
+    std::cout << "Error: " << std::abs(libpath::EXP1<PRECISION>()-std::exp(PRECISION(1))) << std::endl;
+    std::cout << "Mathematical constant (1/e) from libpath: " << 1/libpath::EXP1<PRECISION>() << std::endl;
+    std::cout << "Reference: " << std::exp(PRECISION(-1)) << std::endl;
+    std::cout << "Error: " << std::abs(1/libpath::EXP1<PRECISION>()-std::exp(PRECISION(-1))) << std::endl;
     std::cout << std::boolalpha;
     std::cout << "Testing libpath " << std::endl;
     std::cout << "Test 1. test bezier class " << std::endl;

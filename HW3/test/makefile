@@ -45,9 +45,12 @@ new :
 
 # DO NOT DELETE
 
-test.o: include/test.hpp
+test.o: ../include/libpath/math_const.hpp
+test.o: ../include/libpath/math_const/math_const.tpp include/test.hpp
 test_action_kepler.o: ../include/libpath/fourier_path.hpp
 test_action_kepler.o: ../include/libpath/fourier.hpp
+test_action_kepler.o: ../include/libpath/math_const.hpp
+test_action_kepler.o: ../include/libpath/math_const/math_const.tpp
 test_action_kepler.o: ../include/libpath/fourier/fourier.tpp
 test_action_kepler.o: ../include/libpath/fourier_path/fourier_path.tpp
 test_action_kepler.o: ../include/libpath/action.hpp
@@ -59,6 +62,8 @@ test_action_simple.o: ../include/libpath/bezier/bezier.tpp
 test_action_simple.o: ../include/libpath/bezier_path/bezier_path.tpp
 test_action_simple.o: ../include/libpath/fourier_path.hpp
 test_action_simple.o: ../include/libpath/fourier.hpp
+test_action_simple.o: ../include/libpath/math_const.hpp
+test_action_simple.o: ../include/libpath/math_const/math_const.tpp
 test_action_simple.o: ../include/libpath/fourier/fourier.tpp
 test_action_simple.o: ../include/libpath/fourier_path/fourier_path.tpp
 test_action_simple.o: ../include/libpath/action.hpp
@@ -66,15 +71,21 @@ test_action_simple.o: ../include/libpath/node_weight_table.hpp
 test_action_simple.o: ../include/libpath/action/action.tpp include/test.hpp
 test_action_vaildity.o: ../include/libpath/fourier_path.hpp
 test_action_vaildity.o: ../include/libpath/fourier.hpp
+test_action_vaildity.o: ../include/libpath/math_const.hpp
+test_action_vaildity.o: ../include/libpath/math_const/math_const.tpp
 test_action_vaildity.o: ../include/libpath/fourier/fourier.tpp
 test_action_vaildity.o: ../include/libpath/fourier_path/fourier_path.tpp
 test_action_vaildity.o: ../include/libpath/action.hpp
 test_action_vaildity.o: ../include/libpath/node_weight_table.hpp
 test_action_vaildity.o: ../include/libpath/action/action.tpp include/test.hpp
 test_fourier.o: ../include/libpath/fourier.hpp
+test_fourier.o: ../include/libpath/math_const.hpp
+test_fourier.o: ../include/libpath/math_const/math_const.tpp
 test_fourier.o: ../include/libpath/fourier/fourier.tpp include/test.hpp
 test_fourier_path.o: ../include/libpath/fourier_path.hpp
 test_fourier_path.o: ../include/libpath/fourier.hpp
+test_fourier_path.o: ../include/libpath/math_const.hpp
+test_fourier_path.o: ../include/libpath/math_const/math_const.tpp
 test_fourier_path.o: ../include/libpath/fourier/fourier.tpp
 test_fourier_path.o: ../include/libpath/fourier_path/fourier_path.tpp
 test_fourier_path.o: include/test.hpp

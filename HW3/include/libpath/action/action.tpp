@@ -117,7 +117,8 @@ void action<T, Path, Lag>::eval_helper(T left, T right, T D, T D_tol, T &integra
   if(tmp*std::sqrt(tmp*length) < D_tol*(eps2+L1_lr))
   {
     integral = scale_factor*int_kron;
-    e = err_scale*tmp_e*std::sqrt(tmp_e); // update estimated error
+  	// approx 2000*sqrt(2) by 2829
+    e = 2829*tmp_e*std::sqrt(tmp_e); // update estimated error
     return;
   }
 
@@ -128,7 +129,8 @@ void action<T, Path, Lag>::eval_helper(T left, T right, T D, T D_tol, T &integra
   if(std::abs(D_lr-D) < eps*(eps + L1_lr))
   {
     integral = scale_factor*int_kron;
-    e = err_scale*tmp_e*std::sqrt(tmp_e);
+    // approx 2000*sqrt(2) by 2829
+    e = 2829*tmp_e*std::sqrt(tmp_e);
     return;
   }
 
@@ -170,8 +172,8 @@ T action<T, Path, Lag>::eval_qthsh(T left, T right, unsigned int max_order, T &e
   T scale_coord = (right-left)/2;
   T scale_int = h_pi*scale_coord;
   T h = 2; // step_size
-  T dt_pre = std::exp(T(1)); // previous step size
-  T dt = dt_pre; // current step size
+  T dt_pre = exp1; // previous step size
+  T dt = exp1; // current step size
   T integral_pre = 0; // previous integration value
   T integral = eval_lagrangian(mid); // integration value
   T L1 = std::abs(integral); // L1 norm

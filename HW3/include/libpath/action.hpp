@@ -70,12 +70,9 @@ class action
 
 	static const Lag lag; // lagrangian
 
-    // error scaling factor for gauss-kronrod
-	// approx 2000*sqrt(2) as 2829
-	static constexpr T err_scale = 2829;
-
 	// half pi value used in tanh-sinh
 	static constexpr T h_pi = PI<T>()/2;
+	static constexpr T exp1 = EXP1<T>();
 
     // machine eps
     static constexpr T eps = std::numeric_limits<T>::epsilon(); 

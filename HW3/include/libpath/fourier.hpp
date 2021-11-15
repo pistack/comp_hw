@@ -38,7 +38,7 @@ class fourier
 	T f_period; // the period of fourier function 
 	std::vector<T> f_c; // coefficients
 
-	static constexpr T pi = PI<T>();
+	static constexpr T tau = 2*PI<T>();
 
 	public:
 

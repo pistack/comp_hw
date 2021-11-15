@@ -52,7 +52,7 @@
 
 using namespace std;
 
-PRECISION pi = libpath::PI<PRECISION>(); // pi
+constexpr PRECISION pi = libpath::PI<PRECISION>(); // pi
 
 /// @brief functor class for the kepler lagranian
 /// @param T precision should be the one of
