@@ -92,7 +92,13 @@ int main(void)
     ++tst_num;
     tst_num = 0;
     // report test result
-    std::cout << "Test Report " << std::endl;
+    std::cout << "Test Report ";
+    #if PRECISION_LEVEL == 0
+    std::cout << "( single precision )" << std::endl;
+    #endif
+    #if PRECISION_LEVEL == 1
+    std::cout << "( double precision )" << std::endl;
+    #endif
     std::cout << "Test " << tst_num+1 << ". state: " << tst_result[tst_num] << " elapsed time: " << \
     tst_elapsed[tst_num] << " s" << std::endl;
     ++tst_num;

@@ -11,7 +11,104 @@
 /// adpative gauss-kronrod quadrature method (method: 0) or
 /// tanh-sinh quadrature method (method: 1).
 /// @section gau-kronrod Gauss-Kronrod quadrature
-/// 
+/// In general, to numerically evaluates the integral 
+/// \f{equation}{\label{eq:gen_int}
+/// I = \int_a^b f(t) \mathrm{d} t
+/// \f}
+/// , we first approximate integrand \f$ f(t) \f$ by polynomial.
+/// Once \f$ f(t) \f$ is approximated by polynomial \f$ P(t) \f$ then
+/// integration of \f$ P(t) \f$ from \f$ a \f$ to \f$ b \f$ can be done analytically.
+/// There are several method to approximate integrand \f$ f(t) \f$ by polynomial.
+/// Intuitive and simple method is using interpolation polynomial of order \f$ n \f$ with
+/// \f$ n + 1 \f$ equally spaced points. Then we get Newton-Cots formula.
+/// However, such simple method suffers Runge phenomenon. So, high order Newton-Cots method
+/// is not accurate as we expected.
+/// Another method is using orthogonal polynomial to approximate integrand \f$ f(t) \f$.
+/// In gauss-quadrature method, integrand \f$ f(t) \f$ is approximated by 
+/// Legendre polynomials. Then the integration \f$ I \f$ is approximated to
+/// \f{equation}{\label{eq:gauss_quad}
+/// I = \int_a^b f(t) \mathrm{d} t \approx \sum_{i=1}^n w_i f(x_i)
+/// \f}, with abscissa 
+/// \f{equation}{\label{eq:gau_x}
+/// x_i = \frac{a+b}{2} + \eta_i \frac{b-a}{2}
+/// \f}, where \f$ \eta_i \f$ is the root of \f$ n \f$ th Lagendre polynomial \f$ P_i(t) \f$
+/// and
+/// weight
+/// \f{equation}{\label{eq:gau_w}
+/// w_i = \frac{b-a}{(1-\eta_i^2)P'_n(\eta_i)^2}
+/// \f}
+/// Then such approximation is exact up to the polynomial of order \f$ 2n - 1 \f$ and
+/// order of error is known to be \f$ O((b-a)^{2n+1}) \f$ see 
+/// [Kahaner, Moler & Nash 1989](https://archive.org/details/numericalmethods0000kaha).
+/// So, if we subdivide the interval by \f$ m \f$ then the error decreases by the order
+/// \f$ O(m^{-2n-1}) \f$.
+/// Kronrod improves gauss quadrature method by adding additional \f$ n + 1 \f$ points to
+/// gauss absicca and introduce new weights to make the approximation is exact up to the polynomial
+/// of degree \f$ 3n-1 \f$. Denote \f$ x_i \f$ and \f$ w_i \f$  gauss absicca and weight and
+/// \f$ x'_i \f$ and \f$ w'_i \f$ kronrod absicca and weight.
+/// Let \f$ G_n \f$ and \f$ K_n \f$ be
+/// \f{align}{
+///    G_n &= \sum_{i=1}^n w_i f(x_i) \label{eq:gau_order_n} \\
+///    K_n &= \sum_{i=1}^{2n+1} w'_i f(x'_i) \label{eq:kronrod_order_n}
+/// \f}
+/// Then we can estimate error using difference between gaussian and kronrod quadrature
+/// \f$ | G_n - K_n | \f$.
+/// Piessens suggests that error should be estimated by
+/// \f{equation}{\label{eq:gau_kronrod_err_estimate}
+/// E = (200 \cdot | G_n - K_n |)^{3/2} \approx 2829\cdot(|G_n - K_n|)^{3/2}
+/// \f}
 /// @section tanh-sinh Tanh-Sinh quadrature
-///
+/// Instead of approximate integrand \f$ f(t) \f$ by polynomial, tanh-sinh quadrature exploits
+/// exponential convergence of trapeziodal rule when integrand decreases exponentially.
+/// To make integrand decay rapidly, consider following coordinate transformation.
+/// \f{equation}{\label{eq:tanh_sinh_x}
+/// t = \frac{a+b}{2} + \frac{b-a}{2}\tanh\left(\frac{\pi}{2}\sinh(u)\right)
+/// \f}
+/// Then integral \f$ I \f$ is
+/// \f{equation}{\label{eq:int_tanh_sinh}
+/// I = \int_a^b f(t) \mathrm{d} t = 
+/// \frac{b-a}{2} \int_{-\infty}^{\infty} 
+/// \frac{\frac{\pi}{2} \cosh u}{\cosh^2\left(\frac{\pi}{2}\sinh u\right)} f(t(u)) \mathrm{d} u
+/// \f}
+/// Due to rapidly decreasing \f$ t'(u) \f$ term, \f$ t'(u)f(t(u)) \f$ decays exponentially.
+/// Thus, if we approximate \f$ I \f$ as
+/// \f{equation}{\label{eq:int_tanh_sinh_approx}
+/// I = \int_{-\infty}^{\infty} t'(u)f(t(u)) \mathrm{d} u \approx I_h = h \sum_{i=-N}^{i=N} t'(ih)f(t(ih))
+/// \f}
+/// , where \f$ h \f$ is step size. Then error of such approximation decays exponentially on not only \f$ N \f$
+/// but also \f$ h \f$.
+/// In finite precision system, \f$ N \f$ is taken to the smallest non-negative integer such that
+/// \f$ | t'(Nh)f(t(Nh)) | < \mathrm{eps}^2 \f$, where \f$ \mathrm{eps} \f$ is machine epsilon 
+/// or practically, \f$ |h t'(Nh)f(t(Nh)) | < \mathrm{eps}\cdot (I_h + \mathrm{eps} ) \f$.
+/// Due to the double exponential convergence of tanh-sinh method, error of numerical integration with step size \f$ h \f$
+/// can be estimated by
+/// \f{equation}{\label{eq:tanh_sinh_err_est}
+/// E = | I_{2h} - I_h |
+/// \f} when \f$ h \leq 1/2 \f$.
+/// Thus in practice, start from \f$ h = 1 \f$, evaluates \f$ I_h \f$ and estimates error using above equation
+/// \latexonly \eqref{eq:tanh_sinh_err_est} \endlatexonly, 
+/// then divide \f$ h \f$ by half.
+/// Repeats above step until estimated error less than tolerance.
+/// Tanh-sinh can handle integrand which has singularities at end points.
+/// However It is slower than guass-kronrod quadrature method when integrand is smooth and has no end points 
+/// singularities.
+/// Therefore I set gauss-kronrod method with order \f$ 31 \f$ to default method for
+/// evaluation of action integration.
+/// @section conv_crit Convergence Criteria
+/// Define \f$ L_1 \f$ norm of integrand \f$ f(t) \f$ as
+///\f{equation}{\label{eq:L_1_doc}
+/// L_1 = \int_a^b | f(t) | \mathrm{d} t
+/// \f}
+/// and denote relative tolerance \f$ r \f$ then 
+/// numerical integration is converged when estimated error \f$ E \f$ satisfies
+/// \f{equation}{\label{eq:conv_cond_doc}
+/// E < r \cdot L_1
+/// \f}
+/// However if relative tolerance \f$ r \f$ is comparable or smaller than machine epsilon,
+/// above convergence condition could not meet.
+/// In that case, numerical integration is stopped when estimated error \f$ E \f$ reaches
+/// numerical turncation limit.
+/// @section test Reliability
+/// Reliability of such two integration method is summerized in ``test.txt`` file located in test
+/// sub directory. 
 ///////////////////////////////////////////////////////////

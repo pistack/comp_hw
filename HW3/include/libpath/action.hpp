@@ -45,7 +45,7 @@ namespace libpath{
 /// @see [Math. Comp. 22 (1968), 847-856.]
 /// (https://doi.org/10.1090/S0025-5718-68-99866-9) 
 /// @see [Commun. ACM 16, 11 (Nov. 1973), 694–699.]
-/// (https://doi-org-ssl.access.yonsei.ac.kr/10.1145/355611.362543)
+/// (https://doi.org/10.1145/355611.362543)
 /// @see [ACM Comput. Surv. 44, 4, Article 22 (August 2012)]
 /// (https://doi.org/10.1145/2333112.2333117)
 ///

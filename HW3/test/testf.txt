@@ -1,0 +1,1002 @@
+make -C test test
+make[1]: Entering directory '/home/lis1331/Documents/lecture/phy/computer/comp_hw/HW3/test'
+g++  -O -g -Wall -pedantic -D MONITOR=1  -D PRECISION_LEVEL=0 -D PATH_TYPE_FOURIER -I ../include/ -I include/  -c -o test.o test.cpp
+g++  -O -g -Wall -pedantic -D MONITOR=1  -D PRECISION_LEVEL=0 -D PATH_TYPE_FOURIER -I ../include/ -I include/  -c -o test_action_vaildity.o test_action_vaildity.cpp
+g++  -O -g -Wall -pedantic -D MONITOR=1  -D PRECISION_LEVEL=0 -D PATH_TYPE_FOURIER -I ../include/ -I include/  -c -o test_action_simple.o test_action_simple.cpp
+g++  -O -g -Wall -pedantic -D MONITOR=1  -D PRECISION_LEVEL=0 -D PATH_TYPE_FOURIER -I ../include/ -I include/  -c -o test_action_kepler.o test_action_kepler.cpp
+g++  -O -g -Wall -pedantic -D MONITOR=1  -D PRECISION_LEVEL=0 -D PATH_TYPE_FOURIER -I ../include/ -I include/  -c -o test_fourier.o test_fourier.cpp
+g++  -O -g -Wall -pedantic -D MONITOR=1  -D PRECISION_LEVEL=0 -D PATH_TYPE_FOURIER -I ../include/ -I include/  -c -o test_fourier_path.o test_fourier_path.cpp
+g++  -O -g -Wall -pedantic -D MONITOR=1  -D PRECISION_LEVEL=0 -D PATH_TYPE_FOURIER -I ../include/ -I include/  -c -o test_bezier.o test_bezier.cpp
+g++  -O -g -Wall -pedantic -D MONITOR=1  -D PRECISION_LEVEL=0 -D PATH_TYPE_FOURIER -I ../include/ -I include/  -c -o test_bezier_path.o test_bezier_path.cpp
+g++ -o test test.o test_action_vaildity.o test_action_simple.o test_action_kepler.o  test_fourier.o  test_fourier_path.o test_bezier.o test_bezier_path.o
+./test
+Test 0. mathematical constant 
+Mathematical constant (pi) from libpath: 3.14159
+Reference: 3.14159
+Error: 0
+Mathematical constant (e) from libpath: 2.71828
+Reference: 2.71828
+Error: 0
+Mathematical constant (1/e) from libpath: 0.367879
+Reference: 0.367879
+Error: 0
+Testing libpath 
+Test 1. test bezier class 
+==================================================================
+                        Test bezier class                         
+ Test 1. order 1 bezier with control points: (1, 0)               
+ Test 2. order 2 bezier with control points: (1, 2, 1)            
+ Test 3. order 3 bezier with control points: (1, 2, 3, 1)         
+Test 1. order 1 bezier
+function value: 
+0	1/3	1/2	1
+1	0.666667	0.5	0	
+derivative: 
+0	1/3	1/2	1
+-1	-1	-1	-1	
+Test 2. order 2 bezier
+function value: 
+0	1/3	1/2	1
+1	1.44444	1.5	1	
+derivative: 
+0	1/3	1/2	1
+2	0.666667	0	-2	
+Test 3. order 3 bezier
+function value: 
+0	1/3	1/2	1
+1	1.88889	2.125	1	
+derivative: 
+0	1/3	1/2	1
+3	2	0.75	-6	
+Test finished
+Test 2. test bezier_path class 
+==================================================================
+                   Test bezier_path class                         
+ initial condition of path:                                       
+ t_0: -1, t_1: 1, p_0 = 0, p_1 = 1                                
+ Test 1. order 1 bezier with control points: (1, 0)               
+ Test 2. order 1 bezier with control points: (1, 2)               
+ Test 3. order 1 bezier with control points: (0, 1)               
+ initial condition of path2:                                      
+ t_0: -1, t_1: 1, p_0 = 2, p_1 = 3                                
+ Test 4. order 1 bezier with control points: (1, 0)               
+ Test 5. order 1 bezier with control points: (1, 2)               
+ Test 6. order 1 bezier with control points: (0, 1)               
+ initial condition of path3:                                      
+ t_0: -1, t_1: 1, p_0 = 1, p_1 = 0                                
+ Test 7. order 1 bezier with control points: (1, 0)               
+ Test 8. order 1 bezier with control points: (1, 2)               
+ Test 9. order 1 bezier with control points: (0, 1)               
+========================test start!===============================
+Test 1
+Vaildity of bezier curve false
+function value: 
+-1	1
+0	0	
+derivative: 
+-1	1
+0	0	
+Test 2
+Vaildity of bezier curve true
+function value: 
+-1	1
+0	1	
+derivative: 
+-1	1
+0.5	0.5	
+Test 3
+Vaildity of bezier curve true
+function value: 
+-1	1
+0	1	
+derivative: 
+-1	1
+0.5	0.5	
+Test 4
+Vaildity of bezier curve false
+function value: 
+-1	1
+0	0	
+derivative: 
+-1	1
+-0	-0	
+Test 5
+Vaildity of bezier curve true
+function value: 
+-1	1
+2	3	
+derivative: 
+-1	1
+0.5	0.5	
+Test 6
+Vaildity of bezier curve false
+function value: 
+-1	1
+0	0	
+derivative: 
+-1	1
+0	0	
+Test 7
+Vaildity of bezier curve true
+function value: 
+-1	1
+1	0	
+derivative: 
+-1	1
+-0.5	-0.5	
+Test 8
+Vaildity of bezier curve true
+function value: 
+-1	1
+1	0	
+derivative: 
+-1	1
+-0.5	-0.5	
+Test 9
+Vaildity of bezier curve false
+function value: 
+-1	1
+0	0	
+derivative: 
+-1	1
+0	0	
+Test finished
+Test 3. test fourier class 
+==========================================================
+               Test fourier class                         
+ Test 1. sin(2*x) at (0, pi/4, pi/2 3*pi/4, pi)           
+ Test 2. cos(2*x) at (0, pi/4, pi/2 3*pi/4, pi)           
+ Test 3. sin(2*x)+sin(4*x) at (0, pi/4, pi/2 3*pi/4, pi)  
+ Test 4. nth derivative of sin(2*x) for n=1,2,3,4,5       
+ Test 5. nth derivative of cos(2*x) for n=1,2,3,4,5       
+Test 1. sin(2*x)
+0	pi/4	pi/2	3*pi/4	pi
+0	1	-8.74228e-08	-1	1.74846e-07	
+Test 2. cos(2*x)
+0	pi/4	pi/2	3*pi/4	pi
+1	-4.37114e-08	-1	1.19249e-08	1	
+Test 3. sin(2*x) + sin(4*x)
+0	pi/4	pi/2	3*pi/4	pi
+0	1	8.74228e-08	-1	5.24537e-07	
+Test 4. sin(2*x)
+1st derivative of sin(2*x)
+0	pi/4	pi/2	3*pi/4	pi
+2	-8.74228e-08	-2	2.38498e-08	2	
+2th derivative of sin(2*x)
+0	pi/4	pi/2	3*pi/4	pi
+0	-4	3.49691e-07	4	-6.99382e-07	
+3th derivative of sin(2*x)
+0	pi/4	pi/2	3*pi/4	pi
+-8	3.49691e-07	8	-9.5399e-08	-8	
+4th derivative of sin(2*x)
+0	pi/4	pi/2	3*pi/4	pi
+0	16	-1.39876e-06	-16	2.79753e-06	
+5th derivative of sin(2*x)
+0	pi/4	pi/2	3*pi/4	pi
+32	-1.39876e-06	-32	3.81596e-07	32	
+Test 5. cos(2*x)
+1st derivative of cos(2*x)
+0	pi/4	pi/2	3*pi/4	pi
+0	-2	1.74846e-07	2	-3.49691e-07	
+2th derivative of cos(2*x)
+0	pi/4	pi/2	3*pi/4	pi
+-4	1.74846e-07	4	-4.76995e-08	-4	
+3th derivative of cos(2*x)
+0	pi/4	pi/2	3*pi/4	pi
+0	8	-6.99382e-07	-8	1.39876e-06	
+4th derivative of cos(2*x)
+0	pi/4	pi/2	3*pi/4	pi
+16	-6.99382e-07	-16	1.90798e-07	16	
+5th derivative of cos(2*x)
+0	pi/4	pi/2	3*pi/4	pi
+0	-32	2.79753e-06	32	-5.59506e-06	
+Test finished
+Test 4. test fourier_path class 
+==========================================================
+Test fourier path class routine 
+Test 1. sin(2*pi*x) with boundary condition f(0)=f(1)=0 
+Test 2. cos(2*pi*x) with boundary condition f(0)=f(1)=0 
+Test 3. cos(pi*x) with boundary condition f(0)=0, f(1)=1 
+Test 4. sin(pi*x) with boundary condition f(0)=0, f(1)=1 
+Test 1.
+Adder: 0 should be 0.
+Scaler: 1 should be 1.
+Test 2.
+Adder: -1 should be -1.
+Scaler: 1 should be 1.
+Test 3.
+Adder: 0.5 should be 0.5.
+Scaler: -0.5 should be -0.5.
+Test 4.
+Vaildity of path: false should be false. 
+Adder: 0 should be 0. 
+Scaler: 0 should be 0. 
+Test finished. 
+==========================================================
+Test action class 
+Test 5. test is_vaild() routine 
+==========================================================
+               Test action::is_vaild() routine            
+ Test 1. both element of path vector are vaild            
+ Test 2. first element of path vector is invaild          
+ Test 3. second element of path vector is invaild         
+ Test 4. both element of path vector is invaild           
+Test 1. vaildity of path: true it should be true
+Test 2. vaildity of path: false it should be false
+Test 3. vaildity of path: false it should be false
+Test 4. vaildity of path: false it should be false
+Test finished 
+Test 6. test eval() routine with various simple lagrangian 
+==============================================================
+       Test action::eval() routine simple lagrangian          
+ Test 0. integrate 0 from 0 to 2                              
+ Test 1. integrate sin(pi*x) from 0 to 1                      
+ Test 2. integrate sin(pi*x) from 0 to 2                      
+ Test 3. integrate 1/(2.0+sin(pi*x)) from 0 to 1              
+ Test 4. integrate 1/(2.0+sin(pi*x)) from 0 to 2              
+ Test 5. integrate sin(pi*x)**2 from 0 to 1                   
+ Test 6. integrate sin(sin(pi*x)) from 0 to 2                 
+ Test 7. integrate exp(sin(pi*x)) from 0 to 2                 
+ Test 8. integrate x from 0 to 1                              
+ Test 9. integrate 10th order bezier curve from 0 to 1        
+ Control points: (1,2,3,4,5,6,5,4,3,2,1)                      
+ Test 10. integrate 1/(1+x) from 0 to 1                       
+ Test 11. integrate 1/(1+x^2) from 0 to 1                     
+ Test 12. integrate exp(-x**2) from 0 to 1                    
+ Test Integrand which has singularties at end points          
+ Test 13. integrate 1/sqrt(sin(pi*x)) from 0 to 1             
+ Test 14. integrate 1/sqrt(x) from 0 to 1                     
+ Test 15. integrate 1/sqrt(x*(1-x)) from 0 to 1               
+ Test wildly oscillate integrand                              
+ Test 16. integrate sin(2*exp(2*sin(2*exp(2*sin(pi*x))))) from 0 to 2 
+ Test 0. rtol: 1
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0
+Exact value from Wolfram-Alpha: 0
+Estimated error: 0
+Exact error: 0
+Execution time: 1.8966 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0
+Exact value from Wolfram-Alpha: 0
+Estimated error: 0
+Exact error: 0
+Execution time: 2.1436 microsecond
+ Test 0. rtol: 0.01
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0
+Exact value from Wolfram-Alpha: 0
+Estimated error: 0
+Exact error: 0
+Execution time: 1.9071 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0
+Exact value from Wolfram-Alpha: 0
+Estimated error: 0
+Exact error: 0
+Execution time: 2.1537 microsecond
+ Test 0. rtol: 0.0001
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0
+Exact value from Wolfram-Alpha: 0
+Estimated error: 0
+Exact error: 0
+Execution time: 1.8991 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0
+Exact value from Wolfram-Alpha: 0
+Estimated error: 0
+Exact error: 0
+Execution time: 2.1458 microsecond
+ Test 1. rtol: 1
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.63662
+Exact value from Wolfram-Alpha: 0.63662
+Estimated error: 0
+Exact error: 5.96046e-08
+Execution time: 1.8463 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.802953
+Exact value from Wolfram-Alpha: 0.63662
+Estimated error: 0.767844
+Exact error: 0.166333
+Execution time: 2.3361 microsecond
+ Test 1. rtol: 0.01
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.63662
+Exact value from Wolfram-Alpha: 0.63662
+Estimated error: 0
+Exact error: 5.96046e-08
+Execution time: 1.8452 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.63662
+Exact value from Wolfram-Alpha: 0.63662
+Estimated error: 0.0013728
+Exact error: 5.96046e-08
+Execution time: 3.6171 microsecond
+ Test 1. rtol: 0.0001
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.63662
+Exact value from Wolfram-Alpha: 0.63662
+Estimated error: 0
+Exact error: 5.96046e-08
+Execution time: 1.8445 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.63662
+Exact value from Wolfram-Alpha: 0.63662
+Estimated error: 7.02201e-08
+Exact error: 0
+Execution time: 4.9393 microsecond
+ Test 2. rtol: 1
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 3.14946e-09
+Exact value from Wolfram-Alpha: 0
+Estimated error: 1.13339e-08
+Exact error: 3.14946e-09
+Execution time: 1.8934 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: -1.11356e-08
+Exact value from Wolfram-Alpha: 0
+Estimated error: 7.12502e-08
+Exact error: 1.11356e-08
+Execution time: 2.9107 microsecond
+ Test 2. rtol: 0.01
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 3.14946e-09
+Exact value from Wolfram-Alpha: 0
+Estimated error: 1.13339e-08
+Exact error: 3.14946e-09
+Execution time: 1.8921 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: -4.27438e-08
+Exact value from Wolfram-Alpha: 0
+Estimated error: 5.16937e-09
+Exact error: 4.27438e-08
+Execution time: 9.9209 microsecond
+ Test 2. rtol: 0.0001
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 3.14946e-09
+Exact value from Wolfram-Alpha: 0
+Estimated error: 1.13339e-08
+Exact error: 3.14946e-09
+Execution time: 1.8926 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: -4.27438e-08
+Exact value from Wolfram-Alpha: 0
+Estimated error: 5.16937e-09
+Exact error: 4.27438e-08
+Execution time: 9.9189 microsecond
+ Test 3. rtol: 1
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.3849
+Exact value from Wolfram-Alpha: 0.3849
+Estimated error: 1.16439e-07
+Exact error: 2.98023e-08
+Execution time: 1.865 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.372716
+Exact value from Wolfram-Alpha: 0.3849
+Estimated error: 0.150882
+Exact error: 0.0121838
+Execution time: 2.3511 microsecond
+ Test 3. rtol: 0.01
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.3849
+Exact value from Wolfram-Alpha: 0.3849
+Estimated error: 1.16439e-07
+Exact error: 2.98023e-08
+Execution time: 1.8627 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.3849
+Exact value from Wolfram-Alpha: 0.3849
+Estimated error: 3.57654e-05
+Exact error: 0
+Execution time: 3.7953 microsecond
+ Test 3. rtol: 0.0001
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.3849
+Exact value from Wolfram-Alpha: 0.3849
+Estimated error: 1.16439e-07
+Exact error: 2.98023e-08
+Execution time: 1.8553 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.3849
+Exact value from Wolfram-Alpha: 0.3849
+Estimated error: 2.34067e-08
+Exact error: 2.98023e-08
+Execution time: 5.5395 microsecond
+ Test 4. rtol: 1
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 1.1547
+Exact value from Wolfram-Alpha: 1.1547
+Estimated error: 6.09944e-06
+Exact error: 1.19209e-07
+Execution time: 1.9004 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 1.01703
+Exact value from Wolfram-Alpha: 1.1547
+Estimated error: 0.55377
+Exact error: 0.137674
+Execution time: 2.3854 microsecond
+ Test 4. rtol: 0.01
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 1.1547
+Exact value from Wolfram-Alpha: 1.1547
+Estimated error: 6.09944e-06
+Exact error: 1.19209e-07
+Execution time: 1.9014 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 1.1547
+Exact value from Wolfram-Alpha: 1.1547
+Estimated error: 0.00073511
+Exact error: 2.38419e-07
+Execution time: 5.6125 microsecond
+ Test 4. rtol: 0.0001
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 1.1547
+Exact value from Wolfram-Alpha: 1.1547
+Estimated error: 6.09944e-06
+Exact error: 1.19209e-07
+Execution time: 1.8999 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 1.1547
+Exact value from Wolfram-Alpha: 1.1547
+Estimated error: 9.36268e-08
+Exact error: 1.19209e-07
+Execution time: 8.8869 microsecond
+ Test 5. rtol: 1
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.5
+Exact value from Wolfram-Alpha: 0.5
+Estimated error: 0
+Exact error: 0
+Execution time: 1.8332 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.786738
+Exact value from Wolfram-Alpha: 0.5
+Estimated error: 0.784058
+Exact error: 0.286738
+Execution time: 2.2507 microsecond
+ Test 5. rtol: 0.01
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.5
+Exact value from Wolfram-Alpha: 0.5
+Estimated error: 0
+Exact error: 0
+Execution time: 1.8334 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.5
+Exact value from Wolfram-Alpha: 0.5
+Estimated error: 5.85167e-07
+Exact error: 5.96046e-08
+Execution time: 4.537 microsecond
+ Test 5. rtol: 0.0001
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.5
+Exact value from Wolfram-Alpha: 0.5
+Estimated error: 0
+Exact error: 0
+Execution time: 1.8331 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.5
+Exact value from Wolfram-Alpha: 0.5
+Estimated error: 5.85167e-07
+Exact error: 5.96046e-08
+Execution time: 4.5362 microsecond
+ Test 6. rtol: 1
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 4.034e-09
+Exact value from Wolfram-Alpha: 0
+Estimated error: 1.25469e-08
+Exact error: 4.034e-09
+Execution time: 2.0008 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: -4.11929e-08
+Exact value from Wolfram-Alpha: 0
+Estimated error: 4.11929e-08
+Exact error: 4.11929e-08
+Execution time: 2.6974 microsecond
+ Test 6. rtol: 0.01
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 4.034e-09
+Exact value from Wolfram-Alpha: 0
+Estimated error: 1.25469e-08
+Exact error: 4.034e-09
+Execution time: 2.0019 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: -3.40112e-08
+Exact value from Wolfram-Alpha: 0
+Estimated error: 9.57448e-10
+Exact error: 3.40112e-08
+Execution time: 9.4166 microsecond
+ Test 6. rtol: 0.0001
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 4.034e-09
+Exact value from Wolfram-Alpha: 0
+Estimated error: 1.25469e-08
+Exact error: 4.034e-09
+Execution time: 2.0108 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: -3.40112e-08
+Exact value from Wolfram-Alpha: 0
+Estimated error: 9.57448e-10
+Exact error: 3.40112e-08
+Execution time: 9.4297 microsecond
+ Test 7. rtol: 1
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 2.53213
+Exact value from Wolfram-Alpha: 2.53213
+Estimated error: 9.31511e-07
+Exact error: 0
+Execution time: 1.9636 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 2.03671
+Exact value from Wolfram-Alpha: 2.53213
+Estimated error: 1.10488
+Exact error: 0.49542
+Execution time: 2.4626 microsecond
+ Test 7. rtol: 0.01
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 2.53213
+Exact value from Wolfram-Alpha: 2.53213
+Estimated error: 9.31511e-07
+Exact error: 0
+Execution time: 1.9668 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 2.53213
+Exact value from Wolfram-Alpha: 2.53213
+Estimated error: 0.00100359
+Exact error: 4.76837e-07
+Execution time: 5.7663 microsecond
+ Test 7. rtol: 0.0001
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 2.53213
+Exact value from Wolfram-Alpha: 2.53213
+Estimated error: 9.31511e-07
+Exact error: 0
+Execution time: 1.9626 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 2.53213
+Exact value from Wolfram-Alpha: 2.53213
+Estimated error: 1.87254e-07
+Exact error: 2.38419e-07
+Execution time: 9.1206 microsecond
+ Test 8. rtol: 1
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.5
+Exact value from Wolfram-Alpha: 0.5
+Estimated error: 0
+Exact error: 0
+Execution time: 1.9657 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.507843
+Exact value from Wolfram-Alpha: 0.5
+Estimated error: 0.277555
+Exact error: 0.00784338
+Execution time: 2.499 microsecond
+ Test 8. rtol: 0.01
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.5
+Exact value from Wolfram-Alpha: 0.5
+Estimated error: 0
+Exact error: 0
+Execution time: 1.9627 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.5
+Exact value from Wolfram-Alpha: 0.5
+Estimated error: 1.68528e-06
+Exact error: 0
+Execution time: 4.0302 microsecond
+ Test 8. rtol: 0.0001
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.5
+Exact value from Wolfram-Alpha: 0.5
+Estimated error: 0
+Exact error: 0
+Execution time: 1.9675 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.5
+Exact value from Wolfram-Alpha: 0.5
+Estimated error: 1.68528e-06
+Exact error: 0
+Execution time: 4.035 microsecond
+ Test 9. rtol: 1
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 3.27273
+Exact value from Wolfram-Alpha: 3.27273
+Estimated error: 0
+Exact error: 2.38419e-07
+Execution time: 4.1362 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 4.0322
+Exact value from Wolfram-Alpha: 3.27273
+Estimated error: 3.45976
+Exact error: 0.759475
+Execution time: 5.102 microsecond
+ Test 9. rtol: 0.01
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 3.27273
+Exact value from Wolfram-Alpha: 3.27273
+Estimated error: 0
+Exact error: 2.38419e-07
+Execution time: 4.1357 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 3.27273
+Exact value from Wolfram-Alpha: 3.27273
+Estimated error: 3.55782e-06
+Exact error: 2.38419e-07
+Execution time: 10.9709 microsecond
+ Test 9. rtol: 0.0001
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 3.27273
+Exact value from Wolfram-Alpha: 3.27273
+Estimated error: 0
+Exact error: 2.38419e-07
+Execution time: 4.1351 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 3.27273
+Exact value from Wolfram-Alpha: 3.27273
+Estimated error: 3.55782e-06
+Exact error: 2.38419e-07
+Execution time: 10.9689 microsecond
+ Test 10. rtol: 1
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.693147
+Exact value from Wolfram-Alpha: 0.693147
+Estimated error: 0
+Exact error: 0
+Execution time: 1.9654 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.694293
+Exact value from Wolfram-Alpha: 0.693147
+Estimated error: 0.352905
+Exact error: 0.00114554
+Execution time: 2.4989 microsecond
+ Test 10. rtol: 0.01
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.693147
+Exact value from Wolfram-Alpha: 0.693147
+Estimated error: 0
+Exact error: 0
+Execution time: 1.9658 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.693144
+Exact value from Wolfram-Alpha: 0.693147
+Estimated error: 0.00114859
+Exact error: 2.98023e-06
+Execution time: 3.0763 microsecond
+ Test 10. rtol: 0.0001
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.693147
+Exact value from Wolfram-Alpha: 0.693147
+Estimated error: 0
+Exact error: 0
+Execution time: 1.9634 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.693147
+Exact value from Wolfram-Alpha: 0.693147
+Estimated error: 3.04287e-06
+Exact error: 5.96046e-08
+Execution time: 4.0451 microsecond
+ Test 11. rtol: 1
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.785398
+Exact value from Wolfram-Alpha: 0.785398
+Estimated error: 0
+Exact error: 0
+Execution time: 2.1222 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.802382
+Exact value from Wolfram-Alpha: 0.785398
+Estimated error: 0.454255
+Exact error: 0.0169842
+Execution time: 2.6751 microsecond
+ Test 11. rtol: 0.01
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.785398
+Exact value from Wolfram-Alpha: 0.785398
+Estimated error: 0
+Exact error: 0
+Execution time: 2.1223 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.785398
+Exact value from Wolfram-Alpha: 0.785398
+Estimated error: 8.24384e-05
+Exact error: 5.96046e-08
+Execution time: 4.2729 microsecond
+ Test 11. rtol: 0.0001
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.785398
+Exact value from Wolfram-Alpha: 0.785398
+Estimated error: 0
+Exact error: 0
+Execution time: 2.1247 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.785398
+Exact value from Wolfram-Alpha: 0.785398
+Estimated error: 7.02201e-08
+Exact error: 1.19209e-07
+Execution time: 6.1711 microsecond
+ Test 12. rtol: 1
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.746824
+Exact value from Wolfram-Alpha: 0.746824
+Estimated error: 0
+Exact error: 0
+Execution time: 1.8462 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.771186
+Exact value from Wolfram-Alpha: 0.746824
+Estimated error: 0.452151
+Exact error: 0.0243623
+Execution time: 2.4161 microsecond
+ Test 12. rtol: 0.01
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.746824
+Exact value from Wolfram-Alpha: 0.746824
+Estimated error: 0
+Exact error: 0
+Execution time: 1.8463 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.746824
+Exact value from Wolfram-Alpha: 0.746824
+Estimated error: 4.59005e-05
+Exact error: 0
+Execution time: 4.1384 microsecond
+ Test 12. rtol: 0.0001
+Integration Method: default (G15, K31) gauss-kronrod quadrature
+Integration value: 0.746824
+Exact value from Wolfram-Alpha: 0.746824
+Estimated error: 0
+Exact error: 0
+Execution time: 1.8454 microsecond
+Integration Method: Tanh-Sinh Quadrature
+Integration value: 0.746824
+Exact value from Wolfram-Alpha: 0.746824
+Estimated error: 4.68134e-08
+Exact error: 5.96046e-08
+Execution time: 6.082 microsecond
+ Test integrand with singularity in end points
+ Test 13. rtol: 1
+Integration value: 1.66286
+Exact value from Wolfram-Alpha: 1.66925
+Estimated error: 0.0920621
+Exact error: 0.00639522
+Execution time: 0.589 microsecond
+ Test 13. rtol: 0.01
+Integration value: 1.66888
+Exact value from Wolfram-Alpha: 1.66925
+Estimated error: 0.00602376
+Exact error: 0.000371456
+Execution time: 1.097 microsecond
+ Test 13. rtol: 0.0001
+Integration value: 1.66919
+Exact value from Wolfram-Alpha: 1.66925
+Estimated error: 5.14011e-05
+Exact error: 6.75917e-05
+Execution time: 4.112 microsecond
+ Test 14. rtol: 1
+Integration value: 2.00451
+Exact value from Wolfram-Alpha: 2
+Estimated error: 0.216931
+Exact error: 0.00451064
+Execution time: 0.655 microsecond
+ Test 14. rtol: 0.01
+Integration value: 2
+Exact value from Wolfram-Alpha: 2
+Estimated error: 0.00451038
+Exact error: 2.38419e-07
+Execution time: 1.228 microsecond
+ Test 14. rtol: 0.0001
+Integration value: 2
+Exact value from Wolfram-Alpha: 2
+Estimated error: 4.68134e-07
+Exact error: 2.38419e-07
+Execution time: 2.34 microsecond
+ Test 15. rtol: 1
+Integration value: 3.1435
+Exact value from Wolfram-Alpha: 3.14159
+Estimated error: 0.00190381
+Exact error: 0.00190401
+Execution time: 0.684 microsecond
+ Test 15. rtol: 0.01
+Integration value: 3.1435
+Exact value from Wolfram-Alpha: 3.14159
+Estimated error: 0.00190381
+Exact error: 0.00190401
+Execution time: 0.684 microsecond
+ Test 15. rtol: 0.0001
+Due to turncation error such integral not much accurate than 0.00109183
+Integration value: 3.1413
+Exact value from Wolfram-Alpha: 3.14159
+Estimated error: 0.00015308
+Exact error: 0.000294685
+Execution time: 4.564 microsecond
+Test perforcemance of Gauss-Kronrod quadrature with different nodes
+ Test 16. rtol: 1
+Integration Method: Gauss-Kronrod quadrature
+Order: 15
+Integration value: 0.0973465
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 1.04285
+Exact error: 0.0411566
+Execution time: 49.214 microsecond
+Order: 21
+Integration value: 0.0402611
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 1.0654
+Exact error: 0.0159289
+Execution time: 49.882 microsecond
+Order: 31
+Integration value: 0.0561902
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 0.36456
+Exact error: 2.34693e-07
+Execution time: 70.306 microsecond
+Order: 41
+Integration value: 0.05619
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 1.0232
+Exact error: 3.72529e-09
+Execution time: 68.188 microsecond
+Order: 51
+Integration value: 0.0561899
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 0.257334
+Exact error: 3.35276e-08
+Execution time: 64.543 microsecond
+Order: 61
+Integration value: 0.0561904
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 0.109134
+Exact error: 4.58211e-07
+Execution time: 53.551 microsecond
+ Test 16. rtol: 0.01
+Integration Method: Gauss-Kronrod quadrature
+Order: 15
+Integration value: 0.0561901
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 0.00179671
+Exact error: 1.15484e-07
+Execution time: 93.937 microsecond
+Order: 21
+Integration value: 0.05619
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 0.00142291
+Exact error: 3.72529e-09
+Execution time: 107.455 microsecond
+Order: 31
+Integration value: 0.0561898
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 0.000181127
+Exact error: 1.67638e-07
+Execution time: 105.487 microsecond
+Order: 41
+Integration value: 0.0561901
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 0.00419578
+Exact error: 1.00583e-07
+Execution time: 75.175 microsecond
+Order: 51
+Integration value: 0.0561901
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 0.015175
+Exact error: 1.00583e-07
+Execution time: 83.503 microsecond
+Order: 61
+Integration value: 0.0561902
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 0.000309121
+Exact error: 2.04891e-07
+Execution time: 98.907 microsecond
+ Test 16. rtol: 0.0001
+Integration Method: Gauss-Kronrod quadrature
+Order: 15
+Integration value: 0.05619
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 1.56267e-05
+Exact error: 2.6077e-08
+Execution time: 124.071 microsecond
+Order: 21
+Integration value: 0.0561899
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 1.72174e-06
+Exact error: 4.84288e-08
+Execution time: 116.983 microsecond
+Order: 31
+Integration value: 0.0561899
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 4.96499e-06
+Exact error: 3.35276e-08
+Execution time: 117.881 microsecond
+Order: 41
+Integration value: 0.05619
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 7.25535e-05
+Exact error: 3.72529e-09
+Execution time: 106.774 microsecond
+Order: 51
+Integration value: 0.0561899
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 5.21888e-07
+Exact error: 6.33299e-08
+Execution time: 111.561 microsecond
+Order: 61
+Integration value: 0.0561902
+Exact value from Wolfram-Alpha: 0.05619
+Estimated error: 0.000309121
+Exact error: 2.04891e-07
+Execution time: 97.298 microsecond
+Test finished!
+==========================================================
+Test 7. test eval() routine with kepler lagrangian 
+==========================================================
+               Test action::eval() routine                
+ Test 1. n_f: 3 with kepler action                        
+ Test 2. n_f: 4 with kepler action                        
+ Test 1. rtol: 1
+Integration Method: gauss-kronrod quadrature
+Integration value: 4.82328
+Estimated error: 5.33398e-06
+Execution time: 4.2501 microsecond
+Integration Method: Tanh-Sinh quadrature
+Integration value: 4.64304
+Estimated error: 2.03434
+Execution time: 0.9307 microsecond
+ Test 1. rtol: 0.01
+Integration Method: gauss-kronrod quadrature
+Integration value: 4.82328
+Estimated error: 5.33398e-06
+Execution time: 4.2565 microsecond
+Integration Method: Tanh-Sinh quadrature
+Integration value: 4.82208
+Estimated error: 0.0156378
+Execution time: 3.5178 microsecond
+ Test 1. rtol: 0.0001
+Integration Method: gauss-kronrod quadrature
+Integration value: 4.82328
+Estimated error: 5.33398e-06
+Execution time: 4.3082 microsecond
+Integration Method: Tanh-Sinh quadrature
+Integration value: 4.82328
+Estimated error: 1.49835e-07
+Execution time: 13.0515 microsecond
+ Test 2. rtol: 1
+Integration Method: gauss-kronrod quadrature
+Integration value: 4.85801
+Estimated error: 0
+Execution time: 5.0673 microsecond
+Integration Method: Tanh-Sinh quadrature
+Integration value: 4.79935
+Estimated error: 2.48198
+Execution time: 1.0705 microsecond
+ Test 2. rtol: 0.01
+Integration Method: gauss-kronrod quadrature
+Integration value: 4.85801
+Estimated error: 0
+Execution time: 5.0895 microsecond
+Integration Method: Tanh-Sinh quadrature
+Integration value: 4.858
+Estimated error: 0.00259154
+Execution time: 7.9412 microsecond
+ Test 2. rtol: 0.0001
+Integration Method: gauss-kronrod quadrature
+Integration value: 4.85801
+Estimated error: 0
+Execution time: 5.0778 microsecond
+Integration Method: Tanh-Sinh quadrature
+Integration value: 4.85801
+Estimated error: 2.99669e-07
+Execution time: 14.9027 microsecond
+Test finished!
+==========================================================
+Test Report ( single precision )
+Test 1. state: true elapsed time: 2.9e-05 s
+Test 2. state: true elapsed time: 6.3e-05 s
+Test 3. state: true elapsed time: 5.9e-05 s
+Test 4. state: true elapsed time: 1.3e-05 s
+Test 5. state: true elapsed time: 9e-06 s
+Test 6. state: true elapsed time: 3.5316 s
+Test 7. state: true elapsed time: 0.694809 s
+Test finished! 
+make[1]: Leaving directory '/home/lis1331/Documents/lecture/phy/computer/comp_hw/HW3/test'
