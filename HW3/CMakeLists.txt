@@ -34,9 +34,11 @@ include_directories(include)
 
 # default include source
 set(default_include
+"include/libpath/math_const.hpp"
 "include/libpath/action.hpp"
 "include/libmcm/mcm.hpp"
 "include/libpath/node_weight_table.hpp"
+"include/libpath/math_const/math_const.tpp"
 "include/libpath/action/action.tpp"
 "include/libmcm/mcm/mcm_basic.tpp"
 "include/libmcm/mcm/mcm_move.tpp"

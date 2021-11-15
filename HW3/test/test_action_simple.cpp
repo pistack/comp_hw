@@ -49,10 +49,10 @@ int test_action_simple()
   // exact result
   // values are obtained by wolfram-alpha
   vector<PRECISION> exact {
-    0, 2/pi<PRECISION>, 0, 0.384900179459750509673, 1.15470053837925152902, 0.5, 0, 
+    0, 2/PI<PRECISION>(), 0, 0.384900179459750509673, 1.15470053837925152902, 0.5, 0, 
     2.5321317555040166712,
-    0.5, 36.0/11, std::log(PRECISION(2.0)), pi<PRECISION>/4, std::sqrt(pi<PRECISION>)*std::erf(1.0)/2,
-    1.6692536833481463726, 2, pi<PRECISION>,
+    0.5, 36.0/11, std::log(PRECISION(2.0)), PI<PRECISION>()/4, std::sqrt(PI<PRECISION>())*std::erf(1.0)/2,
+    1.6692536833481463726, 2, PI<PRECISION>(),
     0.0561899582642922203122
   };
 

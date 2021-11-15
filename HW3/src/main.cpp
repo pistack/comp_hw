@@ -5,7 +5,7 @@
  * number of points to evaluate, number of iteration, step size, parameter lambda and
  * output file name then computes and saves solution.
  * @author pistack (Junho Lee)
- * @date 2021. 11. 13.
+ * @date 2021. 11. 15.
  */
 
 #ifndef PATH_TYPE_FOURIER
@@ -32,6 +32,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "libpath/math_const.hpp"
+
 #ifdef PATH_TYPE_FOURIER
 #include "libmcm/mcm_fourier.hpp"
 #endif
@@ -50,7 +52,7 @@
 
 using namespace std;
 
-constexpr PRECISION pi = std::acos(PRECISION(-1)); // pi
+PRECISION pi = libpath::PI<PRECISION>(); // pi
 
 /// @brief functor class for the kepler lagranian
 /// @param T precision should be the one of

@@ -3,7 +3,7 @@
  * @file action.hpp
  * @brief header file for evaluation of the action
  * @author pistack (Junho Lee)
- * @date 2021. 11. 13.
+ * @date 2021. 11. 15.
  */
 
 #ifndef ACTION_H
@@ -13,12 +13,10 @@
 #include <cmath>
 #include <limits>
 #include <vector>
+#include "math_const.hpp"
 #include "node_weight_table.hpp"
 
 namespace libpath{
-
-template<typename T>
-constexpr T h_pi = std::acos(T(0)); ///< half pi
 
 /// @brief class which computes action
 /// @param T precision should be one of
@@ -73,10 +71,11 @@ class action
 	static const Lag lag; // lagrangian
 
     // error scaling factor for gauss-kronrod
-	static constexpr T err_scale = 2000*std::sqrt(T(2));
+	// approx 2000*sqrt(2) as 2829
+	static constexpr T err_scale = 2829;
 
-	// first step value of tanh-sinh
-	static constexpr T const_e = std::exp(T(1));
+	// half pi value used in tanh-sinh
+	static constexpr T h_pi = PI<T>()/2;
 
     // machine eps
     static constexpr T eps = std::numeric_limits<T>::epsilon(); 
