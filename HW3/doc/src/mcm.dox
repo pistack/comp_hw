@@ -15,7 +15,7 @@
 /// @section target Target distribution
 /// In Monte Carlo Metropolis method described in 
 /// [Entropy 2020, 22(9), 916](https://doi.org/10.3390/e22090916),
-/// for large iteration number \f$ n_iter \f$, the distribution \f$ f_{\lambda}(S) \f$
+/// for large iteration number \f$ n_{iter} \f$, the distribution \f$ f_{\lambda}(S) \f$
 /// converges to \f$ g_{\lambda}(S) \f$, where
 /// \f{equation}{\label{eq:target_dist}
 /// g_{\lambda}(S) = \begin{cases}
@@ -32,7 +32,7 @@
 /// minimum action path, too large \f$ \lambda \f$ would make markov chain
 /// stuck. (i.e. low acceptance ratio)
 /// To deal with such problem we could decrease step_size to lower the
-/// difference of action \f$ \Delta A \f$ between each moves.
+/// difference of action \f$ \Delta S \f$ between each moves.
 /// The life is not as easy as you think it is. If you lower the step_size
 /// then you need more number of iteration to converge distribution.
 /// Therefore you should vary pair of step_size and \f$ \lambda \f$ to
@@ -40,9 +40,9 @@
 /// @section mcm_pseudo Pseudo Code
 /// 1. intialize mcm class
 ///   1. set initial condition
-///   2. set absoulte tolerance of the
+///   2. set relative tolerance of the
 ///   action integration see @ref action
-///   3. set basic configuration for support function used to
+///   3. set basic configuration for basis function used to
 ///      approximate path.
 ///   4. set lagrangian \f$ L(t, x(t), x'(t)) \f$.
 /// 2. set initial guess, iteration number n_iter, 
