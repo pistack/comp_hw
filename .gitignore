@@ -152,3 +152,6 @@ CMakeFiles/
 
 # vscode setting file
 .vscode/
+
+# cern root data file
+*.root
