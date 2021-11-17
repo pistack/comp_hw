@@ -1,5 +1,5 @@
 /// @file example.cpp
-/// @brief example root scripts to read ascii file and 
+/// @brief example root script to read ascii file and 
 /// make a plot
 /// @author pistack (Junho Lee)
 /// @date 2021. 11. 17.
@@ -43,11 +43,29 @@ while(std::getline(infile, line))
 
 tree -> Write(); // write tree to file
 plot_zeta -> cd();
-tree -> Draw("#zeta:t", ""); // zeta
+std::size_t n = tree -> Draw("t:#zeta", "", "gOff"); // zeta
+TGraph *graph_zeta = new TGraph(n,tree->GetV1(),tree->GetV2());
+graph_zeta -> SetMarkerStyle(21);
+graph_zeta -> SetMarkerSize(0.5);
+graph_zeta -> SetTitle("#zeta; t; #zeta");
+(graph_zeta -> GetXaxis()) -> Set(n, 0, 10);
+graph_zeta -> Draw("alp");
 plot_theta -> cd();
-tree -> Draw("#theta:t", ""); // theta
+tree -> Draw("#theta:t", "", "gOff"); // theta
+TGraph *graph_theta = new TGraph(n,tree->GetV1(),tree->GetV2());
+graph_theta -> SetMarkerStyle(21);
+graph_theta -> SetMarkerSize(0.5);
+graph_theta -> SetTitle("#theta; t; #theta");
+(graph_theta -> GetXaxis()) -> Set(n, 0, 10);
+graph_theta -> Draw("alp");
 plot_traj -> cd();
-tree -> Draw("y:x", ""); // trajectory
+tree -> Draw("y:x", "", "gOff"); // trajectory
+TGraph *graph_traj = new TGraph(n,tree->GetV1(),tree->GetV2());
+graph_traj -> SetMarkerStyle(21);
+graph_traj -> SetMarkerSize(0.5);
+graph_traj -> SetTitle("Trajectory; x; y");
+(graph_traj -> GetXaxis()) -> Set(n, -1.125, 1.125);
+graph_traj -> Draw("alp");
 file -> Close(); // close file 
 }
 

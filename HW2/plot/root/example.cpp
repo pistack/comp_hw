@@ -1,5 +1,5 @@
 /// @file example.cpp
-/// @brief example root scripts to read ascii file and 
+/// @brief example root script to read ascii file and 
 /// make a plot
 /// @author pistack (Junho Lee)
 /// @date 2021. 11. 17.
@@ -29,7 +29,13 @@ while(std::getline(infile, line))
 
 tree -> Write(); // write tree to file
 plot_zeta -> cd();
-tree -> Draw("#zeta:t", ""); // zeta
+std::size_t n = tree -> Draw("t:#zeta", "", "gOff"); // zeta
+TGraph *graph_zeta = new TGraph(n,tree->GetV1(),tree->GetV2());
+graph_zeta -> SetMarkerStyle(21);
+graph_zeta -> SetMarkerSize(0.5);
+graph_zeta -> SetTitle("#zeta; t; #zeta");
+(graph_zeta -> GetXaxis()) -> Set(n, 0, 3.25);
+graph_zeta -> Draw("alp");
 file -> Close(); // close file 
 }
 
